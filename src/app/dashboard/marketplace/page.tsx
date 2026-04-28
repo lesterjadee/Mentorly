@@ -1,35 +1,54 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Search, Star, BookOpen } from 'lucide-react'
+import Link from 'next/link'
 
-const CATEGORIES = ['All', 'Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology', 'Programming', 'Web Development', 'English', 'Other']
+const CATEGORIES = [
+  'All', 'Mathematics', 'Science', 'Physics', 'Chemistry',
+  'Biology', 'Programming', 'Web Development', 'English', 'Other'
+]
 
-export default async function MarketplacePage({
-  searchParams,
-}: {
-  searchParams: { category?: string; q?: string }
-}) {
+type Service = {
+  id: string
+  title: string
+  description: string
+  category: string
+  price_per_hour: number
+  mode: string
+  users: {
+    full_name: string
+    school: string
+    trust_score: number
+  } | null
+}
+
+type Props = {
+  searchParams: Promise<{ category?: string; q?: string }>
+}
+
+export default async function MarketplacePage({ searchParams }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const selectedCategory = searchParams.category || 'All'
-  const query = searchParams.q || ''
+  const params = await searchParams
+  const selectedCategory = params.category ?? 'All'
+  const query = params.q ?? ''
 
-  let servicesQuery = supabase
+  let dbQuery = supabase
     .from('services')
-    .select('*, users(full_name, school, course, trust_score, avatar_url)')
+    .select('*, users(full_name, school, trust_score)')
     .eq('is_active', true)
     .neq('tutor_id', user.id)
 
   if (selectedCategory !== 'All') {
-    servicesQuery = servicesQuery.eq('category', selectedCategory)
+    dbQuery = dbQuery.eq('category', selectedCategory)
   }
   if (query) {
-    servicesQuery = servicesQuery.ilike('title', `%${query}%`)
+    dbQuery = dbQuery.ilike('title', '%' + query + '%')
   }
 
-  const { data: services } = await servicesQuery.order('created_at', { ascending: false })
+  const { data: services } = await dbQuery.order('created_at', { ascending: false })
 
   return (
     <div>
@@ -38,7 +57,6 @@ export default async function MarketplacePage({
         <p className="text-white/40 text-sm">Find the right tutor for you</p>
       </div>
 
-      {/* search */}
       <form className="relative mb-6">
         <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
         <input
@@ -52,49 +70,54 @@ export default async function MarketplacePage({
         )}
       </form>
 
-      {/* categories */}
       <div className="flex gap-2 flex-wrap mb-8">
         {CATEGORIES.map((cat) => (
-          
+          <Link
             key={cat}
-            href={`/dashboard/marketplace?category=${cat}${query ? `&q=${query}` : ''}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+            href={'/dashboard/marketplace?category=' + cat + (query ? '&q=' + query : '')}
+            className={
               selectedCategory === cat
-                ? 'bg-[#26619C] border-[#26619C] text-white'
-                : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
-            }`}
+                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#26619C] border-[#26619C] text-white'
+                : 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
+            }
           >
             {cat}
-          </a>
+          </Link>
         ))}
       </div>
 
-      {/* results */}
       {services && services.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-4">
-          {services.map((service: any) => (
-            <div key={service.id} className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#26619C]/30 transition-colors">
+          {(services as Service[]).map((service) => (
+            <div
+              key={service.id}
+              className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#26619C]/30 transition-colors"
+            >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-10 h-10 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4]">
-                  {service.users?.full_name?.[0] || '?'}
+                  {service.users?.full_name?.[0] ?? '?'}
                 </div>
                 <span className="text-xs text-white/30 border border-white/10 px-2 py-1 rounded-full">
                   {service.mode}
                 </span>
               </div>
               <h3 className="font-medium text-sm mb-1">{service.title}</h3>
-              <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">{service.description}</p>
+              <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">
+                {service.description}
+              </p>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-white/40">{service.users?.full_name}</p>
                   <p className="text-xs text-white/20">{service.users?.school}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-[#4a8fd4]">₱{service.price_per_hour}/hr</p>
+                  <p className="text-sm font-semibold text-[#4a8fd4]">
+                    ₱{service.price_per_hour}/hr
+                  </p>
                   <div className="flex items-center gap-1 justify-end mt-0.5">
                     <Star size={10} className="text-yellow-400" />
                     <span className="text-xs text-white/30">
-                      {service.users?.trust_score > 0 ? service.users.trust_score : 'New'}
+                      {(service.users?.trust_score ?? 0) > 0 ? service.users?.trust_score : 'New'}
                     </span>
                   </div>
                 </div>
