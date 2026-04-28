@@ -1,10 +1,11 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function Home() {
   const supabase = await createClient()
   const { error } = await supabase.from('_dummy_check').select('*').limit(1)
-  const connected = !error || error.code === 'PGRST116' || 
-    error.message.includes('does not exist') || 
+  const connected = !error || error.code === 'PGRST116' ||
+    error.message.includes('does not exist') ||
     error.message.includes('schema cache')
 
   return (
@@ -27,12 +28,12 @@ export default async function Home() {
           <a href="#" className="hover:text-white transition-colors">Pricing</a>
         </div>
         <div className="flex items-center gap-3">
-          <button className="text-sm text-white/60 hover:text-white transition-colors px-4 py-2">
+          <Link href="/login" className="text-sm text-white/60 hover:text-white transition-colors px-4 py-2">
             Sign in
-          </button>
-          <button className="text-sm bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2 rounded-lg font-medium">
+          </Link>
+          <Link href="/register" className="text-sm bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2 rounded-lg font-medium">
             Get started
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -55,17 +56,17 @@ export default async function Home() {
           </h1>
 
           <p className="text-lg text-white/50 max-w-xl mx-auto mb-10 leading-relaxed">
-            Mentorly connects college students who need help with those who can provide it — 
+            Mentorly connects college students who need help with those who can provide it —
             building an affordable, trusted marketplace for student-to-student knowledge sharing.
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <button className="bg-[#26619C] hover:bg-[#1e4f82] transition-all px-6 py-3 rounded-xl font-medium text-sm">
+            <Link href="/register" className="bg-[#26619C] hover:bg-[#1e4f82] transition-all px-6 py-3 rounded-xl font-medium text-sm">
               Find a tutor
-            </button>
-            <button className="bg-white/5 hover:bg-white/10 border border-white/10 transition-all px-6 py-3 rounded-xl font-medium text-sm text-white/80">
+            </Link>
+            <Link href="/register" className="bg-white/5 hover:bg-white/10 border border-white/10 transition-all px-6 py-3 rounded-xl font-medium text-sm text-white/80">
               Offer your skills
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -119,8 +120,8 @@ export default async function Home() {
       <footer className="border-t border-white/5 px-8 py-6 flex items-center justify-between max-w-6xl mx-auto">
         <p className="text-xs text-white/20">© 2025 Mentorly. Built for students, by students.</p>
         <div className={`flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border ${
-          connected 
-            ? 'border-green-500/20 text-green-400/60' 
+          connected
+            ? 'border-green-500/20 text-green-400/60'
             : 'border-red-500/20 text-red-400/60'
         }`}>
           <span className={`w-1.5 h-1.5 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`} />
