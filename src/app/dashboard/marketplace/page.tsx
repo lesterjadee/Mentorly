@@ -37,7 +37,7 @@ export default async function MarketplacePage({ searchParams }: Props) {
 
   let dbQuery = supabase
     .from('services')
-    .select('*, users(full_name, school, trust_score)')
+    .select('*, users(full_name, school, trust_score, id)')
     .eq('is_active', true)
     .neq('tutor_id', user.id)
 

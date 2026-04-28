@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Calendar, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 import AcceptDeclineButtons from './AcceptDeclineButtons'
+import Link from 'next/link'
 
 export default async function BookingsPage({
   searchParams,
@@ -25,6 +26,14 @@ export default async function BookingsPage({
     .select('*, services(title, price_per_hour), learner:users!bookings_learner_id_fkey(full_name, school)')
     .eq('tutor_id', user.id)
     .order('scheduled_at', { ascending: true })
+
+  // get reviews already left by this user
+  const { data: myReviews } = await supabase
+    .from('reviews')
+    .select('booking_id')
+    .eq('reviewer_id', user.id)
+
+  const reviewedBookingIds = new Set((myReviews || []).map((r: any) => r.booking_id))
 
   function StatusBadge({ status }: { status: string }) {
     const styles: Record<string, string> = {
@@ -97,6 +106,19 @@ export default async function BookingsPage({
                         {formatTime(booking.scheduled_at)} · {booking.duration_hours}hr
                       </span>
                     </div>
+                    {booking.status === 'completed' && !reviewedBookingIds.has(booking.id) && (
+                      <Link
+                        href={'/dashboard/reviews/new?booking=' + booking.id + '&tutor=' + booking.tutor_id}
+                        className="inline-flex items-center gap-1 mt-3 text-xs text-yellow-400 hover:text-yellow-300 transition-colors border border-yellow-500/20 bg-yellow-500/10 px-3 py-1.5 rounded-lg"
+                      >
+                        ⭐ Leave a review
+                      </Link>
+                    )}
+                    {booking.status === 'completed' && reviewedBookingIds.has(booking.id) && (
+                      <span className="inline-flex items-center gap-1 mt-3 text-xs text-white/20 border border-white/10 px-3 py-1.5 rounded-lg">
+                        Review submitted
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <StatusBadge status={booking.status} />
@@ -141,9 +163,11 @@ export default async function BookingsPage({
                   <div className="flex flex-col items-end gap-2">
                     <StatusBadge status={booking.status} />
                     <p className="text-xs font-medium text-[#4a8fd4]">₱{booking.total_price}</p>
-                    {booking.status === 'pending' && (
-                      <AcceptDeclineButtons bookingId={booking.id} />
-                    )}
+                    <AcceptDeclineButtons
+                      bookingId={booking.id}
+                      status={booking.status}
+                      isLearner={false}
+                    />
                   </div>
                 </div>
               </div>
