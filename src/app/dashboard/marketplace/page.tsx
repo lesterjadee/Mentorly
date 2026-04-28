@@ -105,7 +105,7 @@ export default async function MarketplacePage({ searchParams }: Props) {
               <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">
                 {service.description}
               </p>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="text-xs text-white/40">{service.users?.full_name}</p>
                   <p className="text-xs text-white/20">{service.users?.school}</p>
@@ -122,9 +122,12 @@ export default async function MarketplacePage({ searchParams }: Props) {
                   </div>
                 </div>
               </div>
-              <button className="w-full mt-4 bg-white/5 hover:bg-[#26619C] border border-white/10 hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white">
+              <Link
+                href={'/dashboard/bookings/new?service=' + service.id}
+                className="block w-full text-center mt-2 bg-white/5 hover:bg-[#26619C] border border-white/10 hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
+              >
                 Book session
-              </button>
+              </Link>
             </div>
           ))}
         </div>
