@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar, Sparkles } from 'lucide-react'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -13,6 +13,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
     { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace' },
+    { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You' },
     { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings' },
     ...(role === 'learner' || role === 'both' ? [{ href: '/dashboard/requests', icon: BookOpen, label: 'My Requests' }] : []),
     ...(role === 'tutor' || role === 'both' ? [{ href: '/dashboard/services', icon: Briefcase, label: 'My Services' }] : []),

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { BookOpen, Briefcase, Star, ChevronRight, GraduationCap } from 'lucide-react'
+import { BookOpen, Briefcase, Star, ChevronRight, GraduationCap, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
@@ -116,6 +116,19 @@ export default async function DashboardPage() {
             <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-colors" />
           </Link>
         )}
+
+        <Link href="/dashboard/recommendations" className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-yellow-500/20 transition-colors group">
+        <div className="flex items-center gap-4">
+        <div className="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
+      <Sparkles size={16} className="text-yellow-400" />
+          </div>
+      <div>
+      <p className="font-medium text-sm">For you</p>
+      <p className="text-xs text-white/30 mt-0.5">Personalized tutor recommendations</p>
+    </div>
+  </div>
+  <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-colors" />
+</Link>
       </div>
     </div>
   )
