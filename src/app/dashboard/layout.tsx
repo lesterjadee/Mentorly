@@ -10,14 +10,20 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const role = user.user_metadata?.role || 'learner'
 
+  const { count: unreadCount } = await supabase
+    .from('messages')
+    .select('*', { count: 'exact', head: true })
+    .eq('receiver_id', user.id)
+    .eq('is_read', false)
+
   const navItems = [
-    { href: '/dashboard', icon: LayoutDashboard, label: 'Overview' },
-    { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace' },
-    { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You' },
-    { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings' },
-    ...(role === 'learner' || role === 'both' ? [{ href: '/dashboard/requests', icon: BookOpen, label: 'My Requests' }] : []),
-    ...(role === 'tutor' || role === 'both' ? [{ href: '/dashboard/services', icon: Briefcase, label: 'My Services' }] : []),
-    { href: '/dashboard/messages', icon: MessageSquare, label: 'Messages' },
+    { href: '/dashboard', icon: LayoutDashboard, label: 'Overview', badge: null },
+    { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace', badge: null },
+    { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You', badge: null },
+    { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings', badge: null },
+    ...(role === 'learner' || role === 'both' ? [{ href: '/dashboard/requests', icon: BookOpen, label: 'My Requests', badge: null }] : []),
+    ...(role === 'tutor' || role === 'both' ? [{ href: '/dashboard/services', icon: Briefcase, label: 'My Services', badge: null }] : []),
+    { href: '/dashboard/messages', icon: MessageSquare, label: 'Messages', badge: unreadCount || null },
   ]
 
   return (
@@ -45,7 +51,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/40 hover:text-white hover:bg-white/5 transition-all"
             >
               <item.icon size={16} />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {item.badge && (
+                <span className="w-5 h-5 bg-[#26619C] rounded-full text-[10px] font-medium text-white flex items-center justify-center">
+                  {item.badge > 9 ? '9+' : item.badge}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -65,8 +76,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <header className="flex items-center justify-between px-8 py-5 border-b border-white/5">
           <div />
           <div className="flex items-center gap-3">
-            <button className="text-white/30 hover:text-white transition-colors">
+            <button className="text-white/30 hover:text-white transition-colors relative">
               <Bell size={18} />
+              {unreadCount ? (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#26619C] rounded-full" />
+              ) : null}
             </button>
             <div className="w-8 h-8 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-xs font-medium text-[#4a8fd4]">
               {user.user_metadata?.full_name?.[0] || user.email?.[0]}

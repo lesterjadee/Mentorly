@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Calendar, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
+import { Calendar, Clock, CheckCircle, XCircle, AlertCircle, MessageSquare } from 'lucide-react'
 import AcceptDeclineButtons from './AcceptDeclineButtons'
 import Link from 'next/link'
 
@@ -27,7 +27,6 @@ export default async function BookingsPage({
     .eq('tutor_id', user.id)
     .order('scheduled_at', { ascending: true })
 
-  // get reviews already left by this user
   const { data: myReviews } = await supabase
     .from('reviews')
     .select('booking_id')
@@ -106,6 +105,15 @@ export default async function BookingsPage({
                         {formatTime(booking.scheduled_at)} · {booking.duration_hours}hr
                       </span>
                     </div>
+                    {booking.status === 'accepted' && (
+                      <Link
+                        href={'/dashboard/messages/' + booking.tutor_id}
+                        className="inline-flex items-center gap-1 mt-3 text-xs text-white/50 hover:text-white transition-colors border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg"
+                      >
+                        <MessageSquare size={11} />
+                        Message tutor
+                      </Link>
+                    )}
                     {booking.status === 'completed' && !reviewedBookingIds.has(booking.id) && (
                       <Link
                         href={'/dashboard/reviews/new?booking=' + booking.id + '&tutor=' + booking.tutor_id}
@@ -158,6 +166,15 @@ export default async function BookingsPage({
                     </div>
                     {booking.notes && (
                       <p className="text-xs text-white/20 mt-2 italic">"{booking.notes}"</p>
+                    )}
+                    {booking.status === 'accepted' && (
+                      <Link
+                        href={'/dashboard/messages/' + booking.learner_id}
+                        className="inline-flex items-center gap-1 mt-3 text-xs text-white/50 hover:text-white transition-colors border border-white/10 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg"
+                      >
+                        <MessageSquare size={11} />
+                        Message student
+                      </Link>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-2">
