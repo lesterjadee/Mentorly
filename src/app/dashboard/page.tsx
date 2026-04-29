@@ -38,10 +38,10 @@ export default async function DashboardPage() {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
   return (
-    <div className="max-w-4xl">
+    <div className="w-full">
 
       {/* header */}
-      <div className="flex items-start justify-between mb-10 animate-fade-in-up">
+      <div className="flex items-start justify-between mb-8 animate-fade-in-up">
         <div>
           <p className="text-white/40 text-sm mb-1">{greeting},</p>
           <h1 className="text-3xl font-bold">{firstName}</h1>
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
               <TrendingUp size={14} className="text-[#4a8fd4]" />
             </div>
             <p className="text-sm">
-              You have <span className="text-[#4a8fd4] font-medium">{pendingCount} pending booking {pendingCount === 1 ? 'request' : 'requests'}</span> waiting for your response
+              You have <span className="text-[#4a8fd4] font-medium">{pendingCount} pending booking {pendingCount === 1 ? 'request' : 'requests'}</span> waiting
             </p>
           </div>
           <ChevronRight size={15} className="text-white/20 group-hover:text-white/50 transition-colors" />
@@ -102,15 +102,12 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      {/* quick actions */}
-      <div className="space-y-3 animate-fade-in-up delay-300">
-        <p className="text-xs text-white/30 uppercase tracking-wider mb-4">Quick actions</p>
+      {/* quick actions — 2 column grid */}
+      <p className="text-xs text-white/30 uppercase tracking-wider mb-4 animate-fade-in-up delay-300">Quick actions</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 animate-fade-in-up delay-300">
 
         {(role === 'learner' || role === 'both') && (
-          <Link
-            href="/dashboard/marketplace"
-            className="flex items-center justify-between glass rounded-2xl p-5 hover:border-teal-500/20 transition-all duration-300 group"
-          >
+          <Link href="/dashboard/marketplace" className="flex items-center justify-between glass rounded-2xl p-5 hover:border-teal-500/20 transition-all duration-300 group">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                 <BookOpen size={16} className="text-teal-400" />
@@ -125,10 +122,7 @@ export default async function DashboardPage() {
         )}
 
         {(role === 'tutor' || role === 'both') && (
-          <Link
-            href="/dashboard/services/new"
-            className="flex items-center justify-between glass rounded-2xl p-5 hover:border-[#26619C]/30 transition-all duration-300 group"
-          >
+          <Link href="/dashboard/services/new" className="flex items-center justify-between glass rounded-2xl p-5 hover:border-[#26619C]/30 transition-all duration-300 group">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                 <Briefcase size={16} className="text-[#4a8fd4]" />
@@ -143,10 +137,7 @@ export default async function DashboardPage() {
         )}
 
         {(role === 'learner' || role === 'both') && (
-          <Link
-            href="/dashboard/requests/new"
-            className="flex items-center justify-between glass rounded-2xl p-5 hover:border-purple-500/20 transition-all duration-300 group"
-          >
+          <Link href="/dashboard/requests/new" className="flex items-center justify-between glass rounded-2xl p-5 hover:border-purple-500/20 transition-all duration-300 group">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                 <BookOpen size={16} className="text-purple-400" />
@@ -160,10 +151,7 @@ export default async function DashboardPage() {
           </Link>
         )}
 
-        <Link
-          href="/dashboard/recommendations"
-          className="flex items-center justify-between glass rounded-2xl p-5 hover:border-yellow-500/20 transition-all duration-300 group"
-        >
+        <Link href="/dashboard/recommendations" className="flex items-center justify-between glass rounded-2xl p-5 hover:border-yellow-500/20 transition-all duration-300 group">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
               <Sparkles size={16} className="text-yellow-400" />
@@ -175,6 +163,7 @@ export default async function DashboardPage() {
           </div>
           <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all duration-200" />
         </Link>
+
       </div>
     </div>
   )
