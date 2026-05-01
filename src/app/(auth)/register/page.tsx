@@ -12,19 +12,23 @@ const COURSES = [
 ]
 
 export default function RegisterPage() {
-  const [step, setStep] = useState(1)
   const [fullName, setFullName] = useState('')
   const [school, setSchool] = useState('')
   const [course, setCourse] = useState('')
-  const [role, setRole] = useState<'learner' | 'tutor' | 'both' | ''>('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [step, setStep] = useState(1)
 
   async function handleRegister() {
-    if (!fullName || !school || !course || !role || !email || !password) {
+    if (!agreedToTerms) {
+      setError('You must agree to the Terms and Conditions to continue.')
+      return
+    }
+    if (!fullName || !school || !course || !email || !password) {
       setError('Please fill in all fields.')
       return
     }
@@ -35,7 +39,7 @@ export default function RegisterPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, school, course, role },
+        data: { full_name: fullName, school, course, role: 'both' },
       },
     })
     if (error) {
@@ -71,7 +75,6 @@ export default function RegisterPage() {
     <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-lg">
 
-        {/* logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
@@ -90,10 +93,11 @@ export default function RegisterPage() {
         <div className="flex items-center justify-center gap-2 mb-8">
           {[1, 2].map((s) => (
             <div key={s} className="flex items-center gap-2">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
-                step >= s ? 'bg-[#26619C] text-white' : 'bg-white/5 text-white/30'
-              }`}>{s}</div>
-              {s < 2 && <div className={`w-12 h-px transition-colors ${step > s ? 'bg-[#26619C]' : 'bg-white/10'}`} />}
+              <div className={
+                'w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ' +
+                (step >= s ? 'bg-[#26619C] text-white' : 'bg-white/5 text-white/30')
+              }>{s}</div>
+              {s < 2 && <div className={'w-12 h-px transition-colors ' + (step > s ? 'bg-[#26619C]' : 'bg-white/10')} />}
             </div>
           ))}
         </div>
@@ -110,7 +114,6 @@ export default function RegisterPage() {
             <div className="space-y-4">
               <p className="text-xs text-white/30 uppercase tracking-wider mb-6">Step 1 — Personal & academic info</p>
 
-              {/* full name */}
               <div>
                 <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Full name</label>
                 <div className="relative">
@@ -125,7 +128,6 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* school */}
               <div>
                 <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">School / University</label>
                 <div className="relative">
@@ -140,7 +142,6 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* course */}
               <div>
                 <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Course / Program</label>
                 <div className="relative">
@@ -158,36 +159,9 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* role */}
-              <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">I want to join as</label>
-                <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { value: 'learner', label: 'Learner', desc: 'Find tutors & get help' },
-                    { value: 'tutor', label: 'Tutor', desc: 'Offer skills & earn' },
-                    { value: 'both', label: 'Both', desc: 'Learn and teach' },
-                  ].map((r) => (
-                    <button
-                      key={r.value}
-                      onClick={() => setRole(r.value as any)}
-                      className={`p-3 rounded-xl border text-left transition-all ${
-                        role === r.value
-                          ? 'border-[#26619C] bg-[#26619C]/10'
-                          : 'border-white/10 bg-white/3 hover:border-white/20'
-                      }`}
-                    >
-                      <p className={`text-xs font-medium mb-1 ${role === r.value ? 'text-[#4a8fd4]' : 'text-white/70'}`}>
-                        {r.label}
-                      </p>
-                      <p className="text-[10px] text-white/30 leading-tight">{r.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <button
                 onClick={() => {
-                  if (!fullName || !school || !course || !role) {
+                  if (!fullName || !school || !course) {
                     setError('Please fill in all fields.')
                     return
                   }
@@ -205,7 +179,6 @@ export default function RegisterPage() {
             <div className="space-y-4">
               <p className="text-xs text-white/30 uppercase tracking-wider mb-6">Step 2 — Account credentials</p>
 
-              {/* email */}
               <div>
                 <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Email</label>
                 <div className="relative">
@@ -220,7 +193,6 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* password */}
               <div>
                 <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Password</label>
                 <div className="relative">
@@ -237,6 +209,40 @@ export default function RegisterPage() {
                 <p className="text-white/20 text-xs mt-2">Minimum 6 characters</p>
               </div>
 
+              {/* terms checkbox */}
+              <div className="bg-white/3 border border-white/8 rounded-xl p-4">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <div className="relative mt-0.5 flex-shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div
+                      onClick={() => setAgreedToTerms(!agreedToTerms)}
+                      className={
+                        'w-4 h-4 rounded border flex items-center justify-center transition-all cursor-pointer ' +
+                        (agreedToTerms ? 'bg-[#26619C] border-[#26619C]' : 'border-white/20 bg-white/5')
+                      }
+                    >
+                      {agreedToTerms && (
+                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                          <path d="M1 4l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-xs text-white/40 leading-relaxed">
+                    I have read and agree to the{' '}
+                    <Link href="/terms" target="_blank" className="text-[#26619C] hover:text-[#4a8fd4] transition-colors underline underline-offset-2">
+                      Terms and Conditions
+                    </Link>
+                    . I understand that Mentorly is a peer-to-peer platform and I will conduct myself professionally.
+                  </span>
+                </label>
+              </div>
+
               <div className="flex gap-3 mt-2">
                 <button
                   onClick={() => setStep(1)}
@@ -246,7 +252,7 @@ export default function RegisterPage() {
                 </button>
                 <button
                   onClick={handleRegister}
-                  disabled={loading}
+                  disabled={loading || !agreedToTerms}
                   className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
                 >
                   {loading ? 'Creating account...' : 'Create account'}
