@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, BookOpen } from 'lucide-react'
+import { Plus, BookOpen, Search } from 'lucide-react'
 
 export default async function RequestsPage() {
   const supabase = await createClient()
@@ -21,10 +21,22 @@ export default async function RequestsPage() {
           <h1 className="text-2xl font-bold">My Requests</h1>
           <p className="text-white/40 text-sm mt-1">Help requests you've posted</p>
         </div>
-        <Link href="/dashboard/requests/new" className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium">
-          <Plus size={16} />
-          New request
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/requests/browse"
+            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white"
+          >
+            <Search size={15} />
+            Browse requests
+          </Link>
+          <Link
+            href="/dashboard/requests/new"
+            className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+          >
+            <Plus size={16} />
+            New request
+          </Link>
+        </div>
       </div>
 
       {requests && requests.length > 0 ? (
@@ -39,24 +51,23 @@ export default async function RequestsPage() {
                   <div>
                     <p className="font-medium text-sm">{req.title}</p>
                     <p className="text-xs text-white/30 mt-1 max-w-lg leading-relaxed">{req.description}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-white/30">{req.category}</span>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
                       {req.budget && (
-                        <>
-                          <span className="text-white/20">·</span>
-                          <span className="text-xs text-white/30">Budget: ₱{req.budget}</span>
-                        </>
+                        <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-lg">
+                          Budget: ₱{req.budget}/hr
+                        </span>
                       )}
-                      <span className="text-white/20">·</span>
-                      <span className="text-xs text-white/30">{req.mode}</span>
+                      <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
                     </div>
                   </div>
                 </div>
-                <span className={`text-xs px-2 py-1 rounded-full border flex-shrink-0 ${
-                  req.status === 'open'
+                <span className={
+                  'text-xs px-2 py-1 rounded-full border flex-shrink-0 ' +
+                  (req.status === 'open'
                     ? 'border-green-500/20 text-green-400 bg-green-500/10'
-                    : 'border-white/10 text-white/30'
-                }`}>
+                    : 'border-white/10 text-white/30')
+                }>
                   {req.status}
                 </span>
               </div>

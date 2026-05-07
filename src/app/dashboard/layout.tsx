@@ -1,15 +1,14 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { headers } from 'next/headers'
-import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar, Sparkles, User } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar, Sparkles, ClipboardList } from 'lucide-react'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const role = user.user_metadata?.role || 'learner'
+  const role = user.user_metadata?.role || 'both'
 
   const { count: unreadCount } = await supabase
     .from('messages')
@@ -26,21 +25,22 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Overview', badge: null },
     { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace', badge: null },
+    { href: '/dashboard/requests/browse', icon: ClipboardList, label: 'Browse Requests', badge: null },
     { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You', badge: null },
     { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings', badge: null },
-    ...(role === 'learner' || role === 'both' ? [{ href: '/dashboard/requests', icon: BookOpen, label: 'My Requests', badge: null }] : []),
-    ...(role === 'tutor' || role === 'both' ? [{ href: '/dashboard/services', icon: Briefcase, label: 'My Services', badge: null }] : []),
+    { href: '/dashboard/requests', icon: BookOpen, label: 'My Requests', badge: null },
+    { href: '/dashboard/services', icon: Briefcase, label: 'My Services', badge: null },
     { href: '/dashboard/messages', icon: MessageSquare, label: 'Messages', badge: unreadCount || null },
   ]
 
   const firstName = user.user_metadata?.full_name?.split(' ')[0] || 'User'
-  const totalNotifs = (notifCount || 0)
+  const totalNotifs = notifCount || 0
 
   return (
     <div className="min-h-screen bg-[#080C14] text-white flex">
 
       {/* sidebar */}
-      <aside className="w-60 border-r border-white/5 flex flex-col fixed h-full animate-slide-in-left">
+      <aside className="w-60 border-r border-white/5 flex flex-col fixed h-full">
 
         <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-2">
@@ -54,15 +54,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </div>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           {navItems.map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
-              className={
-                'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 animate-fade-in text-white/40 hover:text-white hover:bg-white/5'
-              }
-              style={{ animationDelay: (i * 40) + 'ms' }}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 text-white/40 hover:text-white hover:bg-white/5"
             >
               <item.icon size={16} />
               <span className="flex-1">{item.label}</span>
@@ -103,8 +100,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <header className="flex items-center justify-between px-8 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/80 backdrop-blur-sm z-10">
           <div />
           <div className="flex items-center gap-2">
-
-            {/* notifications bell */}
             <Link
               href="/dashboard/notifications"
               className="relative w-9 h-9 flex items-center justify-center text-white/30 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200"
@@ -114,8 +109,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#26619C] rounded-full animate-pulse" />
               )}
             </Link>
-
-            {/* profile avatar */}
             <Link
               href="/dashboard/profile"
               className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 hover:border-[#26619C]/60 flex items-center justify-center text-xs font-medium text-[#4a8fd4] transition-all duration-200"
