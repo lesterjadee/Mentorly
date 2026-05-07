@@ -14,16 +14,13 @@ export default async function RecommendationsPage() {
     .eq('id', user.id)
     .single()
 
-  // popular services — sorted by trust score
   const { data: popularServices } = await supabase
     .from('services')
     .select('*, users(full_name, school, trust_score)')
     .eq('is_active', true)
-    .neq('tutor_id', user.id)
     .order('created_at', { ascending: false })
     .limit(6)
 
-  // recommended by course — match category to user's course keywords
   const courseKeywords: Record<string, string[]> = {
     'Computer Science': ['Programming', 'Web Development', 'Data Science'],
     'Information Technology': ['Programming', 'Web Development', 'Other'],
@@ -46,13 +43,11 @@ export default async function RecommendationsPage() {
       .from('services')
       .select('*, users(full_name, school, trust_score)')
       .eq('is_active', true)
-      .neq('tutor_id', user.id)
       .in('category', matchedCategories)
       .limit(4)
     recommendedServices = data || []
   }
 
-  // recently booked categories — what this user has booked before
   const { data: pastBookings } = await supabase
     .from('bookings')
     .select('services(category)')
@@ -73,13 +68,11 @@ export default async function RecommendationsPage() {
       .from('services')
       .select('*, users(full_name, school, trust_score)')
       .eq('is_active', true)
-      .neq('tutor_id', user.id)
       .in('category', bookedCategories)
       .limit(4)
     repeatRecommendations = data || []
   }
 
-  // top rated tutors
   const { data: topTutors } = await supabase
     .from('users')
     .select('id, full_name, school, course, trust_score, role')
@@ -90,15 +83,23 @@ export default async function RecommendationsPage() {
     .limit(4)
 
   function ServiceCard({ service }: { service: any }) {
+    const isOwn = service.tutor_id === user!.id
     return (
       <div className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#26619C]/30 transition-colors">
         <div className="flex items-start justify-between mb-3">
           <div className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4]">
             {service.users?.full_name?.[0] ?? '?'}
           </div>
-          <span className="text-xs text-white/30 border border-white/10 px-2 py-0.5 rounded-full">
-            {service.category}
-          </span>
+          <div className="flex items-center gap-1.5">
+            {isOwn && (
+              <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+                Yours
+              </span>
+            )}
+            <span className="text-xs text-white/30 border border-white/10 px-2 py-0.5 rounded-full">
+              {service.category}
+            </span>
+          </div>
         </div>
         <p className="font-medium text-sm mb-1">{service.title}</p>
         <p className="text-xs text-white/30 mb-3">{service.users?.full_name} · {service.users?.school}</p>
@@ -111,12 +112,21 @@ export default async function RecommendationsPage() {
           </div>
           <p className="text-sm font-semibold text-[#4a8fd4]">₱{service.price_per_hour}/hr</p>
         </div>
-        <Link
-          href={'/dashboard/bookings/new?service=' + service.id}
-          className="block w-full text-center bg-white/5 hover:bg-[#26619C] border border-white/10 hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
-        >
-          Book session
-        </Link>
+        {isOwn ? (
+          <Link
+            href={'/dashboard/services/' + service.id + '/edit'}
+            className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-all py-2 rounded-xl text-xs font-medium text-white/40"
+          >
+            Edit your listing
+          </Link>
+        ) : (
+          <Link
+            href={'/dashboard/bookings/new?service=' + service.id}
+            className="block w-full text-center bg-white/5 hover:bg-[#26619C] border border-white/10 hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
+          >
+            Book session
+          </Link>
+        )}
       </div>
     )
   }
@@ -128,7 +138,6 @@ export default async function RecommendationsPage() {
         <p className="text-white/40 text-sm">Personalized recommendations based on your profile and activity</p>
       </div>
 
-      {/* recommended for your course */}
       {recommendedServices.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
@@ -143,7 +152,6 @@ export default async function RecommendationsPage() {
         </section>
       )}
 
-      {/* based on past bookings */}
       {repeatRecommendations.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
@@ -158,7 +166,6 @@ export default async function RecommendationsPage() {
         </section>
       )}
 
-      {/* top rated tutors */}
       {topTutors && topTutors.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
@@ -195,7 +202,6 @@ export default async function RecommendationsPage() {
         </section>
       )}
 
-      {/* popular services */}
       <section className="mb-10">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp size={15} className="text-green-400" />
@@ -216,17 +222,19 @@ export default async function RecommendationsPage() {
         )}
       </section>
 
-      {/* empty state if nothing at all */}
-      {recommendedServices.length === 0 && repeatRecommendations.length === 0 && (!topTutors || topTutors.length === 0) && (!popularServices || popularServices.length === 0) && (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <Zap size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No recommendations yet</p>
-          <p className="text-white/20 text-xs mt-1">Book a few sessions and we'll tailor suggestions for you</p>
-          <Link href="/dashboard/marketplace" className="inline-block mt-4 text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
-            Browse marketplace
-          </Link>
-        </div>
-      )}
+      {recommendedServices.length === 0 &&
+        repeatRecommendations.length === 0 &&
+        (!topTutors || topTutors.length === 0) &&
+        (!popularServices || popularServices.length === 0) && (
+          <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
+            <Zap size={32} className="text-white/10 mx-auto mb-4" />
+            <p className="text-white/40 text-sm">No recommendations yet</p>
+            <p className="text-white/20 text-xs mt-1">Book a few sessions and we'll tailor suggestions for you</p>
+            <Link href="/dashboard/marketplace" className="inline-block mt-4 text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
+              Browse marketplace
+            </Link>
+          </div>
+        )}
     </div>
   )
 }
