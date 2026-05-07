@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BookOpen, Search, MessageSquare } from 'lucide-react'
+import { BookOpen, Search, Calendar, Clock } from 'lucide-react'
 import Link from 'next/link'
 
 const CATEGORIES = [
@@ -46,11 +46,29 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
     return days + 'd ago'
   }
 
+  function formatDate(dateStr: string) {
+    if (!dateStr) return '—'
+    return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-PH', {
+      month: 'short', day: 'numeric', year: 'numeric'
+    })
+  }
+
+  function formatEndTime(startTime: string, hours: number) {
+    if (!startTime || !hours) return '—'
+    const [h, m] = startTime.split(':').map(Number)
+    const totalMins = h * 60 + m + hours * 60
+    const endH = Math.floor(totalMins / 60) % 24
+    const endM = totalMins % 60
+    const period = (t: number) => t >= 12 ? 'PM' : 'AM'
+    const fmt = (t: number) => t % 12 === 0 ? 12 : t % 12
+    return fmt(h) + ':' + String(m).padStart(2, '0') + ' ' + period(h) + ' – ' + fmt(endH) + ':' + String(endM).padStart(2, '0') + ' ' + period(endH)
+  }
+
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-1">Browse Requests</h1>
-        <p className="text-white/40 text-sm">Students looking for help — offer your expertise</p>
+        <p className="text-white/40 text-sm">Students looking for help — view their schedule and send an offer</p>
       </div>
 
       <form className="relative mb-6">
@@ -86,6 +104,11 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
         <div className="grid gap-4">
           {requests.map((req: any) => {
             const isOwn = req.learner_id === user.id
+            const isMulti = req.session_type === 'multi'
+            const timeRange = req.daily_start_time
+              ? formatEndTime(req.daily_start_time, req.hours_per_day)
+              : null
+
             return (
               <div
                 key={req.id}
@@ -93,24 +116,32 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
+
+                    {/* avatar */}
                     <div className="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-sm font-medium text-purple-400 flex-shrink-0">
                       {req.users?.full_name?.[0] ?? '?'}
                     </div>
+
                     <div className="flex-1 min-w-0">
+                      {/* title + own badge */}
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <h3 className="font-medium text-sm">{req.title}</h3>
                         {isOwn && (
-                          <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
+                          <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
                             Your request
                           </span>
                         )}
                       </div>
+
+                      {/* description */}
                       {req.description && (
                         <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">
                           {req.description}
                         </p>
                       )}
-                      <div className="flex items-center gap-3 flex-wrap">
+
+                      {/* tags */}
+                      <div className="flex items-center gap-2 flex-wrap mb-3">
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">
                           {req.category}
                         </span>
@@ -123,27 +154,51 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 mt-3">
-                        <p className="text-xs text-white/20">
-                          Posted by <span className="text-white/40">{req.users?.full_name}</span> · {req.users?.school}
-                        </p>
-                        <span className="text-white/10">·</span>
-                        <p className="text-xs text-white/20">{timeAgo(req.created_at)}</p>
-                      </div>
+
+                      {/* schedule info box */}
+                      {req.start_date && (
+                        <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-3 space-y-1.5">
+                          <p className="text-[10px] text-white/20 uppercase tracking-wider mb-2">Requested schedule</p>
+                          <div className="flex items-center gap-2 text-xs text-white/50">
+                            <Calendar size={11} className="text-white/30 flex-shrink-0" />
+                            {isMulti
+                              ? formatDate(req.start_date) + ' → ' + formatDate(req.end_date)
+                              : formatDate(req.start_date)}
+                            {isMulti && (
+                              <span className="text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full text-[10px]">
+                                {req.total_days} day{req.total_days !== 1 ? 's' : ''}
+                              </span>
+                            )}
+                          </div>
+                          {timeRange && (
+                            <div className="flex items-center gap-2 text-xs text-white/50">
+                              <Clock size={11} className="text-white/30 flex-shrink-0" />
+                              {timeRange} · {req.hours_per_day}hr/day
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* posted by */}
+                      <p className="text-xs text-white/20">
+                        Posted by <span className="text-white/40">{req.users?.full_name}</span>
+                        {req.users?.school && <span> · {req.users.school}</span>}
+                        <span> · {timeAgo(req.created_at)}</span>
+                      </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 flex-shrink-0">
-                    <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full text-center">
+                  {/* right side */}
+                  <div className="flex flex-col gap-2 flex-shrink-0 items-end">
+                    <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full">
                       Open
                     </span>
                     {!isOwn && (
                       <Link
-                        href={'/dashboard/messages/' + req.learner_id}
-                        className="flex items-center gap-1.5 px-3 py-2 bg-[#26619C]/10 hover:bg-[#26619C]/20 border border-[#26619C]/20 hover:border-[#26619C]/40 text-[#4a8fd4] rounded-xl text-xs font-medium transition-all"
+                        href={'/dashboard/requests/' + req.id + '/offer'}
+                        className="flex items-center gap-1.5 px-3 py-2 bg-[#26619C]/10 hover:bg-[#26619C]/20 border border-[#26619C]/20 hover:border-[#26619C]/40 text-[#4a8fd4] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
                       >
-                        <MessageSquare size={12} />
-                        Offer help
+                        Send offer
                       </Link>
                     )}
                   </div>
