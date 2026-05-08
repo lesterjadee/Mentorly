@@ -15,17 +15,27 @@ export default async function BookingsPage({
 
   const params = await searchParams
 
+  // fetch bookings as learner — include both service and request info
   const { data: asLearner } = await supabase
     .from('bookings')
-    .select('*, services(title, price_per_hour), tutor:users!bookings_tutor_id_fkey(full_name, school)')
+    .select(`
+      *,
+      services(title, price_per_hour),
+      tutor:users!bookings_tutor_id_fkey(id, full_name, school)
+    `)
     .eq('learner_id', user.id)
-    .order('start_date', { ascending: true })
+    .order('created_at', { ascending: false })
 
+  // fetch bookings as tutor
   const { data: asTutor } = await supabase
     .from('bookings')
-    .select('*, services(title, price_per_hour), learner:users!bookings_learner_id_fkey(full_name, school)')
+    .select(`
+      *,
+      services(title, price_per_hour),
+      learner:users!bookings_learner_id_fkey(id, full_name, school)
+    `)
     .eq('tutor_id', user.id)
-    .order('start_date', { ascending: true })
+    .order('created_at', { ascending: false })
 
   const { data: myReviews } = await supabase
     .from('reviews')
@@ -33,6 +43,11 @@ export default async function BookingsPage({
     .eq('reviewer_id', user.id)
 
   const reviewedBookingIds = new Set((myReviews || []).map((r: any) => r.booking_id))
+
+  // helper — get display title from booking
+  function getTitle(booking: any) {
+    return booking.services?.title || booking.booking_title || 'Tutoring session'
+  }
 
   function StatusBadge({ status }: { status: string }) {
     const styles: Record<string, string> = {
@@ -65,54 +80,70 @@ export default async function BookingsPage({
     })
   }
 
-  function formatTime(timeStr: string) {
-    if (!timeStr) return '—'
-    const [h, m] = timeStr.split(':').map(Number)
-    const period = h >= 12 ? 'PM' : 'AM'
-    const displayH = h % 12 === 0 ? 12 : h % 12
-    return displayH + ':' + String(m).padStart(2, '0') + ' ' + period
-  }
-
   function formatEndTime(timeStr: string, hours: number) {
-    if (!timeStr || !hours) return ''
+    if (!timeStr || !hours) return '—'
     const [h, m] = timeStr.split(':').map(Number)
     const totalMins = h * 60 + m + hours * 60
     const endH = Math.floor(totalMins / 60) % 24
     const endM = totalMins % 60
     const period = (t: number) => t >= 12 ? 'PM' : 'AM'
     const fmt = (t: number) => t % 12 === 0 ? 12 : t % 12
-    return fmt(h) + ':' + String(m).padStart(2, '0') + ' ' + period(h) + ' – ' + fmt(endH) + ':' + String(endM).padStart(2, '0') + ' ' + period(endH)
+    return (
+      fmt(h) + ':' + String(m).padStart(2, '0') + ' ' + period(h) +
+      ' – ' +
+      fmt(endH) + ':' + String(endM).padStart(2, '0') + ' ' + period(endH)
+    )
   }
 
   function SessionInfo({ booking }: { booking: any }) {
     const isMulti = booking.session_type === 'multi'
-    const startDate = formatDate(booking.start_date)
-    const endDate = formatDate(booking.end_date)
+    const startDate = booking.start_date ? formatDate(booking.start_date) : null
+    const endDate = booking.end_date ? formatDate(booking.end_date) : null
     const timeRange = booking.daily_start_time
       ? formatEndTime(booking.daily_start_time, booking.hours_per_day)
-      : '—'
+      : null
+
+    if (!startDate && !timeRange) return null
 
     return (
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
-        <span className="flex items-center gap-1 text-xs text-white/30">
-          <Calendar size={11} />
-          {isMulti ? startDate + ' → ' + endDate : startDate}
-        </span>
-        <span className="flex items-center gap-1 text-xs text-white/30">
-          <Clock size={11} />
-          {timeRange}
-        </span>
-        {isMulti && (
+        {startDate && (
+          <span className="flex items-center gap-1 text-xs text-white/30">
+            <Calendar size={11} />
+            {isMulti && endDate ? startDate + ' → ' + endDate : startDate}
+          </span>
+        )}
+        {timeRange && (
+          <span className="flex items-center gap-1 text-xs text-white/30">
+            <Clock size={11} />
+            {timeRange}
+          </span>
+        )}
+        {isMulti && booking.total_days && (
           <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full">
             {booking.total_days} day{booking.total_days !== 1 ? 's' : ''} · {booking.hours_per_day}hr/day
           </span>
         )}
-        {!isMulti && (
-          <span className="text-xs text-white/30">
-            {booking.hours_per_day}hr
-          </span>
+        {!isMulti && booking.hours_per_day && (
+          <span className="text-xs text-white/30">{booking.hours_per_day}hr</span>
         )}
       </div>
+    )
+  }
+
+  // source badge — was this from a marketplace service or a request offer?
+  function SourceBadge({ booking }: { booking: any }) {
+    if (booking.request_id) {
+      return (
+        <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+          From request
+        </span>
+      )
+    }
+    return (
+      <span className="text-[10px] text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full">
+        Marketplace
+      </span>
     )
   }
 
@@ -132,15 +163,22 @@ export default async function BookingsPage({
 
       {/* as learner */}
       <div className="mb-8">
-        <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">Sessions I booked</h2>
+        <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">
+          Sessions I booked
+        </h2>
         {asLearner && asLearner.length > 0 ? (
           <div className="space-y-3">
             {asLearner.map((booking: any) => (
               <div key={booking.id} className="bg-white/3 border border-white/8 rounded-2xl p-5">
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">{booking.services?.title}</p>
-                    <p className="text-xs text-white/30 mt-0.5">with {booking.tutor?.full_name} · {booking.tutor?.school}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <p className="font-medium text-sm">{getTitle(booking)}</p>
+                      <SourceBadge booking={booking} />
+                    </div>
+                    <p className="text-xs text-white/30">
+                      with {booking.tutor?.full_name} · {booking.tutor?.school}
+                    </p>
                     <SessionInfo booking={booking} />
                     <div className="flex flex-wrap gap-2 mt-3">
                       {booking.status === 'accepted' && (
@@ -167,9 +205,11 @@ export default async function BookingsPage({
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-2 ml-4">
+                  <div className="flex flex-col items-end gap-2 ml-4 flex-shrink-0">
                     <StatusBadge status={booking.status} />
-                    <p className="text-xs font-medium text-[#4a8fd4]">₱{booking.total_price}</p>
+                    <p className="text-xs font-medium text-[#4a8fd4]">
+                      ₱{booking.total_price}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -177,7 +217,9 @@ export default async function BookingsPage({
           </div>
         ) : (
           <div className="bg-white/3 border border-white/8 rounded-2xl p-8 text-center">
-            <p className="text-white/30 text-sm">No bookings yet — browse the marketplace to book a session</p>
+            <p className="text-white/30 text-sm">
+              No bookings yet — browse the marketplace or wait for your requests to receive offers
+            </p>
           </div>
         )}
       </div>
@@ -185,17 +227,26 @@ export default async function BookingsPage({
       {/* as tutor */}
       {asTutor && asTutor.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">Requests from students</h2>
+          <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-4">
+            Sessions I'm tutoring
+          </h2>
           <div className="space-y-3">
             {asTutor.map((booking: any) => (
               <div key={booking.id} className="bg-white/3 border border-white/8 rounded-2xl p-5">
                 <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">{booking.services?.title}</p>
-                    <p className="text-xs text-white/30 mt-0.5">from {booking.learner?.full_name} · {booking.learner?.school}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <p className="font-medium text-sm">{getTitle(booking)}</p>
+                      <SourceBadge booking={booking} />
+                    </div>
+                    <p className="text-xs text-white/30">
+                      {booking.status === 'pending' ? 'requested by' : 'with'} {booking.learner?.full_name} · {booking.learner?.school}
+                    </p>
                     <SessionInfo booking={booking} />
                     {booking.notes && (
-                      <p className="text-xs text-white/20 mt-2 italic">"{booking.notes}"</p>
+                      <p className="text-xs text-white/20 mt-2 italic">
+                        "{booking.notes}"
+                      </p>
                     )}
                     {booking.status === 'accepted' && (
                       <Link
@@ -207,9 +258,11 @@ export default async function BookingsPage({
                       </Link>
                     )}
                   </div>
-                  <div className="flex flex-col items-end gap-2 ml-4">
+                  <div className="flex flex-col items-end gap-2 ml-4 flex-shrink-0">
                     <StatusBadge status={booking.status} />
-                    <p className="text-xs font-medium text-[#4a8fd4]">₱{booking.total_price}</p>
+                    <p className="text-xs font-medium text-[#4a8fd4]">
+                      ₱{booking.total_price}
+                    </p>
                     <AcceptDeclineButtons
                       bookingId={booking.id}
                       status={booking.status}
@@ -220,6 +273,13 @@ export default async function BookingsPage({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* empty state if tutor has no bookings */}
+      {(!asTutor || asTutor.length === 0) && (!asLearner || asLearner.length === 0) && (
+        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
+          <p className="text-white/30 text-sm">No bookings yet</p>
         </div>
       )}
     </div>
