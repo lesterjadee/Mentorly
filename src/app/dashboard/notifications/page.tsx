@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Bell, Calendar, Star, MessageSquare, BookOpen, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { Bell, Star, MessageSquare, CheckCircle, XCircle, Clock } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function NotificationsPage() {
@@ -54,6 +54,14 @@ export default async function NotificationsPage() {
     .order('created_at', { ascending: false })
     .limit(5)
 
+  const { data: incomingOffers } = await supabase
+    .from('offers')
+    .select('*, tutor:users!offers_tutor_id_fkey(full_name), requests(title)')
+    .eq('learner_id', user.id)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false })
+    .limit(5)
+
   function timeAgo(dateStr: string) {
     const diff = Date.now() - new Date(dateStr).getTime()
     const mins = Math.floor(diff / 60000)
@@ -69,6 +77,7 @@ export default async function NotificationsPage() {
     (pendingBookings && pendingBookings.length > 0) ||
     (acceptedBookings && acceptedBookings.length > 0) ||
     (declinedBookings && declinedBookings.length > 0) ||
+    (incomingOffers && incomingOffers.length > 0) ||
     (unreadMessages && unreadMessages.length > 0) ||
     (completedBookings && completedBookings.some((b: any) => !reviewedIds.has(b.id)))
   )
@@ -90,7 +99,31 @@ export default async function NotificationsPage() {
 
       <div className="space-y-3">
 
-        {/* pending booking requests (tutor) */}
+        {/* incoming tutor offers (for learners) */}
+        {incomingOffers && incomingOffers.map((o: any) => (
+          <Link
+            key={'offer-' + o.id}
+            href={'/dashboard/requests/' + o.request_id + '/offers'}
+            className="flex items-start gap-4 bg-white/3 border border-[#26619C]/20 rounded-2xl p-4 hover:border-[#26619C]/40 transition-all group"
+          >
+            <div className="w-9 h-9 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center flex-shrink-0">
+              <Star size={15} className="text-[#4a8fd4]" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium">New tutor offer</p>
+              <p className="text-xs text-white/40 mt-0.5">
+                <span className="text-white/60">{o.tutor?.full_name}</span> sent an offer for{' '}
+                <span className="text-white/60">{o.requests?.title}</span>
+              </p>
+              <p className="text-xs text-white/20 mt-1">{timeAgo(o.created_at)}</p>
+            </div>
+            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-full flex-shrink-0">
+              Offer
+            </span>
+          </Link>
+        ))}
+
+        {/* pending booking requests (for tutors) */}
         {pendingBookings && pendingBookings.map((b: any) => (
           <Link
             key={'pending-' + b.id}
@@ -103,15 +136,18 @@ export default async function NotificationsPage() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">New booking request</p>
               <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.learner?.full_name}</span> wants to book <span className="text-white/60">{b.services?.title}</span>
+                <span className="text-white/60">{b.learner?.full_name}</span> wants to book{' '}
+                <span className="text-white/60">{b.services?.title}</span>
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">Pending</span>
+            <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">
+              Pending
+            </span>
           </Link>
         ))}
 
-        {/* accepted bookings (learner) */}
+        {/* accepted bookings (for learners) */}
         {acceptedBookings && acceptedBookings.map((b: any) => (
           <Link
             key={'accepted-' + b.id}
@@ -124,15 +160,18 @@ export default async function NotificationsPage() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">Booking accepted</p>
               <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.tutor?.full_name}</span> accepted your booking for <span className="text-white/60">{b.services?.title}</span>
+                <span className="text-white/60">{b.tutor?.full_name}</span> accepted your booking for{' '}
+                <span className="text-white/60">{b.services?.title}</span>
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full flex-shrink-0">Accepted</span>
+            <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full flex-shrink-0">
+              Accepted
+            </span>
           </Link>
         ))}
 
-        {/* declined bookings (learner) */}
+        {/* declined bookings (for learners) */}
         {declinedBookings && declinedBookings.map((b: any) => (
           <Link
             key={'declined-' + b.id}
@@ -145,11 +184,14 @@ export default async function NotificationsPage() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">Booking declined</p>
               <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.tutor?.full_name}</span> declined your booking for <span className="text-white/60">{b.services?.title}</span>
+                <span className="text-white/60">{b.tutor?.full_name}</span> declined your booking for{' '}
+                <span className="text-white/60">{b.services?.title}</span>
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-red-400 border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-full flex-shrink-0">Declined</span>
+            <span className="text-xs text-red-400 border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-full flex-shrink-0">
+              Declined
+            </span>
           </Link>
         ))}
 
@@ -168,11 +210,14 @@ export default async function NotificationsPage() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium">Rate your session</p>
                 <p className="text-xs text-white/40 mt-0.5">
-                  Your session for <span className="text-white/60">{b.services?.title}</span> is complete — leave a review!
+                  Your session for{' '}
+                  <span className="text-white/60">{b.services?.title}</span> is complete — leave a review!
                 </p>
                 <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
               </div>
-              <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">Review</span>
+              <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">
+                Review
+              </span>
             </Link>
           ))}
 
@@ -189,11 +234,14 @@ export default async function NotificationsPage() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">New message</p>
               <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{m.sender?.full_name}</span>: {m.content.length > 50 ? m.content.substring(0, 50) + '...' : m.content}
+                <span className="text-white/60">{m.sender?.full_name}</span>:{' '}
+                {m.content.length > 50 ? m.content.substring(0, 50) + '...' : m.content}
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(m.created_at)}</p>
             </div>
-            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-full flex-shrink-0">Message</span>
+            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-full flex-shrink-0">
+              Message
+            </span>
           </Link>
         ))}
       </div>

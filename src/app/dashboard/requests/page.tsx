@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, BookOpen, Search, Calendar, Clock } from 'lucide-react'
+import { Plus, BookOpen, Search, Calendar, Clock, ChevronRight } from 'lucide-react'
 
 export default async function RequestsPage() {
   const supabase = await createClient()
@@ -13,6 +13,19 @@ export default async function RequestsPage() {
     .select('*')
     .eq('learner_id', user.id)
     .order('created_at', { ascending: false })
+
+  // get offer counts per request
+  const requestIds = (requests || []).map((r: any) => r.id)
+  const { data: offerCounts } = requestIds.length > 0
+    ? await supabase
+        .from('offers')
+        .select('request_id, status')
+        .in('request_id', requestIds)
+    : { data: [] }
+
+  function getOfferCount(requestId: string) {
+    return (offerCounts || []).filter((o: any) => o.request_id === requestId && o.status === 'pending').length
+  }
 
   function formatDate(dateStr: string) {
     if (!dateStr) return '—'
@@ -64,6 +77,7 @@ export default async function RequestsPage() {
             const timeRange = req.daily_start_time
               ? formatEndTime(req.daily_start_time, req.hours_per_day)
               : null
+            const pendingOffers = getOfferCount(req.id)
 
             return (
               <div key={req.id} className="bg-white/3 border border-white/8 rounded-2xl p-6">
@@ -78,7 +92,6 @@ export default async function RequestsPage() {
                         <p className="text-xs text-white/30 mt-1 leading-relaxed line-clamp-2">{req.description}</p>
                       )}
 
-                      {/* tags */}
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
@@ -89,7 +102,6 @@ export default async function RequestsPage() {
                         )}
                       </div>
 
-                      {/* schedule */}
                       {req.start_date && (
                         <div className="flex flex-wrap gap-3 mt-3">
                           <span className="flex items-center gap-1.5 text-xs text-white/30">
@@ -113,14 +125,30 @@ export default async function RequestsPage() {
                       )}
                     </div>
                   </div>
-                  <span className={
-                    'text-xs px-2 py-1 rounded-full border flex-shrink-0 ' +
-                    (req.status === 'open'
-                      ? 'border-green-500/20 text-green-400 bg-green-500/10'
-                      : 'border-white/10 text-white/30')
-                  }>
-                    {req.status}
-                  </span>
+
+                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                    <span className={
+                      'text-xs px-2 py-1 rounded-full border ' +
+                      (req.status === 'open'
+                        ? 'border-green-500/20 text-green-400 bg-green-500/10'
+                        : 'border-white/10 text-white/30')
+                    }>
+                      {req.status}
+                    </span>
+
+                    <Link
+                      href={'/dashboard/requests/' + req.id + '/offers'}
+                      className="flex items-center gap-1.5 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white/50 hover:text-white rounded-xl text-xs font-medium transition-all"
+                    >
+                      {pendingOffers > 0 && (
+                        <span className="w-4 h-4 bg-[#26619C] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+                          {pendingOffers}
+                        </span>
+                      )}
+                      View offers
+                      <ChevronRight size={12} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             )

@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BookOpen, Search, Calendar, Clock } from 'lucide-react'
+import { BookOpen, Search, Calendar, Clock, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const CATEGORIES = [
@@ -9,7 +9,7 @@ const CATEGORIES = [
 ]
 
 type Props = {
-  searchParams: Promise<{ category?: string; q?: string }>
+  searchParams: Promise<{ category?: string; q?: string; offered?: string }>
 }
 
 export default async function BrowseRequestsPage({ searchParams }: Props) {
@@ -20,6 +20,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
   const params = await searchParams
   const selectedCategory = params.category ?? 'All'
   const query = params.q ?? ''
+  const justOffered = params.offered === 'true'
 
   let dbQuery = supabase
     .from('requests')
@@ -34,6 +35,14 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
   }
 
   const { data: requests } = await dbQuery.order('created_at', { ascending: false })
+
+  // check which requests this tutor already sent offers to
+  const { data: myOffers } = await supabase
+    .from('offers')
+    .select('request_id')
+    .eq('tutor_id', user.id)
+
+  const offeredRequestIds = new Set((myOffers || []).map((o: any) => o.request_id))
 
   function timeAgo(dateStr: string) {
     const diff = Date.now() - new Date(dateStr).getTime()
@@ -71,6 +80,13 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
         <p className="text-white/40 text-sm">Students looking for help — view their schedule and send an offer</p>
       </div>
 
+      {justOffered && (
+        <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-6 flex items-center gap-2">
+          <CheckCircle size={15} className="text-green-400" />
+          <p className="text-green-400 text-sm">Offer sent! The learner will review it and respond.</p>
+        </div>
+      )}
+
       <form className="relative mb-6">
         <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
         <input
@@ -105,6 +121,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
           {requests.map((req: any) => {
             const isOwn = req.learner_id === user.id
             const isMulti = req.session_type === 'multi'
+            const alreadyOffered = offeredRequestIds.has(req.id)
             const timeRange = req.daily_start_time
               ? formatEndTime(req.daily_start_time, req.hours_per_day)
               : null
@@ -116,14 +133,11 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-
-                    {/* avatar */}
                     <div className="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-sm font-medium text-purple-400 flex-shrink-0">
                       {req.users?.full_name?.[0] ?? '?'}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      {/* title + own badge */}
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <h3 className="font-medium text-sm">{req.title}</h3>
                         {isOwn && (
@@ -131,23 +145,23 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                             Your request
                           </span>
                         )}
+                        {alreadyOffered && !isOwn && (
+                          <span className="text-[10px] text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <CheckCircle size={9} />
+                            Offer sent
+                          </span>
+                        )}
                       </div>
 
-                      {/* description */}
                       {req.description && (
                         <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">
                           {req.description}
                         </p>
                       )}
 
-                      {/* tags */}
                       <div className="flex items-center gap-2 flex-wrap mb-3">
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">
-                          {req.category}
-                        </span>
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">
-                          {req.mode}
-                        </span>
+                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
+                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
                         {req.budget && (
                           <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-lg">
                             Budget: ₱{req.budget}/hr
@@ -155,10 +169,9 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                         )}
                       </div>
 
-                      {/* schedule info box */}
                       {req.start_date && (
                         <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-3 space-y-1.5">
-                          <p className="text-[10px] text-white/20 uppercase tracking-wider mb-2">Requested schedule</p>
+                          <p className="text-[10px] text-white/20 uppercase tracking-wider mb-1">Requested schedule</p>
                           <div className="flex items-center gap-2 text-xs text-white/50">
                             <Calendar size={11} className="text-white/30 flex-shrink-0" />
                             {isMulti
@@ -179,7 +192,6 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                         </div>
                       )}
 
-                      {/* posted by */}
                       <p className="text-xs text-white/20">
                         Posted by <span className="text-white/40">{req.users?.full_name}</span>
                         {req.users?.school && <span> · {req.users.school}</span>}
@@ -188,18 +200,22 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                     </div>
                   </div>
 
-                  {/* right side */}
                   <div className="flex flex-col gap-2 flex-shrink-0 items-end">
                     <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full">
                       Open
                     </span>
-                    {!isOwn && (
+                    {!isOwn && !alreadyOffered && (
                       <Link
                         href={'/dashboard/requests/' + req.id + '/offer'}
                         className="flex items-center gap-1.5 px-3 py-2 bg-[#26619C]/10 hover:bg-[#26619C]/20 border border-[#26619C]/20 hover:border-[#26619C]/40 text-[#4a8fd4] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
                       >
                         Send offer
                       </Link>
+                    )}
+                    {!isOwn && alreadyOffered && (
+                      <span className="text-xs text-white/20 border border-white/8 px-3 py-2 rounded-xl">
+                        Offer sent
+                      </span>
                     )}
                   </div>
                 </div>
