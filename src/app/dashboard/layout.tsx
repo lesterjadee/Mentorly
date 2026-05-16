@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar, Sparkles, ClipboardList } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Briefcase, MessageSquare, Bell, LogOut, Search, Calendar, Sparkles, ClipboardList, ArrowLeftRight } from 'lucide-react'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -26,6 +26,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: '/dashboard', icon: LayoutDashboard, label: 'Overview', badge: null },
     { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace', badge: null },
     { href: '/dashboard/requests/browse', icon: ClipboardList, label: 'Browse Requests', badge: null },
+    { href: '/dashboard/trades', icon: ArrowLeftRight, label: 'Skill Swap', badge: null },
     { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You', badge: null },
     { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings', badge: null },
     { href: '/dashboard/requests', icon: BookOpen, label: 'My Requests', badge: null },
@@ -38,10 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="min-h-screen bg-[#080C14] text-white flex">
-
-      {/* sidebar */}
       <aside className="w-60 border-r border-white/5 flex flex-col fixed h-full">
-
         <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
@@ -55,7 +53,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          {navItems.map((item, i) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -72,7 +70,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
           ))}
         </nav>
 
-        {/* user info */}
         <div className="px-4 py-3 mx-3 mb-2 glass rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-xs font-medium text-[#4a8fd4] flex-shrink-0">
@@ -95,7 +92,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </aside>
 
-      {/* main */}
       <div className="flex-1 ml-60">
         <header className="flex items-center justify-between px-8 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/80 backdrop-blur-sm z-10">
           <div />
