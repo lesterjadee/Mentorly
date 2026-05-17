@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import {
   BookOpen, Briefcase, Star, ChevronRight,
   GraduationCap, Sparkles, TrendingUp, ArrowLeftRight,
-  MessageSquare, Search
+  MessageSquare, Search, Calendar
 } from 'lucide-react'
 import Link from 'next/link'
 import StatCard from './components/StatCard'
@@ -49,7 +49,6 @@ export default async function DashboardPage() {
     .eq('learner_id', user.id)
     .eq('status', 'pending')
 
-  // activity data — last 30 days
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
@@ -59,7 +58,6 @@ export default async function DashboardPage() {
     .or('learner_id.eq.' + user.id + ',tutor_id.eq.' + user.id)
     .gte('created_at', thirtyDaysAgo.toISOString())
 
-  // build activity graph data — last 14 days
   const activityData = Array.from({ length: 14 }, (_, i) => {
     const d = new Date()
     d.setDate(d.getDate() - (13 - i))
@@ -70,7 +68,6 @@ export default async function DashboardPage() {
     return { date: dateStr, count }
   })
 
-  // onboarding steps
   const onboardingSteps = [
     {
       id: 'profile',
