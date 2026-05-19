@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { Star, BookOpen, Filter, X, Search, ChevronDown } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Star, BookOpen, Filter, X, Search, ChevronDown, Award } from 'lucide-react'
 import Link from 'next/link'
 import TutorModal from './TutorModal'
 
@@ -23,6 +23,7 @@ type Service = {
     full_name: string
     school: string
     trust_score: number
+    mentor_score?: number
   } | null
 }
 
@@ -66,7 +67,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
     return 0
   })
 
-  const hasFilters = selectedCategory !== 'All' || selectedMode !== 'All' || minPrice || maxPrice || minRating > 0
+  const hasFilters = selectedCategory !== 'All' || selectedMode !== 'All' || minPrice !== '' || maxPrice !== '' || minRating > 0
 
   function clearFilters() {
     setSelectedCategory('All')
@@ -79,7 +80,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
   function ServiceCard({ service, large = false }: { service: Service; large?: boolean }) {
     const isOwn = service.tutor_id === currentUserId
-    const score = service.users?.trust_score || 0
+    const score = service.users?.mentor_score || service.users?.trust_score || 0
 
     return (
       <div
@@ -115,26 +116,38 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
           </div>
         </div>
 
-        <h3 className={'font-semibold mb-1 line-clamp-1 ' + (large ? 'text-sm' : 'text-xs')}>{service.title}</h3>
+        <h3 className={'font-semibold mb-1 line-clamp-1 ' + (large ? 'text-sm' : 'text-xs')}>
+          {service.title}
+        </h3>
         {service.description && (
-          <p className="text-xs text-white/30 line-clamp-2 leading-relaxed mb-3">{service.description}</p>
+          <p className="text-xs text-white/30 line-clamp-2 leading-relaxed mb-3">
+            {service.description}
+          </p>
         )}
 
+        {/* dual score section */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1">
+          <div className="flex flex-col gap-1">
             {score > 0 ? (
-              <>
-                {[1,2,3,4,5].map((s) => (
-                  <Star key={s} size={10} className={s <= Math.round(score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'} />
+              <div className="flex items-center gap-1">
+                <Award size={10} className="text-yellow-400" />
+                <span className="text-[10px] text-white/40">Mentor</span>
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <Star
+                    key={s}
+                    size={9}
+                    className={s <= Math.round(score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
+                  />
                 ))}
-                <span className="text-[10px] text-white/30 ml-1">{score}</span>
-              </>
+                <span className="text-[10px] text-white/30 ml-0.5">{score}</span>
+              </div>
             ) : (
               <span className="text-[10px] text-white/20">New tutor</span>
             )}
           </div>
           <p className={'font-black text-[#4a8fd4] ' + (large ? 'text-base' : 'text-sm')}>
-            ₱{service.price_per_hour}<span className="text-[10px] font-normal text-white/30">/hr</span>
+            ₱{service.price_per_hour}
+            <span className="text-[10px] font-normal text-white/30">/hr</span>
           </p>
         </div>
 
@@ -174,7 +187,9 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         <div className="flex items-start justify-between mb-6">
           <div>
             <h1 className="text-2xl font-black tracking-tight mb-1">Marketplace</h1>
-            <p className="text-white/30 text-sm">{filtered.length} tutor{filtered.length !== 1 ? 's' : ''} available</p>
+            <p className="text-white/30 text-sm">
+              {filtered.length} tutor{filtered.length !== 1 ? 's' : ''} available
+            </p>
           </div>
           <Link
             href="/dashboard/requests/new"
