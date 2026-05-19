@@ -9,6 +9,7 @@ import Link from 'next/link'
 import StatCard from './components/StatCard'
 import OnboardingProgress from './components/OnboardingProgress'
 import ActivityGraph from './components/ActivityGraph'
+import InAppNudge from './components/InAppNudge'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -133,6 +134,14 @@ export default async function DashboardPage() {
       {/* onboarding progress */}
       <OnboardingProgress steps={onboardingSteps} />
 
+      {/* in-app nudge */}
+      <InAppNudge
+        hasProfile={!!(profile?.bio && profile?.school && profile?.course)}
+        hasService={(servicesCount || 0) > 0}
+        hasBooking={(bookingsCount || 0) > 0}
+        hasBio={!!profile?.bio}
+      />
+
       {/* alerts banner */}
       {totalAlerts > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
@@ -146,7 +155,9 @@ export default async function DashboardPage() {
                   <Calendar size={14} className="text-yellow-400" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-yellow-400">{pendingCount} booking{(pendingCount || 0) > 1 ? 's' : ''}</p>
+                  <p className="text-xs font-semibold text-yellow-400">
+                    {pendingCount} booking{(pendingCount || 0) > 1 ? 's' : ''}
+                  </p>
                   <p className="text-[10px] text-white/30">awaiting your response</p>
                 </div>
               </div>
@@ -163,7 +174,9 @@ export default async function DashboardPage() {
                   <MessageSquare size={14} className="text-[#4a8fd4]" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#4a8fd4]">{unreadMessages} message{(unreadMessages || 0) > 1 ? 's' : ''}</p>
+                  <p className="text-xs font-semibold text-[#4a8fd4]">
+                    {unreadMessages} message{(unreadMessages || 0) > 1 ? 's' : ''}
+                  </p>
                   <p className="text-[10px] text-white/30">unread</p>
                 </div>
               </div>
@@ -180,7 +193,9 @@ export default async function DashboardPage() {
                   <Star size={14} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-green-400">{pendingOffers} offer{(pendingOffers || 0) > 1 ? 's' : ''}</p>
+                  <p className="text-xs font-semibold text-green-400">
+                    {pendingOffers} offer{(pendingOffers || 0) > 1 ? 's' : ''}
+                  </p>
                   <p className="text-[10px] text-white/30">waiting for you</p>
                 </div>
               </div>
@@ -231,7 +246,9 @@ export default async function DashboardPage() {
       </div>
 
       {/* quick actions */}
-      <p className="text-[10px] text-white/20 uppercase tracking-widest mb-3 font-medium">Quick actions</p>
+      <p className="text-[10px] text-white/20 uppercase tracking-widest mb-3 font-medium">
+        Quick actions
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
         <Link

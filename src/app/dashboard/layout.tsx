@@ -3,29 +3,24 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import {
   LayoutDashboard, BookOpen, Briefcase, MessageSquare,
-  Bell, LogOut, Search, Calendar, Sparkles,
+  LogOut, Search, Calendar, Sparkles,
   ClipboardList, ArrowLeftRight
 } from 'lucide-react'
 import CommandPalette from './components/CommandPalette'
+import NotificationPanel from './components/NotificationPanel'
+import TabTitle from './components/TabTitle'
+import PushNotificationPrompt from './components/PushNotificationPrompt'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const role = user.user_metadata?.role || 'both'
-
   const { count: unreadCount } = await supabase
     .from('messages')
     .select('*', { count: 'exact', head: true })
     .eq('receiver_id', user.id)
     .eq('is_read', false)
-
-  const { count: notifCount } = await supabase
-    .from('bookings')
-    .select('*', { count: 'exact', head: true })
-    .eq('tutor_id', user.id)
-    .eq('status', 'pending')
 
   const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Overview', badge: null },
@@ -40,20 +35,24 @@ export default async function DashboardLayout({ children }: { children: React.Re
       href: '/dashboard/messages',
       icon: MessageSquare,
       label: 'Messages',
-      badge: unreadCount || null
+      badge: unreadCount || null,
     },
   ]
 
   const firstName = user.user_metadata?.full_name?.split(' ')[0] || 'User'
-  const totalNotifs = notifCount || 0
 
   return (
     <div className="min-h-screen bg-[#080C14] text-white flex">
 
+      {/* client-side tab title updater */}
+      <TabTitle userId={user.id} />
+
+      {/* push notification prompt */}
+      <PushNotificationPrompt />
+
       {/* ── SIDEBAR ── */}
       <aside className="w-60 border-r border-white/5 flex flex-col fixed h-full z-20">
 
-        {/* logo */}
         <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/20">
@@ -66,7 +65,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </div>
         </div>
 
-        {/* nav items */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => (
             <Link
@@ -98,7 +96,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </div>
         </div>
 
-        {/* sign out */}
         <div className="px-3 py-3 border-t border-white/5">
           <form action="/auth/signout" method="post">
             <button className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/30 hover:text-white hover:bg-white/5 transition-all duration-150 w-full group">
@@ -109,24 +106,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </aside>
 
-      {/* ── MAIN CONTENT ── */}
+      {/* ── MAIN ── */}
       <div className="flex-1 ml-60">
 
-        {/* sticky header */}
         <header className="flex items-center justify-between px-8 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/80 backdrop-blur-sm z-10">
           <CommandPalette />
           <div className="flex items-center gap-2">
-
-            {/* notifications bell */}
-            <Link
-              href="/dashboard/notifications"
-              className="relative w-9 h-9 flex items-center justify-center text-white/30 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-150"
-            >
-              <Bell size={17} />
-              {totalNotifs > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#26619C] rounded-full animate-pulse" />
-              )}
-            </Link>
+            {/* realtime notification panel */}
+            <NotificationPanel userId={user.id} />
 
             {/* profile avatar */}
             <Link
@@ -138,7 +125,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </div>
         </header>
 
-        {/* page content */}
         <main className="p-8 animate-fade-in">{children}</main>
       </div>
     </div>
