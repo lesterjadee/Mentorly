@@ -335,29 +335,43 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-white/5 px-6 md:px-10 py-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-md bg-[#26619C] flex items-center justify-center">
-                <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-                  <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
-                  <circle cx="7" cy="7" r="2" fill="white"/>
-                </svg>
-              </div>
-              <span className="text-xs font-bold text-white/60">Mentorly</span>
-            </div>
-            <p className="text-xs text-white/20">© 2025 · Built for students, by students</p>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="/features" className="text-xs text-white/20 hover:text-white/50 transition-colors">Features</Link>
-            <Link href="/how-it-works" className="text-xs text-white/20 hover:text-white/50 transition-colors">How it works</Link>
-            <Link href="/terms" className="text-xs text-white/20 hover:text-white/50 transition-colors">Terms</Link>
-            <Link href="/login" className="text-xs text-white/20 hover:text-white/50 transition-colors">Sign in</Link>
-          </div>
+{/* footer */}
+<footer className="border-t border-white/5 px-6 md:px-10 py-8">
+  <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
+      <div className="flex items-center gap-2">
+        <div className="w-5 h-5 rounded-md bg-[#26619C] flex items-center justify-center">
+          <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
+            <circle cx="7" cy="7" r="2" fill="white"/>
+          </svg>
         </div>
-      </footer>
+        <span className="text-xs font-bold text-white/60">Mentorly</span>
+      </div>
+      <p className="text-xs text-white/20">© 2025 · Built for students, by students</p>
+      <div className="flex items-center gap-4">
+        <Link href="/features" className="text-xs text-white/20 hover:text-white/50 transition-colors">Features</Link>
+        <Link href="/how-it-works" className="text-xs text-white/20 hover:text-white/50 transition-colors">How it works</Link>
+        <Link href="/terms" className="text-xs text-white/20 hover:text-white/50 transition-colors">Terms</Link>
+        <Link href="/login" className="text-xs text-white/20 hover:text-white/50 transition-colors">Sign in</Link>
+      </div>
+    </div>
+    <div className="flex flex-col items-center md:items-end gap-2">
+      <div className="flex items-center gap-1.5 text-xs text-white/25">
+        <span>Powered by</span>
+        <span className="text-white/50 font-semibold">Gordon College</span>
+        <span className="text-yellow-400">⚡</span>
+      </div>
+      <div className={
+        'flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border ' +
+        (connected ? 'border-green-500/20 text-green-400/60' : 'border-red-500/20 text-red-400/60')
+      }>
+        <span className={'w-1.5 h-1.5 rounded-full ' + (connected ? 'bg-green-500 animate-pulse' : 'bg-red-500')} />
+        {connected ? 'All systems operational' : 'DB disconnected'}
+      </div>
+    </div>
+  </div>
+</footer>
 
       {/* ── STICKY BOTTOM CTA (mobile) ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#050810] via-[#050810]/95 to-transparent">

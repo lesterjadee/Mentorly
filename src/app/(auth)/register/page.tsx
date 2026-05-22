@@ -14,13 +14,8 @@ const COURSES = [
 function TermsModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      {/* backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-
-      {/* modal */}
       <div className="relative bg-[#0f1623] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
-
-        {/* header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/8 flex-shrink-0">
           <div>
             <h2 className="font-semibold text-white">Terms and Conditions</h2>
@@ -33,73 +28,53 @@ function TermsModal({ onClose }: { onClose: () => void }) {
             <X size={15} />
           </button>
         </div>
-
-        {/* scrollable content */}
         <div className="overflow-y-auto px-6 py-5 space-y-6 text-sm text-white/50 leading-relaxed flex-1">
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">1. Acceptance of Terms</h3>
-            <p>By creating an account and using Mentorly, you agree to be bound by these Terms and Conditions. If you do not agree to any part of these terms, you may not access or use the platform. Mentorly reserves the right to update these terms at any time, and continued use of the platform constitutes acceptance of any changes.</p>
+            <p>By creating an account and using Mentorly, you agree to be bound by these Terms and Conditions. Mentorly reserves the right to update these terms at any time.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">2. Eligibility</h3>
-            <p>Mentorly is intended for currently enrolled college and university students. By registering, you confirm that you are a student at an accredited academic institution. Misrepresentation of your academic status may result in immediate account suspension.</p>
+            <p>Mentorly is exclusively available to currently enrolled students of Gordon College with a valid @gordoncollege.edu.ph email address. Misrepresentation of your academic status may result in immediate account suspension.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">3. User Accounts</h3>
-            <p>You are responsible for maintaining the confidentiality of your account credentials. You agree to provide accurate, current, and complete information during registration. Mentorly is not liable for any loss or damage arising from unauthorized access to your account due to your failure to keep your login information secure.</p>
+            <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">4. Tutor and Learner Responsibilities</h3>
-            <p className="mb-2">As a tutor, you agree to provide honest and accurate descriptions of your skills, qualifications, and services. You commit to fulfilling accepted bookings in a professional and timely manner.</p>
-            <p>As a learner, you agree to treat tutors with respect and to honor scheduled sessions. Repeated no-shows or abusive behavior may result in account restrictions.</p>
+            <p className="mb-2">As a tutor, you agree to provide honest and accurate descriptions of your skills and to fulfill accepted bookings professionally.</p>
+            <p>As a learner, you agree to treat tutors with respect and to honor scheduled sessions.</p>
           </section>
-
           <section>
-            <h3 className="text-white/80 font-medium mb-2">5. Session Bookings and Cancellations</h3>
-            <p>Sessions are arranged directly between tutors and learners through the platform. Both parties are expected to communicate promptly regarding scheduling changes. Mentorly is not responsible for disputes arising from cancelled or missed sessions, but may intervene in cases of reported misconduct.</p>
+            <h3 className="text-white/80 font-medium mb-2">5. Session Bookings</h3>
+            <p>Sessions are arranged directly between tutors and learners. Mentorly is not responsible for disputes arising from cancelled or missed sessions.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">6. Payments and Pricing</h3>
-            <p>Tutors set their own rates on the platform. All financial transactions between users are the sole responsibility of those involved. Mentorly does not process, hold, or guarantee payments between users at this time. Users are encouraged to agree on payment terms before a session begins.</p>
+            <p>Tutors set their own rates. All financial transactions are the sole responsibility of those involved. Mentorly does not process payments between users.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">7. Reviews and Trust Scores</h3>
-            <p>Users may leave honest reviews after completed sessions. Reviews must be truthful and based on actual experience. Fake, malicious, or retaliatory reviews are prohibited and may be removed. Trust scores are calculated automatically based on submitted ratings.</p>
+            <p>Reviews must be truthful and based on actual experience. Fake or malicious reviews are prohibited and may be removed.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">8. Prohibited Conduct</h3>
-            <p>Users may not use Mentorly to engage in academic dishonesty, harassment, discrimination, or any unlawful activity. Sharing false information, impersonating others, or attempting to manipulate the review system is strictly prohibited and may result in permanent account termination.</p>
+            <p>Users may not use Mentorly to engage in academic dishonesty, harassment, discrimination, or any unlawful activity.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">9. Privacy and Data</h3>
-            <p>Mentorly collects basic profile information to facilitate connections between students. Your data will not be sold to third parties. By using the platform, you consent to the storage and processing of your information as necessary to provide our services.</p>
+            <p>Mentorly collects basic profile information to facilitate connections between students. Your data will not be sold to third parties.</p>
           </section>
-
           <section>
             <h3 className="text-white/80 font-medium mb-2">10. Limitation of Liability</h3>
-            <p>Mentorly is a student-to-student marketplace and does not guarantee the quality, accuracy, or outcomes of any tutoring session. The platform is provided on an "as is" basis. Mentorly shall not be held liable for any direct, indirect, or consequential damages arising from use of the platform.</p>
+            <p>Mentorly is provided on an "as is" basis and shall not be held liable for any damages arising from use of the platform.</p>
           </section>
-
           <section>
-            <h3 className="text-white/80 font-medium mb-2">11. Termination</h3>
-            <p>Mentorly reserves the right to suspend or permanently terminate any account that violates these Terms and Conditions without prior notice. Users may also delete their accounts at any time by contacting support.</p>
-          </section>
-
-          <section>
-            <h3 className="text-white/80 font-medium mb-2">12. Contact</h3>
-            <p>If you have questions about these terms, please reach out through the platform's messaging system or contact your institution's student services office.</p>
+            <h3 className="text-white/80 font-medium mb-2">11. Contact</h3>
+            <p>If you have questions about these terms, please reach out through the platform's messaging system.</p>
           </section>
         </div>
-
-        {/* footer */}
         <div className="px-6 py-4 border-t border-white/8 flex-shrink-0">
           <button
             onClick={onClose}
@@ -115,7 +90,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('')
-  const [school, setSchool] = useState('')
+  const [school] = useState('Gordon College')
   const [course, setCourse] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -131,10 +106,17 @@ export default function RegisterPage() {
       setError('You must agree to the Terms and Conditions to continue.')
       return
     }
-    if (!fullName || !school || !course || !email || !password) {
+    if (!fullName || !course || !email || !password) {
       setError('Please fill in all fields.')
       return
     }
+
+    // gordon college email check
+    if (!email.toLowerCase().endsWith('@gordoncollege.edu.ph')) {
+      setError('Only Gordon College students with a @gordoncollege.edu.ph email can register.')
+      return
+    }
+
     setLoading(true)
     setError('')
     const supabase = createClient()
@@ -142,7 +124,7 @@ export default function RegisterPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, school, course, role: 'both' },
+        data: { full_name: fullName, school: 'Gordon College', course, role: 'both' },
       },
     })
     if (error) {
@@ -192,7 +174,15 @@ export default function RegisterPage() {
               <span className="font-semibold text-white text-[15px]">Mentorly</span>
             </Link>
             <h1 className="text-2xl font-bold text-white mb-2">Create your account</h1>
-            <p className="text-white/40 text-sm">Join thousands of students on Mentorly</p>
+            <p className="text-white/40 text-sm">For Gordon College students only</p>
+          </div>
+
+          {/* gordon college badge */}
+          <div className="flex items-center justify-center gap-2 mb-6 bg-[#26619C]/5 border border-[#26619C]/20 rounded-xl px-4 py-3">
+            <GraduationCap size={15} className="text-[#4a8fd4] flex-shrink-0" />
+            <p className="text-xs text-white/50 text-center">
+              Requires a <span className="text-[#4a8fd4] font-semibold">@gordoncollege.edu.ph</span> email to register
+            </p>
           </div>
 
           {/* step indicator */}
@@ -235,16 +225,12 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">School / University</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">School</label>
                   <div className="relative">
                     <School size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
-                    <input
-                      type="text"
-                      value={school}
-                      onChange={(e) => setSchool(e.target.value)}
-                      placeholder="University of the Philippines"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-                    />
+                    <div className="w-full bg-white/3 border border-white/8 rounded-xl pl-10 pr-4 py-3 text-white/50 text-sm">
+                      Gordon College
+                    </div>
                   </div>
                 </div>
 
@@ -267,7 +253,7 @@ export default function RegisterPage() {
 
                 <button
                   onClick={() => {
-                    if (!fullName || !school || !course) {
+                    if (!fullName || !course) {
                       setError('Please fill in all fields.')
                       return
                     }
@@ -286,17 +272,29 @@ export default function RegisterPage() {
                 <p className="text-xs text-white/30 uppercase tracking-wider mb-6">Step 2 — Account credentials</p>
 
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Email</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Gordon College Email</label>
                   <div className="relative">
                     <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@university.edu"
+                      placeholder="yourname@gordoncollege.edu.ph"
                       className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
                     />
                   </div>
+                  {email && !email.toLowerCase().endsWith('@gordoncollege.edu.ph') && (
+                    <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
+                      <X size={11} />
+                      Must be a @gordoncollege.edu.ph email
+                    </p>
+                  )}
+                  {email && email.toLowerCase().endsWith('@gordoncollege.edu.ph') && (
+                    <p className="text-green-400 text-xs mt-2 flex items-center gap-1">
+                      <CheckCircle size={11} />
+                      Valid Gordon College email
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -315,13 +313,12 @@ export default function RegisterPage() {
                   <p className="text-white/20 text-xs mt-2">Minimum 6 characters</p>
                 </div>
 
-                {/* terms checkbox — fixed clickability */}
+                {/* terms checkbox */}
                 <div className="bg-white/3 border border-white/8 rounded-xl p-4">
                   <div
                     className="flex items-start gap-3 cursor-pointer select-none"
                     onClick={() => setAgreedToTerms(!agreedToTerms)}
                   >
-                    {/* custom checkbox */}
                     <div className="flex-shrink-0 mt-0.5">
                       <div className={
                         'w-5 h-5 rounded border-2 flex items-center justify-center transition-all ' +
@@ -342,7 +339,7 @@ export default function RegisterPage() {
                       >
                         Terms and Conditions
                       </span>
-                      . I understand that Mentorly is a peer-to-peer platform and I will conduct myself professionally.
+                      . I understand that Mentorly is exclusively for Gordon College students.
                     </span>
                   </div>
                 </div>
