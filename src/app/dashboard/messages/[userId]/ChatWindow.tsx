@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Send, Star, Paperclip, X, FileText, Image, Download } from 'lucide-react'
+import { Send, Star, Paperclip, X, FileText, Download } from 'lucide-react'
 import Link from 'next/link'
 
 type Message = {
@@ -91,8 +91,6 @@ export default function ChatWindow({
   async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-
-    // 10MB limit
     if (file.size > 10 * 1024 * 1024) {
       alert('File size must be under 10MB.')
       return
@@ -147,7 +145,7 @@ export default function ChatWindow({
       .insert({
         sender_id: currentUser.id,
         receiver_id: otherUser.id,
-        content: content.trim() || (fileData ? '' : ''),
+        content: content.trim() || '',
         file_url: fileData?.url || null,
         file_name: fileData?.name || null,
         file_type: fileData?.type || null,
@@ -192,33 +190,44 @@ export default function ChatWindow({
     return groups
   }
 
+  // ── THE FIX: proper JSX with all attributes inside the opening tag ──
   function FileAttachment({ msg }: { msg: Message }) {
     if (!msg.file_url) return null
 
     if (isImage(msg.file_type)) {
       return (
-        <a href={msg.file_url} target="_blank" rel="noopener noreferrer" className="block mt-2">
+        
+          href={msg.file_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block mt-2"
+        >
           <img
             src={msg.file_url}
             alt={msg.file_name || 'Image'}
-            className="max-w-xs rounded-xl border border-white/10 hover:opacity-90 transition-opacity cursor-pointer"
+            className="max-w-[240px] rounded-xl border border-white/10 hover:opacity-90 transition-opacity cursor-pointer"
           />
+          <p className="text-[10px] text-white/30 mt-1">{msg.file_name}</p>
         </a>
       )
     }
 
+    // document / file — all props INSIDE the opening <a> tag
     return (
-      <a>
+      
         href={msg.file_url}
         target="_blank"
         rel="noopener noreferrer"
         download={msg.file_name}
-        className="flex items-center gap-3 mt-2 bg-white/10 hover:bg-white/15 border border-white/10 rounded-xl px-3 py-2.5 transition-colors group max-w-xs"
+        className="flex items-center gap-3 mt-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 rounded-xl px-3 py-2.5 transition-all group max-w-xs cursor-pointer"
+      >
         <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
           <FileText size={15} className="text-white/60" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-white/80 truncate">{msg.file_name}</p>
+          <p className="text-xs font-medium text-white/80 truncate group-hover:text-white transition-colors">
+            {msg.file_name}
+          </p>
           {msg.file_size && (
             <p className="text-[10px] text-white/40">{formatFileSize(msg.file_size)}</p>
           )}
@@ -234,7 +243,7 @@ export default function ChatWindow({
     <div className="flex w-full">
 
       {/* sidebar contacts */}
-      <div className="w-72 border-r border-white/5 flex flex-col flex-shrink-0 hidden md:flex">
+      <div className="w-72 border-r border-white/5 flex-col flex-shrink-0 hidden md:flex">
         <div className="px-6 py-5 border-b border-white/5">
           <h1 className="text-lg font-bold">Messages</h1>
           <p className="text-white/30 text-xs mt-0.5">Your conversations</p>
@@ -301,7 +310,9 @@ export default function ChatWindow({
                   <Send size={16} className="text-[#4a8fd4]" />
                 </div>
                 <p className="text-white/30 text-sm">No messages yet</p>
-                <p className="text-white/20 text-xs mt-1">Say hi to {otherUser.full_name?.split(' ')[0]}!</p>
+                <p className="text-white/20 text-xs mt-1">
+                  Say hi to {otherUser.full_name?.split(' ')[0]}!
+                </p>
               </div>
             </div>
           )}
@@ -321,7 +332,10 @@ export default function ChatWindow({
                       key={msg.id}
                       className={'flex ' + (isMe ? 'justify-end' : 'justify-start')}
                     >
-                      <div className={'max-w-xs lg:max-w-md flex flex-col gap-1 ' + (isMe ? 'items-end' : 'items-start')}>
+                      <div className={
+                        'max-w-xs lg:max-w-md flex flex-col gap-1 ' +
+                        (isMe ? 'items-end' : 'items-start')
+                      }>
                         {msg.content && (
                           <div className={
                             'px-4 py-2.5 rounded-2xl text-sm leading-relaxed ' +
@@ -351,10 +365,7 @@ export default function ChatWindow({
           <div className="px-4 md:px-6 py-2 border-t border-white/5 flex-shrink-0">
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
               <div className="w-7 h-7 rounded-lg bg-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-                {isImage(selectedFile.type)
-                  ? <Image size={13} className="text-[#4a8fd4]" />
-                  : <FileText size={13} className="text-[#4a8fd4]" />
-                }
+                <FileText size={13} className="text-[#4a8fd4]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-white/70 truncate">{selectedFile.name}</p>
@@ -373,11 +384,10 @@ export default function ChatWindow({
           </div>
         )}
 
-        {/* input */}
+        {/* input bar */}
         <div className="px-4 md:px-6 py-4 border-t border-white/5 flex-shrink-0">
           <div className="flex items-end gap-2 md:gap-3">
 
-            {/* file attach button */}
             <button
               onClick={() => fileInputRef.current?.click()}
               className="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-colors rounded-xl flex items-center justify-center flex-shrink-0 text-white/30 hover:text-white"
@@ -402,10 +412,11 @@ export default function ChatWindow({
                   sendMessage()
                 }
               }}
-              placeholder={'Message ' + otherUser.full_name?.split(' ')[0] + '...'}
+              placeholder={'Message ' + (otherUser.full_name?.split(' ')[0] || 'them') + '...'}
               rows={1}
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
             />
+
             <button
               onClick={sendMessage}
               disabled={sending || (!content.trim() && !selectedFile)}
@@ -418,7 +429,7 @@ export default function ChatWindow({
             </button>
           </div>
           <p className="text-white/20 text-xs mt-2">
-            Enter to send · Shift+Enter for new line · 📎 Attach files up to 10MB
+            Enter to send · Shift+Enter for new line · 📎 Max 10MB
           </p>
         </div>
       </div>
