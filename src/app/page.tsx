@@ -73,8 +73,13 @@ export default async function Home() {
         </div>
 
         {/* grid lines */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '80px 80px'}} />
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
 
         <div className="relative text-center max-w-4xl mx-auto">
 
@@ -138,7 +143,7 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* ── SOCIAL PROOF AVATARS ── */}
+        {/* social proof avatars */}
         {topTutors && topTutors.length > 0 && (
           <div className="relative mt-20 flex flex-col items-center">
             <div className="flex items-center gap-3 mb-3">
@@ -179,7 +184,7 @@ export default async function Home() {
             { value: displayServices + '+', label: 'Active tutors', icon: BookOpen },
             { value: displayBookings + '+', label: 'Sessions completed', icon: TrendingUp },
           ].map((stat) => (
-            <div key={stat.label} className="text-center group">
+            <div key={stat.label} className="text-center">
               <p className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">{stat.value}</p>
               <p className="text-xs text-white/30 uppercase tracking-widest">{stat.label}</p>
             </div>
@@ -195,7 +200,10 @@ export default async function Home() {
             Tutoring is broken.
             <span className="text-white/30"> We fixed it.</span>
           </h2>
-          <p className="text-white/40 max-w-xl mx-auto">Private tutoring costs ₱500–₱2,000/hr. Group reviews don't work. Your classmates who get it aren't monetizing their knowledge. We fix all three.</p>
+          <p className="text-white/40 max-w-xl mx-auto">
+            Private tutoring costs ₱500–₱2,000/hr. Group reviews don't work. Your classmates who get it
+            aren't monetizing their knowledge. We fix all three.
+          </p>
         </div>
 
         {/* bento grid */}
@@ -208,8 +216,10 @@ export default async function Home() {
               <Zap size={20} className="text-[#4a8fd4]" />
             </div>
             <h3 className="text-xl font-bold mb-3">Book in under 2 minutes</h3>
-            <p className="text-white/40 text-sm leading-relaxed mb-6">Browse tutors, check their trust score, pick a schedule, and confirm. No back-and-forth emails. No waiting days for a reply.</p>
-            <div className="flex items-center gap-3 text-xs text-white/30">
+            <p className="text-white/40 text-sm leading-relaxed mb-6">
+              Browse tutors, check their trust score, pick a schedule, and confirm. No back-and-forth emails. No waiting days for a reply.
+            </p>
+            <div className="flex items-center gap-3 text-xs text-white/30 flex-wrap">
               <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                 Available today
@@ -225,7 +235,9 @@ export default async function Home() {
               <Shield size={20} className="text-green-400" />
             </div>
             <h3 className="text-lg font-bold mb-2">Verified students only</h3>
-            <p className="text-white/40 text-sm leading-relaxed">Every tutor is a real enrolled student with a visible trust score built from real reviews.</p>
+            <p className="text-white/40 text-sm leading-relaxed">
+              Every tutor is a real Gordon College student with a visible trust score built from real reviews.
+            </p>
           </div>
 
           {/* bottom left */}
@@ -234,7 +246,9 @@ export default async function Home() {
               <Users size={20} className="text-purple-400" />
             </div>
             <h3 className="text-lg font-bold mb-2">Skill Swap — zero fees</h3>
-            <p className="text-white/40 text-sm leading-relaxed">Trade subjects with another student. You teach them Math, they teach you Science. No money involved.</p>
+            <p className="text-white/40 text-sm leading-relaxed">
+              Trade subjects with another student. You teach them Math, they teach you Science. No money involved.
+            </p>
           </div>
 
           {/* bottom middle */}
@@ -243,7 +257,9 @@ export default async function Home() {
               <Star size={20} className="text-yellow-400" />
             </div>
             <h3 className="text-lg font-bold mb-2">Earn while you study</h3>
-            <p className="text-white/40 text-sm leading-relaxed">Set your own rate. Tutor on your schedule. Students are already earning ₱150–₱400/hr.</p>
+            <p className="text-white/40 text-sm leading-relaxed">
+              Set your own rate. Tutor on your schedule. Students are already earning ₱150–₱400/hr.
+            </p>
           </div>
 
           {/* bottom right */}
@@ -252,7 +268,9 @@ export default async function Home() {
               <BookOpen size={20} className="text-teal-400" />
             </div>
             <h3 className="text-lg font-bold mb-2">Post a help request</h3>
-            <p className="text-white/40 text-sm leading-relaxed">Tell tutors exactly what you need. Let them come to you with offers and rates.</p>
+            <p className="text-white/40 text-sm leading-relaxed">
+              Tell tutors exactly what you need. Let them come to you with offers and rates.
+            </p>
           </div>
         </div>
       </section>
@@ -274,7 +292,7 @@ export default async function Home() {
               {
                 step: '01',
                 title: 'Create your free account',
-                desc: 'Sign up with your student email in under 60 seconds. No credit card. No commitment.',
+                desc: 'Sign up with your Gordon College email in under 60 seconds. No credit card. No commitment.',
                 color: 'text-[#4a8fd4]',
                 border: 'border-[#26619C]/20',
                 bg: 'bg-[#26619C]/5',
@@ -335,45 +353,38 @@ export default async function Home() {
         </div>
       </section>
 
-{/* footer */}
-<footer className="border-t border-white/5 px-6 md:px-10 py-8">
-  <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-    <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
-      <div className="flex items-center gap-2">
-        <div className="w-5 h-5 rounded-md bg-[#26619C] flex items-center justify-center">
-          <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-            <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
-            <circle cx="7" cy="7" r="2" fill="white"/>
-          </svg>
-        </div>
-        <span className="text-xs font-bold text-white/60">Mentorly</span>
-      </div>
-      <p className="text-xs text-white/20">© 2025 · Built for students, by students</p>
-      <div className="flex items-center gap-4">
-        <Link href="/features" className="text-xs text-white/20 hover:text-white/50 transition-colors">Features</Link>
-        <Link href="/how-it-works" className="text-xs text-white/20 hover:text-white/50 transition-colors">How it works</Link>
-        <Link href="/terms" className="text-xs text-white/20 hover:text-white/50 transition-colors">Terms</Link>
-        <Link href="/login" className="text-xs text-white/20 hover:text-white/50 transition-colors">Sign in</Link>
-      </div>
-    </div>
-    <div className="flex flex-col items-center md:items-end gap-2">
-      <div className="flex items-center gap-1.5 text-xs text-white/25">
-        <span>Powered by</span>
-        <span className="text-white/50 font-semibold">Gordon College</span>
-        <span className="text-yellow-400">⚡</span>
-      </div>
-      <div className={
-        'flex items-center gap-2 text-xs px-3 py-1.5 rounded-full border ' +
-        (connected ? 'border-green-500/20 text-green-400/60' : 'border-red-500/20 text-red-400/60')
-      }>
-        <span className={'w-1.5 h-1.5 rounded-full ' + (connected ? 'bg-green-500 animate-pulse' : 'bg-red-500')} />
-        {connected ? 'All systems operational' : 'DB disconnected'}
-      </div>
-    </div>
-  </div>
-</footer>
+      {/* ── FOOTER ── */}
+      <footer className="border-t border-white/5 px-6 md:px-10 py-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-md bg-[#26619C] flex items-center justify-center">
+                <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.5" fill="none"/>
+                  <circle cx="7" cy="7" r="2" fill="white"/>
+                </svg>
+              </div>
+              <span className="text-xs font-bold text-white/60">Mentorly</span>
+            </div>
+            <p className="text-xs text-white/20">© 2025 · Built for students, by students</p>
+            <div className="flex items-center gap-4">
+              <Link href="/features" className="text-xs text-white/20 hover:text-white/50 transition-colors">Features</Link>
+              <Link href="/how-it-works" className="text-xs text-white/20 hover:text-white/50 transition-colors">How it works</Link>
+              <Link href="/terms" className="text-xs text-white/20 hover:text-white/50 transition-colors">Terms</Link>
+              <Link href="/login" className="text-xs text-white/20 hover:text-white/50 transition-colors">Sign in</Link>
+            </div>
+          </div>
 
-      {/* ── STICKY BOTTOM CTA (mobile) ── */}
+          {/* powered by Gordon College */}
+          <div className="flex items-center gap-1.5 text-xs text-white/25">
+            <span>Powered by</span>
+            <span className="text-white/50 font-semibold">Gordon College</span>
+            <span className="text-yellow-400">⚡</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* ── STICKY MOBILE CTA ── */}
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#050810] via-[#050810]/95 to-transparent">
         <Link
           href="/register"
