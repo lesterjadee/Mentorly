@@ -3,7 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { GraduationCap, Mail, Lock, User, BookOpen, School, CheckCircle, X } from 'lucide-react'
+import {
+  GraduationCap, Mail, Lock, User,
+  BookOpen, School, CheckCircle, X, Eye, EyeOff
+} from 'lucide-react'
 
 const COURSES = [
   'Computer Science', 'Information Technology', 'Engineering', 'Business Administration',
@@ -88,18 +91,75 @@ function TermsModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+function PasswordStrengthBar({ password }: { password: string }) {
+  const checks = {
+    length: password.length >= 8,
+    capital: /[A-Z]/.test(password),
+    symbol: /[^a-zA-Z0-9]/.test(password),
+  }
+  const passed = Object.values(checks).filter(Boolean).length
+  const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500']
+  const labels = ['Too weak', 'Weak', 'Almost there', 'Strong']
+
+  if (!password) return null
+
+  return (
+    <div className="mt-3 space-y-2">
+      {/* bar */}
+      <div className="flex gap-1">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className={
+              'h-1.5 flex-1 rounded-full transition-all duration-300 ' +
+              (passed > i ? colors[passed] : 'bg-white/10')
+            }
+          />
+        ))}
+      </div>
+      <p className={'text-xs ' + (passed === 3 ? 'text-green-400' : 'text-white/30')}>
+        {labels[passed]}
+      </p>
+      {/* individual checks */}
+      <div className="space-y-1">
+        {[
+          { label: 'At least 8 characters', ok: checks.length },
+          { label: 'At least 1 uppercase letter (A–Z)', ok: checks.capital },
+          { label: 'At least 1 symbol (!@#$%^&*...)', ok: checks.symbol },
+        ].map((c) => (
+          <div key={c.label} className="flex items-center gap-2">
+            {c.ok
+              ? <CheckCircle size={11} className="text-green-400 flex-shrink-0" />
+              : <X size={11} className="text-white/20 flex-shrink-0" />
+            }
+            <span className={'text-xs ' + (c.ok ? 'text-green-400' : 'text-white/30')}>
+              {c.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('')
-  const [school] = useState('Gordon College')
   const [course, setCourse] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
+
+  const isValidEmail = email.toLowerCase().endsWith('@gordoncollege.edu.ph')
+  const isValidPassword =
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[^a-zA-Z0-9]/.test(password)
 
   async function handleRegister() {
     if (!agreedToTerms) {
@@ -110,10 +170,12 @@ export default function RegisterPage() {
       setError('Please fill in all fields.')
       return
     }
-
-    // gordon college email check
-    if (!email.toLowerCase().endsWith('@gordoncollege.edu.ph')) {
+    if (!isValidEmail) {
       setError('Only Gordon College students with a @gordoncollege.edu.ph email can register.')
+      return
+    }
+    if (!isValidPassword) {
+      setError('Password must be at least 8 characters, include 1 uppercase letter, and 1 symbol.')
       return
     }
 
@@ -145,7 +207,8 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-3">Check your email</h1>
           <p className="text-white/40 text-sm leading-relaxed mb-6">
-            We sent a confirmation link to <span className="text-white/70">{email}</span>.
+            We sent a confirmation link to{' '}
+            <span className="text-white/70">{email}</span>.
             Click it to activate your Mentorly account.
           </p>
           <Link href="/login" className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
@@ -181,7 +244,9 @@ export default function RegisterPage() {
           <div className="flex items-center justify-center gap-2 mb-6 bg-[#26619C]/5 border border-[#26619C]/20 rounded-xl px-4 py-3">
             <GraduationCap size={15} className="text-[#4a8fd4] flex-shrink-0" />
             <p className="text-xs text-white/50 text-center">
-              Requires a <span className="text-[#4a8fd4] font-semibold">@gordoncollege.edu.ph</span> email to register
+              Requires a{' '}
+              <span className="text-[#4a8fd4] font-semibold">@gordoncollege.edu.ph</span>{' '}
+              email to register
             </p>
           </div>
 
@@ -192,8 +257,12 @@ export default function RegisterPage() {
                 <div className={
                   'w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ' +
                   (step >= s ? 'bg-[#26619C] text-white' : 'bg-white/5 text-white/30')
-                }>{s}</div>
-                {s < 2 && <div className={'w-12 h-px transition-colors ' + (step > s ? 'bg-[#26619C]' : 'bg-white/10')} />}
+                }>
+                  {s}
+                </div>
+                {s < 2 && (
+                  <div className={'w-12 h-px transition-colors ' + (step > s ? 'bg-[#26619C]' : 'bg-white/10')} />
+                )}
               </div>
             ))}
           </div>
@@ -201,17 +270,23 @@ export default function RegisterPage() {
           <div className="bg-white/3 border border-white/8 rounded-2xl p-8">
 
             {error && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6">
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 mb-6 flex items-start gap-2">
+                <X size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
                 <p className="text-red-400 text-sm">{error}</p>
               </div>
             )}
 
+            {/* ── STEP 1 ── */}
             {step === 1 && (
               <div className="space-y-4">
-                <p className="text-xs text-white/30 uppercase tracking-wider mb-6">Step 1 — Personal & academic info</p>
+                <p className="text-xs text-white/30 uppercase tracking-wider mb-6">
+                  Step 1 — Personal and academic info
+                </p>
 
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Full name</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                    Full name
+                  </label>
                   <div className="relative">
                     <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                     <input
@@ -225,17 +300,21 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">School</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                    School
+                  </label>
                   <div className="relative">
                     <School size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
-                    <div className="w-full bg-white/3 border border-white/8 rounded-xl pl-10 pr-4 py-3 text-white/50 text-sm">
+                    <div className="w-full bg-white/3 border border-white/8 rounded-xl pl-10 pr-4 py-3 text-white/50 text-sm cursor-not-allowed">
                       Gordon College
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Course / Program</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                    Course / Program
+                  </label>
                   <div className="relative">
                     <BookOpen size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                     <select
@@ -267,12 +346,18 @@ export default function RegisterPage() {
               </div>
             )}
 
+            {/* ── STEP 2 ── */}
             {step === 2 && (
               <div className="space-y-4">
-                <p className="text-xs text-white/30 uppercase tracking-wider mb-6">Step 2 — Account credentials</p>
+                <p className="text-xs text-white/30 uppercase tracking-wider mb-6">
+                  Step 2 — Account credentials
+                </p>
 
+                {/* email */}
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Gordon College Email</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                    Gordon College email
+                  </label>
                   <div className="relative">
                     <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                     <input
@@ -280,16 +365,23 @@ export default function RegisterPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="yourname@gordoncollege.edu.ph"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                      className={
+                        'w-full bg-white/5 border rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none transition-colors ' +
+                        (email
+                          ? isValidEmail
+                            ? 'border-green-500/40 focus:border-green-500/60'
+                            : 'border-red-500/40 focus:border-red-500/60'
+                          : 'border-white/10 focus:border-[#26619C]/60')
+                      }
                     />
                   </div>
-                  {email && !email.toLowerCase().endsWith('@gordoncollege.edu.ph') && (
+                  {email && !isValidEmail && (
                     <p className="text-red-400 text-xs mt-2 flex items-center gap-1">
                       <X size={11} />
                       Must be a @gordoncollege.edu.ph email
                     </p>
                   )}
-                  {email && email.toLowerCase().endsWith('@gordoncollege.edu.ph') && (
+                  {email && isValidEmail && (
                     <p className="text-green-400 text-xs mt-2 flex items-center gap-1">
                       <CheckCircle size={11} />
                       Valid Gordon College email
@@ -297,23 +389,39 @@ export default function RegisterPage() {
                   )}
                 </div>
 
+                {/* password */}
                 <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Password</label>
+                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                    Password
+                  </label>
                   <div className="relative">
                     <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                      placeholder="Min 8 chars, 1 uppercase, 1 symbol"
+                      className={
+                        'w-full bg-white/5 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none transition-colors ' +
+                        (password
+                          ? isValidPassword
+                            ? 'border-green-500/40 focus:border-green-500/60'
+                            : 'border-orange-500/30 focus:border-orange-500/50'
+                          : 'border-white/10 focus:border-[#26619C]/60')
+                      }
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
                   </div>
-                  <p className="text-white/20 text-xs mt-2">Minimum 6 characters</p>
+                  <PasswordStrengthBar password={password} />
                 </div>
 
-                {/* terms checkbox */}
+                {/* terms */}
                 <div className="bg-white/3 border border-white/8 rounded-xl p-4">
                   <div
                     className="flex items-start gap-3 cursor-pointer select-none"
@@ -346,19 +454,25 @@ export default function RegisterPage() {
 
                 <div className="flex gap-3 mt-2">
                   <button
-                    onClick={() => setStep(1)}
+                    onClick={() => { setStep(1); setError('') }}
                     className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-3 rounded-xl text-white/60 text-sm font-medium"
                   >
                     Back
                   </button>
                   <button
                     onClick={handleRegister}
-                    disabled={loading || !agreedToTerms}
-                    className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+                    disabled={loading || !agreedToTerms || !isValidEmail || !isValidPassword}
+                    className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-medium"
                   >
                     {loading ? 'Creating account...' : 'Create account'}
                   </button>
                 </div>
+
+                {!isValidPassword && password && (
+                  <p className="text-center text-xs text-white/20">
+                    Complete all password requirements to continue
+                  </p>
+                )}
               </div>
             )}
 
