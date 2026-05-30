@@ -22,7 +22,7 @@ export default function LoginPage() {
       return
     }
     if (!isValidEmail) {
-      setError('Mentorly is exclusive to Gordon College students. Please use your @gordoncollege.edu.ph email.')
+      setError('This platform is exclusive to Gordon College students. Please use your @gordoncollege.edu.ph email.')
       return
     }
 
@@ -50,16 +50,16 @@ export default function LoginPage() {
 
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
-                <circle cx="7" cy="7" r="2" fill="white"/>
-              </svg>
+            <div className="w-8 h-8 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/30">
+              <span className="text-white font-black text-xs">SC</span>
             </div>
-            <span className="font-semibold text-white text-[15px]">Mentorly</span>
+            <div className="text-left">
+              <p className="font-black text-[15px] tracking-tight leading-none">SPECS</p>
+              <p className="text-white/30 text-[10px]">Academic Support</p>
+            </div>
           </Link>
           <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-white/40 text-sm">Sign in to your Mentorly account</p>
+          <p className="text-white/40 text-sm">Sign in to your SPECS account</p>
         </div>
 
         {/* gordon college badge */}
@@ -68,7 +68,7 @@ export default function LoginPage() {
           <p className="text-xs text-white/50 text-center">
             Exclusive to{' '}
             <span className="text-[#4a8fd4] font-semibold">Gordon College</span>{' '}
-            students only
+            students · @gordoncollege.edu.ph only
           </p>
         </div>
 
@@ -85,11 +85,9 @@ export default function LoginPage() {
 
             {/* email */}
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs text-white/40 uppercase tracking-wider">
-                  Gordon College email
-                </label>
-              </div>
+              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+                Gordon College email
+              </label>
               <div className="relative">
                 <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                 <input
@@ -120,10 +118,7 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs text-white/40 uppercase tracking-wider">Password</label>
-                <Link
-                  href="/forgot-password"
-                  className="text-xs text-[#26619C] hover:text-[#4a8fd4] transition-colors"
-                >
+                <Link href="/forgot-password" className="text-xs text-[#26619C] hover:text-[#4a8fd4] transition-colors">
                   Forgot password?
                 </Link>
               </div>
@@ -150,7 +145,7 @@ export default function LoginPage() {
             <button
               onClick={handleLogin}
               disabled={loading || !email || !password || !isValidEmail}
-              className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
+              className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-semibold mt-2"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
@@ -165,6 +160,10 @@ export default function LoginPage() {
             </p>
           </div>
         </div>
+
+        <p className="text-center text-xs text-white/15 mt-6">
+          Society of Programming Enthusiasts · Gordon College ⚡
+        </p>
       </div>
     </main>
   )

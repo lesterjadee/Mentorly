@@ -2,9 +2,9 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import {
-  LayoutDashboard, BookOpen, Briefcase, MessageSquare,
-  LogOut, Search, Calendar, Sparkles,
-  ClipboardList, ArrowLeftRight
+  LayoutDashboard, BookOpen, MessageSquare,
+  LogOut, Calendar, Sparkles,
+  ClipboardList, FileText, Bell
 } from 'lucide-react'
 import CommandPalette from './components/CommandPalette'
 import NotificationPanel from './components/NotificationPanel'
@@ -16,21 +16,29 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const { data: profile } = await supabase
+    .from('users')
+    .select('is_specs_member, specs_role, full_name')
+    .eq('id', user.id)
+    .single()
+
+  const isSpecsMember = profile?.is_specs_member || false
+
   const { count: unreadCount } = await supabase
     .from('messages')
     .select('*', { count: 'exact', head: true })
     .eq('receiver_id', user.id)
     .eq('is_read', false)
 
-  const navItems = [
+  // nav items visible to ALL users
+  const studentNavItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Overview', badge: null },
-    { href: '/dashboard/marketplace', icon: Search, label: 'Marketplace', badge: null },
+    { href: '/dashboard/sessions', icon: Calendar, label: 'Browse Sessions', badge: null },
+    { href: '/dashboard/materials', icon: FileText, label: 'Study Materials', badge: null },
     { href: '/dashboard/requests/browse', icon: ClipboardList, label: 'Browse Requests', badge: null },
-    { href: '/dashboard/trades', icon: ArrowLeftRight, label: 'Skill Swap', badge: null },
     { href: '/dashboard/recommendations', icon: Sparkles, label: 'For You', badge: null },
-    { href: '/dashboard/bookings', icon: Calendar, label: 'Bookings', badge: null },
+    { href: '/dashboard/bookings', icon: Calendar, label: 'My Bookings', badge: null },
     { href: '/dashboard/requests', icon: BookOpen, label: 'My Requests', badge: null },
-    { href: '/dashboard/services', icon: Briefcase, label: 'My Services', badge: null },
     {
       href: '/dashboard/messages',
       icon: MessageSquare,
@@ -39,34 +47,58 @@ export default async function DashboardLayout({ children }: { children: React.Re
     },
   ]
 
-  const firstName = user.user_metadata?.full_name?.split(' ')[0] || 'User'
+  // extra nav items for SPECS members only
+  const specsNavItems = [
+    { href: '/dashboard/sessions/new', icon: Calendar, label: 'Post a Session', badge: null },
+    { href: '/dashboard/materials/upload', icon: FileText, label: 'Upload Materials', badge: null },
+  ]
+
+  const navItems = isSpecsMember
+    ? [...studentNavItems, ...specsNavItems]
+    : studentNavItems
+
+  const firstName = profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'User'
 
   return (
     <div className="min-h-screen bg-[#080C14] text-white flex">
 
-      {/* client-side tab title updater */}
       <TabTitle userId={user.id} />
-
-      {/* push notification prompt */}
       <PushNotificationPrompt />
 
-      {/* ── SIDEBAR ── */}
-      <aside className="w-60 border-r border-white/5 flex flex-col fixed h-full z-20">
+      {/* ── DESKTOP SIDEBAR ── */}
+      <aside className="hidden md:flex w-64 border-r border-white/5 flex-col fixed h-full z-20">
 
+        {/* logo */}
         <div className="px-6 py-5 border-b border-white/5">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/20">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
-                <circle cx="7" cy="7" r="2" fill="white"/>
-              </svg>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/20">
+              <span className="text-white font-black text-xs tracking-tighter">SC</span>
             </div>
-            <span className="font-bold text-[15px] tracking-tight">Mentorly</span>
+            <div>
+              <p className="font-black text-[14px] tracking-tight leading-none">SPECS</p>
+              <p className="text-[10px] text-white/30 mt-0.5">Academic Support</p>
+            </div>
           </div>
         </div>
 
+        {/* SPECS member badge */}
+        {isSpecsMember && (
+          <div className="mx-3 mt-3 px-3 py-2 bg-[#26619C]/10 border border-[#26619C]/20 rounded-xl flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#4a8fd4] animate-pulse" />
+            <span className="text-[11px] text-[#4a8fd4] font-medium">
+              SPECS {profile?.specs_role || 'Member'} ⚡
+            </span>
+          </div>
+        )}
+
+        {/* nav */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          {navItems.map((item) => (
+
+          {/* student section */}
+          <p className="px-3 pt-1 pb-2 text-[10px] text-white/20 uppercase tracking-widest font-medium">
+            Student
+          </p>
+          {studentNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -81,17 +113,43 @@ export default async function DashboardLayout({ children }: { children: React.Re
               )}
             </Link>
           ))}
+
+          {/* SPECS section */}
+          {isSpecsMember && (
+            <>
+              <p className="px-3 pt-4 pb-2 text-[10px] text-[#4a8fd4]/60 uppercase tracking-widest font-medium">
+                SPECS ⚡
+              </p>
+              {specsNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 text-[#4a8fd4]/60 hover:text-[#4a8fd4] hover:bg-[#26619C]/10"
+                >
+                  <item.icon size={16} />
+                  <span className="flex-1">{item.label}</span>
+                </Link>
+              ))}
+            </>
+          )}
         </nav>
 
         {/* user card */}
         <div className="px-4 py-3 mx-3 mb-2 bg-white/3 border border-white/8 rounded-xl">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-xs font-bold text-[#4a8fd4] flex-shrink-0">
+            <div className={
+              'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ' +
+              (isSpecsMember
+                ? 'bg-[#26619C] border border-[#26619C]/60 text-white'
+                : 'bg-[#26619C]/20 border border-[#26619C]/30 text-[#4a8fd4]')
+            }>
               {user.user_metadata?.full_name?.[0] || user.email?.[0]}
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold truncate">{firstName}</p>
-              <p className="text-[10px] text-white/30 truncate">{user.email}</p>
+              <p className={'text-[10px] truncate ' + (isSpecsMember ? 'text-[#4a8fd4]' : 'text-white/30')}>
+                {isSpecsMember ? 'SPECS Member ⚡' : 'Student'}
+              </p>
             </div>
           </div>
         </div>
@@ -106,26 +164,56 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </aside>
 
-      {/* ── MAIN ── */}
-      <div className="flex-1 ml-60">
+      {/* ── MAIN CONTENT ── */}
+      <div className="flex-1 md:ml-64 pb-24 md:pb-0">
 
-        <header className="flex items-center justify-between px-8 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/80 backdrop-blur-sm z-10">
+        {/* desktop header */}
+        <header className="hidden md:flex items-center justify-between px-8 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/80 backdrop-blur-sm z-10">
           <CommandPalette />
           <div className="flex items-center gap-2">
-            {/* realtime notification panel */}
             <NotificationPanel userId={user.id} />
-
-            {/* profile avatar */}
             <Link
               href="/dashboard/profile"
-              className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 hover:border-[#26619C]/60 flex items-center justify-center text-xs font-bold text-[#4a8fd4] transition-all duration-150"
+              className={
+                'w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-150 ' +
+                (isSpecsMember
+                  ? 'bg-[#26619C] border border-[#26619C]/60 text-white hover:border-[#4a8fd4]'
+                  : 'bg-[#26619C]/20 border border-[#26619C]/30 hover:border-[#26619C]/60 text-[#4a8fd4]')
+              }
             >
               {user.user_metadata?.full_name?.[0] || user.email?.[0]}
             </Link>
           </div>
         </header>
 
-        <main className="p-8 animate-fade-in">{children}</main>
+        {/* mobile header */}
+        <header className="flex md:hidden items-center justify-between px-4 py-4 border-b border-white/5 sticky top-0 bg-[#080C14]/90 backdrop-blur-xl z-10">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
+              <span className="text-white font-black text-[10px]">SC</span>
+            </div>
+            <div>
+              <span className="font-black text-[14px] tracking-tight">SPECS</span>
+              {isSpecsMember && <span className="text-[#4a8fd4] text-xs ml-1.5">⚡</span>}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <NotificationPanel userId={user.id} />
+            <Link
+              href="/dashboard/profile"
+              className={
+                'w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold ' +
+                (isSpecsMember
+                  ? 'bg-[#26619C] text-white'
+                  : 'bg-[#26619C]/20 border border-[#26619C]/30 text-[#4a8fd4]')
+              }
+            >
+              {user.user_metadata?.full_name?.[0] || user.email?.[0]}
+            </Link>
+          </div>
+        </header>
+
+        <main className="p-4 md:p-8 animate-fade-in">{children}</main>
       </div>
     </div>
   )
