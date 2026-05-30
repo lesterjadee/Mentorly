@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { ArrowLeft, Calendar, Clock, MapPin } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, Shield } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewBookingPage() {
@@ -11,9 +11,8 @@ export default function NewBookingPage() {
   const searchParams = useSearchParams()
   const serviceId = searchParams.get('service')
 
-  const [service, setService] = useState<any>(null)
+  const [session, setSession] = useState<any>(null)
   const [sessionType, setSessionType] = useState<'single' | 'multi'>('single')
-
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [dailyStartTime, setDailyStartTime] = useState('')
@@ -24,33 +23,35 @@ export default function NewBookingPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    async function fetchService() {
+    async function fetchSession() {
       if (!serviceId) return
       const supabase = createClient()
       const { data } = await supabase
         .from('services')
-        .select('*, users(full_name, school, trust_score)')
+        .select('*, users!services_tutor_id_fkey(full_name, school, course, specs_role)')
         .eq('id', serviceId)
         .single()
       if (data) {
-        setService(data)
-        if (data.mode !== 'both') setMode(data.mode)
+        setSession(data)
+        // pre-fill schedule from session if available
+        if (data.start_date) setStartDate(data.start_date)
+        if (data.end_date) setEndDate(data.end_date)
+        if (data.daily_start_time) setDailyStartTime(data.daily_start_time.slice(0,5))
+        if (data.hours_per_day) setHoursPerDay(String(data.hours_per_day))
+        if (data.mode && data.mode !== 'both') setMode(data.mode)
+        if (data.total_days && data.total_days > 1) setSessionType('multi')
       }
     }
-    fetchService()
+    fetchSession()
   }, [serviceId])
 
-  // calculate number of days between start and end (inclusive)
   function countDays() {
-    if (!startDate || !endDate) return 0
-    const start = new Date(startDate)
-    const end = new Date(endDate)
-    if (end < start) return 0
-    const diff = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
-    return diff + 1
+    if (!startDate || !endDate) return 1
+    const s = new Date(startDate), e = new Date(endDate)
+    if (e < s) return 1
+    return Math.floor((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)) + 1
   }
 
-  // format end time from start time + hours
   function formatEndTime(startTime: string, hours: string) {
     if (!startTime || !hours) return ''
     const [h, m] = startTime.split(':').map(Number)
@@ -59,7 +60,7 @@ export default function NewBookingPage() {
     const endM = totalMins % 60
     const period = (t: number) => t >= 12 ? 'PM' : 'AM'
     const fmt = (t: number) => t % 12 === 0 ? 12 : t % 12
-    return fmt(h) + ':' + String(m).padStart(2, '0') + ' ' + period(h) + ' – ' + fmt(endH) + ':' + String(endM).padStart(2, '0') + ' ' + period(endH)
+    return fmt(h) + ':' + String(m).padStart(2,'0') + ' ' + period(h) + ' – ' + fmt(endH) + ':' + String(endM).padStart(2,'0') + ' ' + period(endH)
   }
 
   function formatDisplayDate(dateStr: string) {
@@ -69,27 +70,13 @@ export default function NewBookingPage() {
     })
   }
 
-  const days = countDays()
-  const totalPrice = service ? service.price_per_hour * parseFloat(hoursPerDay || '1') * (days || 1) : 0
-
   async function handleBooking() {
     if (!startDate || !dailyStartTime) {
       setError('Please fill in the date and time fields.')
       return
     }
     if (sessionType === 'multi' && !endDate) {
-      setError('Please select an end date for multi-day sessions.')
-      return
-    }
-    if (sessionType === 'multi' && new Date(endDate) < new Date(startDate)) {
-      setError('End date must be on or after the start date.')
-      return
-    }
-
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-    if (new Date(startDate) < today) {
-      setError('Start date cannot be in the past.')
+      setError('Please select an end date.')
       return
     }
 
@@ -103,16 +90,15 @@ export default function NewBookingPage() {
     const finalEndDate = sessionType === 'single' ? startDate : endDate
     const totalDays = sessionType === 'single' ? 1 : countDays()
     const scheduledAt = new Date(startDate + 'T' + dailyStartTime)
-    const totalPriceCalc = service.price_per_hour * parseFloat(hoursPerDay) * totalDays
 
     const { error: bookingError } = await supabase.from('bookings').insert({
       service_id: serviceId,
       learner_id: user.id,
-      tutor_id: service.tutor_id,
+      tutor_id: session.tutor_id,
       scheduled_at: scheduledAt.toISOString(),
       duration_hours: parseFloat(hoursPerDay) * totalDays,
       mode,
-      total_price: totalPriceCalc,
+      total_price: 0,
       notes,
       status: 'pending',
       session_type: sessionType,
@@ -121,6 +107,7 @@ export default function NewBookingPage() {
       daily_start_time: dailyStartTime,
       hours_per_day: parseFloat(hoursPerDay),
       total_days: totalDays,
+      booking_title: session.title,
     })
 
     if (bookingError) {
@@ -131,7 +118,7 @@ export default function NewBookingPage() {
     }
   }
 
-  if (!service) {
+  if (!session) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
@@ -139,56 +126,40 @@ export default function NewBookingPage() {
     )
   }
 
+  const days = countDays()
+
   return (
     <div className="max-w-2xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/marketplace" className="text-white/30 hover:text-white transition-colors">
+        <Link href={'/dashboard/sessions/' + serviceId} className="text-white/30 hover:text-white transition-colors">
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">Book a session</h1>
-          <p className="text-white/40 text-sm mt-1">Schedule your tutoring session</p>
+          <h1 className="text-2xl font-black tracking-tight">Book a session</h1>
+          <p className="text-white/40 text-sm mt-0.5">Confirm your booking details</p>
         </div>
       </div>
 
-      {/* service summary card */}
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-6 flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4]">
-          {service.users?.full_name?.[0]}
+      {/* session summary */}
+      <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-2xl p-5 mb-6">
+        <div className="flex items-center gap-4">
+          <div className="w-11 h-11 rounded-full bg-[#26619C] flex items-center justify-center text-base font-black text-white flex-shrink-0">
+            {session.users?.full_name?.[0]}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-sm">{session.title}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <Shield size={10} className="text-[#4a8fd4]" />
+              <p className="text-xs text-[#4a8fd4]">
+                {session.users?.full_name} · SPECS {session.users?.specs_role || 'Member'}
+              </p>
+            </div>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <p className="text-xl font-black text-green-400">FREE</p>
+            <p className="text-[10px] text-white/30">No charge</p>
+          </div>
         </div>
-        <div className="flex-1">
-          <p className="font-medium text-sm">{service.title}</p>
-          <p className="text-xs text-white/30 mt-0.5">
-            with {service.users?.full_name} · {service.users?.school}
-          </p>
-        </div>
-        <p className="text-sm font-semibold text-[#4a8fd4]">₱{service.price_per_hour}/hr</p>
-      </div>
-
-      {/* session type toggle */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <button
-          onClick={() => setSessionType('single')}
-          className={
-            'py-3 rounded-xl border text-sm font-medium transition-all ' +
-            (sessionType === 'single'
-              ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
-              : 'border-white/10 text-white/40 hover:border-white/20')
-          }
-        >
-          Single day
-        </button>
-        <button
-          onClick={() => setSessionType('multi')}
-          className={
-            'py-3 rounded-xl border text-sm font-medium transition-all ' +
-            (sessionType === 'multi'
-              ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
-              : 'border-white/10 text-white/40 hover:border-white/20')
-          }
-        >
-          Multiple days
-        </button>
       </div>
 
       <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
@@ -198,6 +169,24 @@ export default function NewBookingPage() {
             <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
+
+        {/* session type toggle */}
+        <div className="grid grid-cols-2 gap-3">
+          {(['single', 'multi'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => setSessionType(t)}
+              className={
+                'py-3 rounded-xl border text-sm font-semibold transition-all ' +
+                (sessionType === t
+                  ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
+                  : 'border-white/10 text-white/40 hover:border-white/20')
+              }
+            >
+              {t === 'single' ? 'Single day' : 'Multiple days'}
+            </button>
+          ))}
+        </div>
 
         {/* dates */}
         {sessionType === 'single' ? (
@@ -245,7 +234,7 @@ export default function NewBookingPage() {
         {/* time */}
         <div>
           <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-            <Clock size={12} /> Start time (daily)
+            <Clock size={12} /> Start time
           </label>
           <input
             type="time"
@@ -255,16 +244,14 @@ export default function NewBookingPage() {
           />
           {dailyStartTime && hoursPerDay && (
             <p className="text-xs text-[#4a8fd4] mt-2">
-              Each session: {formatEndTime(dailyStartTime, hoursPerDay)}
+              {formatEndTime(dailyStartTime, hoursPerDay)}
             </p>
           )}
         </div>
 
         {/* hours per day */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">
-            Hours per day
-          </label>
+          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Hours per day</label>
           <div className="grid grid-cols-4 gap-2">
             {['1', '1.5', '2', '3'].map((h) => (
               <button
@@ -277,18 +264,16 @@ export default function NewBookingPage() {
                     : 'border-white/10 text-white/40 hover:border-white/20')
                 }
               >
-                {h}hr
+                {h}h
               </button>
             ))}
           </div>
         </div>
 
-        {/* session mode */}
-        {service.mode === 'both' && (
+        {/* mode */}
+        {session.mode === 'both' && (
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <MapPin size={12} /> Session mode
-            </label>
+            <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Session mode</label>
             <div className="grid grid-cols-2 gap-3">
               {(['online', 'in-person'] as const).map((m) => (
                 <button
@@ -311,21 +296,20 @@ export default function NewBookingPage() {
         {/* notes */}
         <div>
           <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Notes for tutor — optional
+            Message to tutor — optional
           </label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Topics to cover, your current level, anything the tutor should know..."
+            placeholder="Topics you need help with, your current level, questions you have..."
             rows={3}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
           />
         </div>
 
-        {/* price + session summary */}
+        {/* session summary */}
         <div className="bg-white/3 border border-white/8 rounded-xl p-5 space-y-3">
-          <p className="text-xs text-white/30 uppercase tracking-wider">Session summary</p>
-
+          <p className="text-xs text-white/30 uppercase tracking-wider">Booking summary</p>
           {startDate && (
             <div className="flex justify-between text-sm">
               <span className="text-white/40">
@@ -338,44 +322,38 @@ export default function NewBookingPage() {
               </span>
             </div>
           )}
-
           {dailyStartTime && (
             <div className="flex justify-between text-sm">
-              <span className="text-white/40">Time each day</span>
+              <span className="text-white/40">Time</span>
               <span className="text-white/70">{formatEndTime(dailyStartTime, hoursPerDay)}</span>
             </div>
           )}
-
-          <div className="flex justify-between text-sm">
-            <span className="text-white/40">Hours per day</span>
-            <span className="text-white/70">{hoursPerDay} hr</span>
-          </div>
-
           {sessionType === 'multi' && startDate && endDate && (
             <div className="flex justify-between text-sm">
               <span className="text-white/40">Total days</span>
               <span className="text-white/70">{days} day{days !== 1 ? 's' : ''}</span>
             </div>
           )}
-
-          <div className="border-t border-white/8 pt-3 flex justify-between items-center">
-            <div>
-              <p className="text-xs text-white/30">Total price</p>
-              <p className="text-xs text-white/20 mt-0.5">
-                ₱{service.price_per_hour}/hr × {hoursPerDay}hr
-                {sessionType === 'multi' && days > 0 ? ' × ' + days + ' days' : ''}
-              </p>
-            </div>
-            <p className="text-2xl font-bold text-[#4a8fd4]">₱{totalPrice.toFixed(2)}</p>
+          <div className="border-t border-white/8 pt-3 flex items-center justify-between">
+            <span className="text-sm text-white/40">Total cost</span>
+            <span className="text-xl font-black text-green-400">FREE</span>
           </div>
+        </div>
+
+        {/* free notice */}
+        <div className="flex items-center gap-3 bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3">
+          <Shield size={14} className="text-green-400 flex-shrink-0" />
+          <p className="text-xs text-white/50">
+            This session is <span className="text-green-400 font-semibold">completely free</span> — provided by SPECS as a community service.
+          </p>
         </div>
 
         <button
           onClick={handleBooking}
           disabled={loading}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
         >
-          {loading ? 'Sending request...' : 'Send booking request'}
+          {loading ? 'Sending request...' : 'Confirm booking — Free'}
         </button>
       </div>
     </div>
