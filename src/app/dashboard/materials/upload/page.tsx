@@ -15,6 +15,23 @@ const SUBJECTS = [
   'Accounting', 'Economics', 'Other'
 ]
 
+function getFileEmoji(file: File): string {
+  const name = file.name.toLowerCase()
+  const type = file.type.toLowerCase()
+  if (type.includes('pdf') || name.endsWith('.pdf')) return '📄'
+  if (name.endsWith('.doc') || name.endsWith('.docx')) return '📝'
+  if (name.endsWith('.ppt') || name.endsWith('.pptx')) return '📊'
+  if (name.endsWith('.xls') || name.endsWith('.xlsx')) return '📈'
+  if (type.startsWith('image/')) return '🖼️'
+  return '📁'
+}
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+}
+
 export default function UploadMaterialPage() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -48,7 +65,6 @@ export default function UploadMaterialPage() {
       const isMember = profile?.is_specs_member || false
       setIsSpecsMember(isMember)
 
-      // load their own sessions to optionally link material
       if (isMember) {
         const { data: mySessions } = await supabase
           .from('services')
@@ -62,23 +78,6 @@ export default function UploadMaterialPage() {
     load()
   }, [])
 
-  function formatFileSize(bytes: number) {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }
-
-  function getFileEmoji(file: File) {
-    const name = file.name.toLowerCase()
-    const type = file.type.toLowerCase()
-    if (type.includes('pdf') || name.endsWith('.pdf')) return '📄'
-    if (name.endsWith('.doc') || name.endsWith('.docx')) return '📝'
-    if (name.endsWith('.ppt') || name.endsWith('.pptx')) return '📊'
-    if (name.endsWith('.xls') || name.endsWith('.xlsx')) return '📈'
-    if (type.startsWith('image/')) return '🖼️'
-    return '📁'
-  }
-
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
@@ -87,7 +86,6 @@ export default function UploadMaterialPage() {
       return
     }
     setSelectedFile(file)
-    // auto-fill title from filename
     if (!title) {
       setTitle(file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '))
     }
@@ -102,8 +100,6 @@ export default function UploadMaterialPage() {
     setError('')
 
     const supabase = createClient()
-
-    // upload file to storage
     const ext = selectedFile.name.split('.').pop()
     const filePath = userId + '/standalone/' + Date.now() + '.' + ext
 
@@ -121,7 +117,6 @@ export default function UploadMaterialPage() {
       .from('study-materials')
       .getPublicUrl(filePath)
 
-    // save to study_materials table
     const { error: dbError } = await supabase.from('study_materials').insert({
       uploaded_by: userId,
       session_id: linkedSession || null,
@@ -159,7 +154,8 @@ export default function UploadMaterialPage() {
           <AlertCircle size={32} className="text-red-400 mx-auto mb-4" />
           <h2 className="font-bold text-lg mb-2">SPECS Members Only</h2>
           <p className="text-white/40 text-sm leading-relaxed mb-5">
-            Only SPECS members can upload study materials. If you're a SPECS member, please contact an officer to update your account.
+            Only SPECS members can upload study materials. If you're a SPECS member,
+            please contact an officer to update your account.
           </p>
           <Link
             href="/dashboard/materials"
@@ -274,7 +270,7 @@ export default function UploadMaterialPage() {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What's covered in this material? What level is it for? Any important notes?"
+            placeholder="What's covered? What level is it for? Any important notes?"
             rows={3}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
           />
@@ -327,7 +323,7 @@ export default function UploadMaterialPage() {
               </select>
             </div>
             <p className="text-xs text-white/20 mt-1.5">
-              Linking to a session lets students find this material from the session detail page.
+              Linking lets students find this material from the session detail page.
             </p>
           </div>
         )}
@@ -337,7 +333,8 @@ export default function UploadMaterialPage() {
           <Shield size={13} className="text-[#4a8fd4] flex-shrink-0 mt-0.5" />
           <p className="text-xs text-white/40 leading-relaxed">
             This material will be{' '}
-            <span className="text-white/70 font-medium">publicly available</span> to all Gordon College students on the SPECS platform — no account upgrade or payment needed to download.
+            <span className="text-white/70 font-medium">publicly available</span> to all
+            Gordon College students — no payment needed to download.
           </p>
         </div>
 
@@ -352,8 +349,12 @@ export default function UploadMaterialPage() {
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-white/80 truncate">{title}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-[10px] text-white/30 border border-white/8 px-2 py-0.5 rounded-full">{subject}</span>
-                  <span className="text-[10px] text-white/20">{formatFileSize(selectedFile.size)}</span>
+                  <span className="text-[10px] text-white/30 border border-white/8 px-2 py-0.5 rounded-full">
+                    {subject}
+                  </span>
+                  <span className="text-[10px] text-white/20">
+                    {formatFileSize(selectedFile.size)}
+                  </span>
                 </div>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
@@ -385,21 +386,4 @@ export default function UploadMaterialPage() {
       </div>
     </div>
   )
-
-  function getFileEmoji(file: File) {
-    const name = file.name.toLowerCase()
-    const type = file.type.toLowerCase()
-    if (type.includes('pdf') || name.endsWith('.pdf')) return '📄'
-    if (name.endsWith('.doc') || name.endsWith('.docx')) return '📝'
-    if (name.endsWith('.ppt') || name.endsWith('.pptx')) return '📊'
-    if (name.endsWith('.xls') || name.endsWith('.xlsx')) return '📈'
-    if (type.startsWith('image/')) return '🖼️'
-    return '📁'
-  }
-
-  function formatFileSize(bytes: number) {
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }
 }
