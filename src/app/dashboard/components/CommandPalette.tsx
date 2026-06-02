@@ -2,35 +2,68 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import {
-  Search, LayoutDashboard, BookOpen, Briefcase,
-  MessageSquare, Calendar, Sparkles, ArrowLeftRight,
-  ClipboardList, User, Bell, Plus, ArrowRight
+  Search, LayoutDashboard, BookOpen,
+  MessageSquare, Calendar, Sparkles,
+  ArrowRight, FileText, ClipboardList,
+  User, Bell, Plus, Shield
 } from 'lucide-react'
 
-const COMMANDS = [
+type Command = {
+  id: string
+  label: string
+  icon: any
+  href: string
+  group: string
+  specsOnly?: boolean
+}
+
+const ALL_COMMANDS: Command[] = [
+  // navigate — all users
   { id: 'overview', label: 'Go to Overview', icon: LayoutDashboard, href: '/dashboard', group: 'Navigate' },
-  { id: 'marketplace', label: 'Browse Marketplace', icon: Search, href: '/dashboard/marketplace', group: 'Navigate' },
-  { id: 'requests', label: 'Browse Requests', icon: ClipboardList, href: '/dashboard/requests/browse', group: 'Navigate' },
-  { id: 'trades', label: 'Skill Swap', icon: ArrowLeftRight, href: '/dashboard/trades', group: 'Navigate' },
+  { id: 'sessions', label: 'Browse Sessions', icon: Calendar, href: '/dashboard/sessions', group: 'Navigate' },
+  { id: 'materials', label: 'Study Materials', icon: FileText, href: '/dashboard/materials', group: 'Navigate' },
+  { id: 'requests-browse', label: 'Browse Requests', icon: ClipboardList, href: '/dashboard/requests/browse', group: 'Navigate' },
   { id: 'foryou', label: 'For You', icon: Sparkles, href: '/dashboard/recommendations', group: 'Navigate' },
   { id: 'bookings', label: 'My Bookings', icon: Calendar, href: '/dashboard/bookings', group: 'Navigate' },
-  { id: 'myrequests', label: 'My Requests', icon: BookOpen, href: '/dashboard/requests', group: 'Navigate' },
-  { id: 'myservices', label: 'My Services', icon: Briefcase, href: '/dashboard/services', group: 'Navigate' },
+  { id: 'requests', label: 'My Requests', icon: BookOpen, href: '/dashboard/requests', group: 'Navigate' },
   { id: 'messages', label: 'Messages', icon: MessageSquare, href: '/dashboard/messages', group: 'Navigate' },
   { id: 'notifications', label: 'Notifications', icon: Bell, href: '/dashboard/notifications', group: 'Navigate' },
   { id: 'profile', label: 'My Profile', icon: User, href: '/dashboard/profile', group: 'Navigate' },
-  { id: 'new-service', label: 'List a new service', icon: Plus, href: '/dashboard/services/new', group: 'Actions' },
+  // actions — all users
   { id: 'new-request', label: 'Post a help request', icon: Plus, href: '/dashboard/requests/new', group: 'Actions' },
-  { id: 'new-trade', label: 'Post a skill swap', icon: Plus, href: '/dashboard/trades/new', group: 'Actions' },
+  // SPECS only
+  { id: 'new-session', label: 'Post a new session', icon: Plus, href: '/dashboard/sessions/new', group: 'SPECS', specsOnly: true },
+  { id: 'upload-material', label: 'Upload study material', icon: Plus, href: '/dashboard/materials/upload', group: 'SPECS', specsOnly: true },
 ]
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState(0)
+  const [isSpecsMember, setIsSpecsMember] = useState(false)
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    async function checkRole() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data } = await supabase
+        .from('users')
+        .select('is_specs_member')
+        .eq('id', user.id)
+        .single()
+      setIsSpecsMember(data?.is_specs_member || false)
+    }
+    checkRole()
+  }, [])
+
+  const commands = ALL_COMMANDS.filter((c) =>
+    !c.specsOnly || isSpecsMember
+  )
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -50,11 +83,11 @@ export default function CommandPalette() {
     if (open) setTimeout(() => inputRef.current?.focus(), 50)
   }, [open])
 
-  const filtered = COMMANDS.filter((c) =>
+  const filtered = commands.filter((c) =>
     c.label.toLowerCase().includes(query.toLowerCase())
   )
 
-  const groups = ['Navigate', 'Actions'].map((g) => ({
+  const groups = ['Navigate', 'Actions', 'SPECS'].map((g) => ({
     name: g,
     items: filtered.filter((c) => c.group === g),
   })).filter((g) => g.items.length > 0)
@@ -97,16 +130,10 @@ export default function CommandPalette() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] px-4">
-      {/* backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={() => setOpen(false)}
-      />
-
-      {/* palette */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
       <div className="relative w-full max-w-lg bg-[#0d1117] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
 
-        {/* search */}
+        {/* search input */}
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/8">
           <Search size={15} className="text-white/30 flex-shrink-0" />
           <input
@@ -122,45 +149,69 @@ export default function CommandPalette() {
         {/* results */}
         <div className="max-h-80 overflow-y-auto py-2">
           {groups.length === 0 ? (
-            <div className="px-4 py-8 text-center text-xs text-white/30">No results for "{query}"</div>
+            <div className="px-4 py-8 text-center text-xs text-white/30">
+              No results for "{query}"
+            </div>
           ) : (
-            groups.map((group) => {
-              let globalIdx = 0
-              return (
-                <div key={group.name}>
-                  <p className="px-4 py-2 text-[10px] text-white/20 uppercase tracking-widest">{group.name}</p>
-                  {group.items.map((item) => {
-                    const idx = filtered.indexOf(item)
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => execute(item.href)}
-                        onMouseEnter={() => setSelected(idx)}
-                        className={
-                          'w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left ' +
-                          (selected === idx ? 'bg-[#26619C]/20' : 'hover:bg-white/3')
-                        }
-                      >
-                        <item.icon size={14} className={selected === idx ? 'text-[#4a8fd4]' : 'text-white/30'} />
-                        <span className={'text-sm ' + (selected === idx ? 'text-white' : 'text-white/60')}>
-                          {item.label}
-                        </span>
-                        {selected === idx && (
-                          <ArrowRight size={12} className="ml-auto text-white/30" />
-                        )}
-                      </button>
-                    )
-                  })}
+            groups.map((group) => (
+              <div key={group.name}>
+                <div className="flex items-center gap-2 px-4 py-2">
+                  {group.name === 'SPECS' && (
+                    <Shield size={9} className="text-[#4a8fd4]" />
+                  )}
+                  <p className="text-[10px] text-white/20 uppercase tracking-widest">
+                    {group.name}
+                  </p>
                 </div>
-              )
-            })
+                {group.items.map((item) => {
+                  const idx = filtered.indexOf(item)
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => execute(item.href)}
+                      onMouseEnter={() => setSelected(idx)}
+                      className={
+                        'w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left ' +
+                        (selected === idx ? 'bg-[#26619C]/20' : 'hover:bg-white/3')
+                      }
+                    >
+                      <item.icon
+                        size={14}
+                        className={
+                          selected === idx
+                            ? (item.specsOnly ? 'text-[#4a8fd4]' : 'text-[#4a8fd4]')
+                            : 'text-white/30'
+                        }
+                      />
+                      <span className={'text-sm ' + (selected === idx ? 'text-white' : 'text-white/60')}>
+                        {item.label}
+                      </span>
+                      {selected === idx && (
+                        <ArrowRight size={12} className="ml-auto text-white/30" />
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            ))
           )}
         </div>
 
         <div className="border-t border-white/5 px-4 py-2.5 flex items-center gap-4 text-[10px] text-white/20">
-          <span className="flex items-center gap-1"><span className="font-mono bg-white/5 px-1 rounded">↑↓</span> navigate</span>
-          <span className="flex items-center gap-1"><span className="font-mono bg-white/5 px-1 rounded">↵</span> open</span>
-          <span className="flex items-center gap-1"><span className="font-mono bg-white/5 px-1 rounded">esc</span> close</span>
+          <span className="flex items-center gap-1">
+            <span className="font-mono bg-white/5 px-1 rounded">↑↓</span> navigate
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="font-mono bg-white/5 px-1 rounded">↵</span> open
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="font-mono bg-white/5 px-1 rounded">esc</span> close
+          </span>
+          {isSpecsMember && (
+            <span className="ml-auto flex items-center gap-1 text-[#4a8fd4]/40">
+              <Shield size={8} /> SPECS commands unlocked
+            </span>
+          )}
         </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ type Props = {
   isSpecsMember: boolean
   hasSession?: boolean
   hasMaterial?: boolean
+  // legacy props — ignored but kept for backward compat
   hasService?: boolean
   hasBio?: boolean
 }

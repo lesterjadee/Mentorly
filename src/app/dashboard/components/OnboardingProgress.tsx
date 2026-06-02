@@ -32,10 +32,10 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
       <div className="flex items-start justify-between gap-4 mb-5 pr-6">
         <div>
           <p className="font-semibold text-sm mb-0.5">
-            {completed === 0 ? 'Get started with Mentorly' : 'Almost there!'}
+            {completed === 0 ? 'Get started with SPECS' : 'Almost set up!'}
           </p>
           <p className="text-xs text-white/40">
-            Complete your setup to get {completed === 0 ? '3x' : '2x'} more bookings
+            Complete your setup to get the most out of the platform
           </p>
         </div>
         <div className="text-right flex-shrink-0">
