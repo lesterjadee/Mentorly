@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { uniqueRealtimeTopic } from '@/lib/supabase/realtime'
 import { Send, Star, Paperclip, X, FileText, Download } from 'lucide-react'
 import Link from 'next/link'
 
@@ -57,7 +58,7 @@ export default function ChatWindow({
   useEffect(() => {
     const supabase = createClient()
     const channel = supabase
-      .channel('messages-' + currentUser.id + '-' + otherUser.id)
+      .channel(uniqueRealtimeTopic('messages-' + otherUser.id, currentUser.id))
       .on(
         'postgres_changes',
         {

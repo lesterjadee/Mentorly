@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { uniqueRealtimeTopic } from '@/lib/supabase/realtime'
 
 type Props = {
   userId: string
@@ -44,7 +45,7 @@ export default function TabTitle({ userId }: Props) {
     // realtime updates
     const supabase = createClient()
     const channel = supabase
-      .channel('tab-title-' + userId)
+      .channel(uniqueRealtimeTopic('tab-title', userId))
       .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, updateTitle)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, updateTitle)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'offers' }, updateTitle)

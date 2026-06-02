@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { uniqueRealtimeTopic } from '@/lib/supabase/realtime'
 import {
   Bell, X, Star, MessageSquare, CheckCircle,
   XCircle, Clock, ArrowLeftRight, ChevronRight
@@ -183,7 +184,7 @@ export default function NotificationPanel({ userId }: Props) {
     // realtime subscription for new messages
     const supabase = createClient()
     const channel = supabase
-      .channel('notif-panel-' + userId)
+      .channel(uniqueRealtimeTopic('notif-panel', userId))
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
