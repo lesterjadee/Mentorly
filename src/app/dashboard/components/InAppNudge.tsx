@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, ArrowRight, Sparkles, Briefcase, User, BookOpen } from 'lucide-react'
+import { X, ArrowRight, Sparkles, FileText, User, Calendar, ClipboardList } from 'lucide-react'
 import Link from 'next/link'
 
 type Nudge = {
@@ -17,61 +17,113 @@ type Nudge = {
 
 type Props = {
   hasProfile: boolean
-  hasService: boolean
   hasBooking: boolean
-  hasBio: boolean
+  isSpecsMember: boolean
+  hasSession?: boolean
+  hasMaterial?: boolean
+  hasService?: boolean
+  hasBio?: boolean
 }
 
-export default function InAppNudge({ hasProfile, hasService, hasBooking, hasBio }: Props) {
+export default function InAppNudge({
+  hasProfile,
+  hasBooking,
+  isSpecsMember,
+  hasSession = false,
+  hasMaterial = false,
+}: Props) {
   const [dismissed, setDismissed] = useState<string[]>([])
   const [currentIdx, setCurrentIdx] = useState(0)
 
-  const allNudges: Nudge[] = [
-    !hasBio && {
-      id: 'bio',
+  const studentNudges: Nudge[] = [
+    !hasProfile && {
+      id: 'profile',
       icon: User,
       iconColor: 'text-[#4a8fd4]',
       iconBg: 'bg-[#26619C]/10 border-[#26619C]/20',
-      title: 'Add a bio to get 3x more bookings',
-      desc: 'Students book tutors they feel they know. A 2-sentence bio makes all the difference.',
-      cta: 'Add bio',
+      title: 'Complete your profile',
+      desc: 'A complete profile helps SPECS tutors prepare better sessions for you.',
+      cta: 'Update profile',
       href: '/dashboard/profile',
     },
-    !hasService && {
-      id: 'service',
-      icon: Briefcase,
-      iconColor: 'text-purple-400',
-      iconBg: 'bg-purple-500/10 border-purple-500/20',
-      title: 'You could be earning right now',
-      desc: 'Students are actively looking for tutors. List your first service in 2 minutes.',
-      cta: 'List a service',
-      href: '/dashboard/services/new',
-    },
     !hasBooking && {
-      id: 'booking',
-      icon: BookOpen,
-      iconColor: 'text-teal-400',
-      iconBg: 'bg-teal-500/10 border-teal-500/20',
-      title: 'Find a tutor for your hardest subject',
-      desc: 'Browse 48+ active tutors. Book a session for less than a cup of coffee per hour.',
-      cta: 'Browse tutors',
-      href: '/dashboard/marketplace',
+      id: 'browse',
+      icon: Calendar,
+      iconColor: 'text-green-400',
+      iconBg: 'bg-green-500/10 border-green-500/20',
+      title: 'Free SPECS sessions are available',
+      desc: 'Browse tutoring sessions posted by SPECS members — completely free.',
+      cta: 'Browse sessions',
+      href: '/dashboard/sessions',
     },
     {
-      id: 'swap',
-      icon: Sparkles,
-      iconColor: 'text-yellow-400',
-      iconBg: 'bg-yellow-500/10 border-yellow-500/20',
-      title: 'Did you know? You can trade subjects for free',
-      desc: 'Skill Swap lets you tutor someone in what you know in exchange for help in what you don\'t.',
-      cta: 'Try Skill Swap',
-      href: '/dashboard/trades',
+      id: 'materials',
+      icon: FileText,
+      iconColor: 'text-blue-400',
+      iconBg: 'bg-blue-500/10 border-blue-500/20',
+      title: 'Study materials are waiting for you',
+      desc: 'SPECS has uploaded reviewers and notes you can download right now.',
+      cta: 'View materials',
+      href: '/dashboard/materials',
+    },
+    {
+      id: 'request',
+      icon: ClipboardList,
+      iconColor: 'text-purple-400',
+      iconBg: 'bg-purple-500/10 border-purple-500/20',
+      title: 'Need help with a specific topic?',
+      desc: 'Post a help request and SPECS members will offer sessions tailored to you.',
+      cta: 'Post a request',
+      href: '/dashboard/requests/new',
     },
   ].filter(Boolean).filter((n: any) => !dismissed.includes(n.id)) as Nudge[]
 
+  const specsNudges: Nudge[] = [
+    !hasProfile && {
+      id: 'profile',
+      icon: User,
+      iconColor: 'text-[#4a8fd4]',
+      iconBg: 'bg-[#26619C]/10 border-[#26619C]/20',
+      title: 'Complete your profile',
+      desc: 'Students will see your profile before booking — make a great first impression.',
+      cta: 'Update profile',
+      href: '/dashboard/profile',
+    },
+    !hasSession && {
+      id: 'session',
+      icon: Calendar,
+      iconColor: 'text-[#4a8fd4]',
+      iconBg: 'bg-[#26619C]/10 border-[#26619C]/20',
+      title: 'Post your first SPECS session',
+      desc: 'Students are waiting for help. Post a session and make a difference.',
+      cta: 'Post a session',
+      href: '/dashboard/sessions/new',
+    },
+    !hasMaterial && {
+      id: 'material',
+      icon: FileText,
+      iconColor: 'text-blue-400',
+      iconBg: 'bg-blue-500/10 border-blue-500/20',
+      title: 'Share a study material',
+      desc: 'Upload a reviewer or notes so students can learn even outside sessions.',
+      cta: 'Upload material',
+      href: '/dashboard/materials/upload',
+    },
+    {
+      id: 'requests',
+      icon: Sparkles,
+      iconColor: 'text-yellow-400',
+      iconBg: 'bg-yellow-500/10 border-yellow-500/20',
+      title: 'Students are asking for help',
+      desc: 'Check the requests board — students are posting what subjects they need.',
+      cta: 'View requests',
+      href: '/dashboard/requests/browse',
+    },
+  ].filter(Boolean).filter((n: any) => !dismissed.includes(n.id)) as Nudge[]
+
+  const allNudges = isSpecsMember ? specsNudges : studentNudges
   const nudge = allNudges[currentIdx % Math.max(allNudges.length, 1)]
 
-  // rotate nudges every 8 seconds
   useEffect(() => {
     if (allNudges.length <= 1) return
     const t = setInterval(() => setCurrentIdx((i) => i + 1), 8000)
