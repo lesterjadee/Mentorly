@@ -20,7 +20,7 @@ export default async function BookingsPage({
     .from('bookings')
     .select(`
       *,
-      services(title, price_per_hour),
+      services(title),
       tutor:users!bookings_tutor_id_fkey(id, full_name, school)
     `)
     .eq('learner_id', user.id)
@@ -31,18 +31,11 @@ export default async function BookingsPage({
     .from('bookings')
     .select(`
       *,
-      services(title, price_per_hour),
+      services(title),
       learner:users!bookings_learner_id_fkey(id, full_name, school)
     `)
     .eq('tutor_id', user.id)
     .order('created_at', { ascending: false })
-
-  const { data: myReviews } = await supabase
-    .from('reviews')
-    .select('booking_id')
-    .eq('reviewer_id', user.id)
-
-  const reviewedBookingIds = new Set((myReviews || []).map((r: any) => r.booking_id))
 
   // helper — get display title from booking
   function getTitle(booking: any) {
@@ -190,26 +183,10 @@ export default async function BookingsPage({
                           Message tutor
                         </Link>
                       )}
-                      {booking.status === 'completed' && !reviewedBookingIds.has(booking.id) && (
-                        <Link
-                          href={'/dashboard/reviews/new?booking=' + booking.id + '&tutor=' + booking.tutor_id}
-                          className="inline-flex items-center gap-1 text-xs text-yellow-400 hover:text-yellow-300 transition-colors border border-yellow-500/20 bg-yellow-500/10 px-3 py-1.5 rounded-lg"
-                        >
-                          ⭐ Leave a review
-                        </Link>
-                      )}
-                      {booking.status === 'completed' && reviewedBookingIds.has(booking.id) && (
-                        <span className="inline-flex items-center gap-1 text-xs text-white/20 border border-white/10 px-3 py-1.5 rounded-lg">
-                          Review submitted
-                        </span>
-                      )}
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-2 ml-4 flex-shrink-0">
                     <StatusBadge status={booking.status} />
-                    <p className="text-xs font-medium text-[#4a8fd4]">
-                      ₱{booking.total_price}
-                    </p>
                   </div>
                 </div>
               </div>
@@ -260,9 +237,6 @@ export default async function BookingsPage({
                   </div>
                   <div className="flex flex-col items-end gap-2 ml-4 flex-shrink-0">
                     <StatusBadge status={booking.status} />
-                    <p className="text-xs font-medium text-[#4a8fd4]">
-                      ₱{booking.total_price}
-                    </p>
                     <AcceptDeclineButtons
                       bookingId={booking.id}
                       status={booking.status}

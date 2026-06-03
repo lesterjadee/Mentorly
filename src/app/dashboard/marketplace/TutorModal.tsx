@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { X, Star, BookOpen, School, ArrowRight, Award, ExternalLink } from 'lucide-react'
+import { X, BookOpen, School, ArrowRight, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 type Props = {
@@ -12,7 +12,6 @@ type Props = {
 
 export default function TutorModal({ serviceId, onClose }: Props) {
   const [service, setService] = useState<any>(null)
-  const [reviews, setReviews] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -20,20 +19,11 @@ export default function TutorModal({ serviceId, onClose }: Props) {
       const supabase = createClient()
       const { data: svc } = await supabase
         .from('services')
-        .select('*, users(id, full_name, school, course, trust_score, mentor_score, learner_score, bio, total_sessions)')
+        .select('*, users(id, full_name, school, course, bio, total_sessions)')
         .eq('id', serviceId)
         .single()
 
-      if (svc) {
-        setService(svc)
-        const { data: rvws } = await supabase
-          .from('reviews')
-          .select('*, reviewer:users!reviews_reviewer_id_fkey(full_name)')
-          .eq('reviewee_id', svc.tutor_id)
-          .order('created_at', { ascending: false })
-          .limit(3)
-        setReviews(rvws || [])
-      }
+      if (svc) setService(svc)
       setLoading(false)
     }
     load()
@@ -89,18 +79,10 @@ export default function TutorModal({ serviceId, onClose }: Props) {
                     </Link>
                   </div>
 
-                  {/* quick scores */}
+                  {/* quick details */}
                   <div className="flex items-center gap-3 mt-3">
                     <div className="flex items-center gap-1.5">
-                      <Award size={11} className="text-yellow-400" />
-                      <span className="text-xs text-white/50">Mentor:</span>
-                      <span className="text-xs font-bold text-yellow-400">
-                        {service.users?.mentor_score > 0 ? service.users.mentor_score : 'New'}
-                      </span>
-                    </div>
-                    <div className="w-px h-3 bg-white/10" />
-                    <div className="flex items-center gap-1.5">
-                      <Star size={11} className="text-[#4a8fd4]" />
+                      <BookOpen size={11} className="text-[#4a8fd4]" />
                       <span className="text-xs text-white/50">Sessions:</span>
                       <span className="text-xs font-bold text-[#4a8fd4]">
                         {service.users?.total_sessions || 0}
@@ -137,13 +119,7 @@ export default function TutorModal({ serviceId, onClose }: Props) {
               )}
 
               <div className="flex items-center justify-between bg-white/3 border border-white/8 rounded-xl p-4">
-                <div>
-                  <p className="text-xs text-white/30">Rate</p>
-                  <p className="text-2xl font-black text-[#4a8fd4]">
-                    ₱{service.price_per_hour}
-                    <span className="text-sm font-normal text-white/30">/hr</span>
-                  </p>
-                </div>
+                <p className="text-sm font-bold text-green-400">Free SPECS support</p>
                 <Link
                   href={'/dashboard/bookings/new?service=' + service.id}
                   onClick={onClose}
@@ -155,42 +131,6 @@ export default function TutorModal({ serviceId, onClose }: Props) {
               </div>
             </div>
 
-            {/* recent reviews */}
-            {reviews.length > 0 && (
-              <div className="px-6 pb-6 border-t border-white/8 pt-5">
-                <p className="text-xs text-white/20 uppercase tracking-widest mb-3 font-medium">
-                  Recent reviews
-                </p>
-                <div className="space-y-3">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="bg-white/3 border border-white/8 rounded-xl p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs font-semibold text-white/60">{review.reviewer?.full_name}</p>
-                        <div className="flex items-center gap-0.5">
-                          {[1,2,3,4,5].map((s) => (
-                            <Star
-                              key={s}
-                              size={10}
-                              className={s <= review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      {review.comment && (
-                        <p className="text-xs text-white/30 leading-relaxed">{review.comment}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <Link
-                  href={'/dashboard/tutor/' + service.tutor_id}
-                  onClick={onClose}
-                  className="block text-center text-xs text-[#26619C] hover:text-[#4a8fd4] transition-colors mt-3"
-                >
-                  View all reviews →
-                </Link>
-              </div>
-            )}
           </div>
         ) : (
           <div className="p-8 text-center">

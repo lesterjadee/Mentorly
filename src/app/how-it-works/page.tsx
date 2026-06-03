@@ -34,9 +34,9 @@ export default function HowItWorksPage() {
           <div className="grid md:grid-cols-4 gap-4">
             {[
               { icon: UserPlus, step: '01', title: 'Create your account', desc: 'Sign up for free with your student email in under a minute.' },
-              { icon: Search, step: '02', title: 'Browse tutors', desc: 'Search by subject, filter by price and mode, read reviews.' },
+              { icon: Search, step: '02', title: 'Browse tutors', desc: 'Search by subject and mode to find available SPECS support.' },
               { icon: Calendar, step: '03', title: 'Book a session', desc: 'Pick a date, time, and duration. Send a booking request.' },
-              { icon: Star, step: '04', title: 'Leave a review', desc: 'After your session, rate your tutor to help others.' },
+              { icon: Star, step: '04', title: 'Attend and learn', desc: 'Join the session prepared and make the most of the free academic help.' },
             ].map((s) => (
               <div key={s.step} className="bg-white/3 border border-white/8 rounded-2xl p-5 relative">
                 <span className="text-[10px] text-white/20 font-mono absolute top-4 right-4">{s.step}</span>
@@ -58,9 +58,9 @@ export default function HowItWorksPage() {
           <div className="grid md:grid-cols-4 gap-4">
             {[
               { icon: UserPlus, step: '01', title: 'Create your account', desc: 'Sign up free and set up your student profile.' },
-              { icon: Search, step: '02', title: 'List your service', desc: 'Add your subjects, set your hourly rate, and describe what you offer.' },
+              { icon: Search, step: '02', title: 'List your support', desc: 'Add your subjects, available mode, and describe what you can help with.' },
               { icon: Calendar, step: '03', title: 'Accept bookings', desc: 'Review incoming requests and accept or decline them.' },
-              { icon: Star, step: '04', title: 'Build your reputation', desc: 'Complete sessions, earn reviews, and grow your trust score.' },
+              { icon: Star, step: '04', title: 'Serve students', desc: 'Complete sessions as part of SPECS academic service to the school community.' },
             ].map((s) => (
               <div key={s.step} className="bg-white/3 border border-white/8 rounded-2xl p-5 relative">
                 <span className="text-[10px] text-white/20 font-mono absolute top-4 right-4">{s.step}</span>

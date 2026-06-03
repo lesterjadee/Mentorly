@@ -9,15 +9,14 @@ export default async function MarketplacePage() {
 
   const { data: services } = await supabase
     .from('services')
-    .select('*, users(id, full_name, school, trust_score)')
+    .select('*, users(id, full_name, school)')
     .eq('is_active', true)
     .order('created_at', { ascending: false })
 
   const { data: featured } = await supabase
     .from('services')
-    .select('*, users(id, full_name, school, trust_score)')
+    .select('*, users(id, full_name, school)')
     .eq('is_active', true)
-    .gt('users.trust_score', 0)
     .order('created_at', { ascending: false })
     .limit(6)
 

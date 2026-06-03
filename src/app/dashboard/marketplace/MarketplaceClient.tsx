@@ -125,30 +125,11 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
           </p>
         )}
 
-        {/* dual score section */}
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-1">
-            {score > 0 ? (
-              <div className="flex items-center gap-1">
-                <Award size={10} className="text-yellow-400" />
-                <span className="text-[10px] text-white/40">Mentor</span>
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <Star
-                    key={s}
-                    size={9}
-                    className={s <= Math.round(score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
-                  />
-                ))}
-                <span className="text-[10px] text-white/30 ml-0.5">{score}</span>
-              </div>
-            ) : (
-              <span className="text-[10px] text-white/20">New tutor</span>
-            )}
+            <span className="text-[10px] text-white/20">SPECS volunteer support</span>
           </div>
-          <p className={'font-black text-[#4a8fd4] ' + (large ? 'text-base' : 'text-sm')}>
-            ₱{service.price_per_hour}
-            <span className="text-[10px] font-normal text-white/30">/hr</span>
-          </p>
+          <p className={'font-black text-green-400 ' + (large ? 'text-base' : 'text-sm')}>Free</p>
         </div>
 
         {!isOwn && (
@@ -228,9 +209,6 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
               className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none pr-8 cursor-pointer"
             >
               <option value="newest" className="bg-[#0d1117]">Newest</option>
-              <option value="rating" className="bg-[#0d1117]">Top rated</option>
-              <option value="price_asc" className="bg-[#0d1117]">Price: Low → High</option>
-              <option value="price_desc" className="bg-[#0d1117]">Price: High → Low</option>
             </select>
             <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
           </div>
@@ -281,55 +259,6 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
                 </div>
               </div>
 
-              {/* price range */}
-              <div>
-                <label className="text-[10px] text-white/30 uppercase tracking-wider mb-2 block">Price range (₱/hr)</label>
-                <div className="space-y-2">
-                  <input
-                    type="number"
-                    placeholder="Min price"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-xs placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max price"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-xs placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* min rating */}
-              <div>
-                <label className="text-[10px] text-white/30 uppercase tracking-wider mb-2 block">Min rating</label>
-                <div className="flex flex-col gap-1.5">
-                  {[0, 3, 4, 5].map((r) => (
-                    <button
-                      key={r}
-                      onClick={() => setMinRating(r)}
-                      className={
-                        'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ' +
-                        (minRating === r
-                          ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                          : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent')
-                      }
-                    >
-                      {r === 0 ? 'Any rating' : (
-                        <>
-                          {Array.from({ length: r }).map((_, i) => (
-                            <Star key={i} size={10} className="text-yellow-400 fill-yellow-400" />
-                          ))}
-                          <span>& up</span>
-                        </>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* clear */}
               <div className="flex items-end">
                 {hasFilters && (
@@ -368,8 +297,8 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <Star size={14} className="text-yellow-400 fill-yellow-400" />
-              <p className="text-sm font-bold">Top rated this week</p>
+              <BookOpen size={14} className="text-[#4a8fd4]" />
+              <p className="text-sm font-bold">Featured SPECS support</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {featured.slice(0, 3).map((s) => (

@@ -13,7 +13,6 @@ export default function SendOfferPage() {
 
   const [request, setRequest] = useState<any>(null)
   const [message, setMessage] = useState('')
-  const [proposedPrice, setProposedPrice] = useState('')
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(true)
   const [error, setError] = useState('')
@@ -31,10 +30,7 @@ export default function SendOfferPage() {
         .eq('id', requestId)
         .single()
 
-      if (req) {
-        setRequest(req)
-        if (req.budget) setProposedPrice(req.budget.toString())
-      }
+      if (req) setRequest(req)
 
       // check if already sent an offer
       const { data: existing } = await supabase
@@ -69,10 +65,6 @@ export default function SendOfferPage() {
   }
 
   async function handleSubmit() {
-    if (!proposedPrice) {
-      setError('Please enter your proposed rate.')
-      return
-    }
     setLoading(true)
     setError('')
 
@@ -85,7 +77,7 @@ export default function SendOfferPage() {
       tutor_id: user.id,
       learner_id: request.learner_id,
       message,
-      proposed_price: parseFloat(proposedPrice),
+      proposed_price: 0,
       status: 'pending',
     })
 
@@ -194,11 +186,6 @@ export default function SendOfferPage() {
             <div className="flex flex-wrap gap-2 mt-3">
               <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{request.category}</span>
               <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{request.mode}</span>
-              {request.budget && (
-                <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-lg">
-                  Learner budget: ₱{request.budget}/hr
-                </span>
-              )}
             </div>
           </div>
         </div>
@@ -206,32 +193,13 @@ export default function SendOfferPage() {
 
       {/* offer form */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
-        <p className="text-xs text-white/30 uppercase tracking-wider">Your offer</p>
+        <p className="text-xs text-white/30 uppercase tracking-wider">Your support offer</p>
 
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
             <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
-
-        <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Your rate (₱/hr) *
-          </label>
-          <input
-            type="number"
-            value={proposedPrice}
-            onChange={(e) => setProposedPrice(e.target.value)}
-            placeholder="e.g. 150"
-            min="0"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-          />
-          {request.budget && parseFloat(proposedPrice) > request.budget && (
-            <p className="text-xs text-yellow-400 mt-2">
-              ⚠ Your rate is above the learner's budget of ₱{request.budget}/hr
-            </p>
-          )}
-        </div>
 
         <div>
           <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
@@ -245,21 +213,6 @@ export default function SendOfferPage() {
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
           />
         </div>
-
-        {/* total estimate */}
-        {proposedPrice && request.start_date && (
-          <div className="bg-white/3 border border-white/8 rounded-xl p-4 flex items-center justify-between">
-            <div>
-              <p className="text-xs text-white/40">Estimated total</p>
-              <p className="text-xs text-white/20 mt-0.5">
-                ₱{proposedPrice}/hr × {request.hours_per_day}hr × {request.total_days || 1} day{(request.total_days || 1) !== 1 ? 's' : ''}
-              </p>
-            </div>
-            <p className="text-xl font-bold text-[#4a8fd4]">
-              ₱{(parseFloat(proposedPrice) * request.hours_per_day * (request.total_days || 1)).toFixed(2)}
-            </p>
-          </div>
-        )}
 
         <button
           onClick={handleSubmit}

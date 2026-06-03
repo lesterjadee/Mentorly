@@ -31,21 +31,6 @@ export default async function NotificationsPage() {
     .order('created_at', { ascending: false })
     .limit(5)
 
-  const { data: completedBookings } = await supabase
-    .from('bookings')
-    .select('*, services(title), tutor:users!bookings_tutor_id_fkey(full_name)')
-    .eq('learner_id', user.id)
-    .eq('status', 'completed')
-    .order('created_at', { ascending: false })
-    .limit(5)
-
-  const { data: myReviews } = await supabase
-    .from('reviews')
-    .select('booking_id')
-    .eq('reviewer_id', user.id)
-
-  const reviewedIds = new Set((myReviews || []).map((r: any) => r.booking_id))
-
   const { data: unreadMessages } = await supabase
     .from('messages')
     .select('*, sender:users!messages_sender_id_fkey(full_name)')
@@ -78,8 +63,7 @@ export default async function NotificationsPage() {
     (acceptedBookings && acceptedBookings.length > 0) ||
     (declinedBookings && declinedBookings.length > 0) ||
     (incomingOffers && incomingOffers.length > 0) ||
-    (unreadMessages && unreadMessages.length > 0) ||
-    (completedBookings && completedBookings.some((b: any) => !reviewedIds.has(b.id)))
+    (unreadMessages && unreadMessages.length > 0)
   )
 
   return (
@@ -194,32 +178,6 @@ export default async function NotificationsPage() {
             </span>
           </Link>
         ))}
-
-        {/* completed — leave review */}
-        {completedBookings && completedBookings
-          .filter((b: any) => !reviewedIds.has(b.id))
-          .map((b: any) => (
-            <Link
-              key={'review-' + b.id}
-              href={'/dashboard/reviews/new?booking=' + b.id + '&tutor=' + b.tutor_id}
-              className="flex items-start gap-4 bg-white/3 border border-yellow-500/20 rounded-2xl p-4 hover:border-yellow-500/40 transition-all group"
-            >
-              <div className="w-9 h-9 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0">
-                <Star size={15} className="text-yellow-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium">Rate your session</p>
-                <p className="text-xs text-white/40 mt-0.5">
-                  Your session for{' '}
-                  <span className="text-white/60">{b.services?.title}</span> is complete — leave a review!
-                </p>
-                <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
-              </div>
-              <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">
-                Review
-              </span>
-            </Link>
-          ))}
 
         {/* unread messages */}
         {unreadMessages && unreadMessages.map((m: any) => (

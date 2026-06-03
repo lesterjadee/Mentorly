@@ -18,7 +18,6 @@ export default function NewRequestPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
-  const [budget, setBudget] = useState('')
   const [mode, setMode] = useState<'online' | 'in-person' | 'both'>('both')
   const [sessionType, setSessionType] = useState<'single' | 'multi'>('single')
   const [startDate, setStartDate] = useState('')
@@ -89,7 +88,7 @@ export default function NewRequestPage() {
       title,
       description,
       category,
-      budget: budget ? parseFloat(budget) : null,
+      budget: null,
       mode,
       status: 'open',
       session_type: sessionType,
@@ -153,32 +152,19 @@ export default function NewRequestPage() {
           />
         </div>
 
-        {/* category + budget */}
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Category *</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
-            >
-              <option value="" disabled className="bg-[#080C14]">Select category</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c} className="bg-[#080C14]">{c}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Budget (₱/hr) — optional</label>
-            <input
-              type="number"
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              placeholder="e.g. 150"
-              min="0"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-            />
-          </div>
+        {/* category */}
+        <div>
+          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Category *</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          >
+            <option value="" disabled className="bg-[#080C14]">Select category</option>
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c} className="bg-[#080C14]">{c}</option>
+            ))}
+          </select>
         </div>
 
         {/* mode */}
@@ -341,12 +327,6 @@ export default function NewRequestPage() {
               <div className="flex justify-between text-sm">
                 <span className="text-white/40">Total days</span>
                 <span className="text-white/70">{days} day{days !== 1 ? 's' : ''}</span>
-              </div>
-            )}
-            {budget && (
-              <div className="flex justify-between text-sm">
-                <span className="text-white/40">Budget</span>
-                <span className="text-[#4a8fd4]">₱{budget}/hr</span>
               </div>
             )}
           </div>

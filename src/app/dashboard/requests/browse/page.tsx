@@ -77,13 +77,13 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-1">Browse Requests</h1>
-        <p className="text-white/40 text-sm">Students looking for help — view their schedule and send an offer</p>
+        <p className="text-white/40 text-sm">Students looking for help - view their schedule and offer support</p>
       </div>
 
       {justOffered && (
         <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-6 flex items-center gap-2">
           <CheckCircle size={15} className="text-green-400" />
-          <p className="text-green-400 text-sm">Offer sent! The learner will review it and respond.</p>
+          <p className="text-green-400 text-sm">Offer sent! The learner will respond when they can.</p>
         </div>
       )}
 
@@ -162,11 +162,6 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                       <div className="flex items-center gap-2 flex-wrap mb-3">
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
-                        {req.budget && (
-                          <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-lg">
-                            Budget: ₱{req.budget}/hr
-                          </span>
-                        )}
                       </div>
 
                       {req.start_date && (
@@ -209,7 +204,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                         href={'/dashboard/requests/' + req.id + '/offer'}
                         className="flex items-center gap-1.5 px-3 py-2 bg-[#26619C]/10 hover:bg-[#26619C]/20 border border-[#26619C]/20 hover:border-[#26619C]/40 text-[#4a8fd4] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
                       >
-                        Send offer
+                        Offer help
                       </Link>
                     )}
                     {!isOwn && alreadyOffered && (

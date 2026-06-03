@@ -47,8 +47,6 @@ export default async function ServicesPage() {
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-xs text-white/30">{service.category}</span>
                     <span className="text-white/20">·</span>
-                    <span className="text-xs text-white/30">₱{service.price_per_hour}/hr</span>
-                    <span className="text-white/20">·</span>
                     <span className="text-xs text-white/30">{service.mode}</span>
                   </div>
                 </div>

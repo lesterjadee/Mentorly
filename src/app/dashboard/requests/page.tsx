@@ -95,11 +95,6 @@ export default async function RequestsPage() {
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
                         <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
-                        {req.budget && (
-                          <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-lg">
-                            Budget: ₱{req.budget}/hr
-                          </span>
-                        )}
                       </div>
 
                       {req.start_date && (

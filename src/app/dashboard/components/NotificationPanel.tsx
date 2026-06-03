@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 type Notif = {
   id: string
-  type: 'offer' | 'booking_pending' | 'booking_accepted' | 'booking_declined' | 'booking_completed' | 'message' | 'trade_request' | 'review'
+  type: 'offer' | 'booking_pending' | 'booking_accepted' | 'booking_declined' | 'booking_completed' | 'message' | 'trade_request'
   title: string
   desc: string
   href: string
@@ -96,36 +96,6 @@ export default function NotificationPanel({ userId }: Props) {
         time: b.created_at,
         read: false,
       })
-    })
-
-    // completed sessions needing review
-    const { data: myReviews } = await supabase
-      .from('reviews')
-      .select('booking_id')
-      .eq('reviewer_id', userId)
-
-    const reviewedIds = new Set((myReviews || []).map((r: any) => r.booking_id))
-
-    const { data: completed } = await supabase
-      .from('bookings')
-      .select('id, created_at, services(title), tutor:users!bookings_tutor_id_fkey(full_name)')
-      .eq('learner_id', userId)
-      .eq('status', 'completed')
-      .order('created_at', { ascending: false })
-      .limit(3)
-
-    completed?.forEach((b: any) => {
-      if (!reviewedIds.has(b.id)) {
-        allNotifs.push({
-          id: 'review-' + b.id,
-          type: 'review',
-          title: 'Rate your session',
-          desc: 'How was your session with ' + (b.tutor?.full_name || 'your tutor') + '?',
-          href: '/dashboard/reviews/new?booking=' + b.id + '&tutor=' + b.tutor_id,
-          time: b.created_at,
-          read: false,
-        })
-      }
     })
 
     // unread messages
@@ -253,7 +223,6 @@ export default function NotificationPanel({ userId }: Props) {
       booking_completed: { icon: CheckCircle, bg: 'bg-blue-500/10 border border-blue-500/20', color: 'text-blue-400' },
       message: { icon: MessageSquare, bg: 'bg-purple-500/10 border border-purple-500/20', color: 'text-purple-400' },
       trade_request: { icon: ArrowLeftRight, bg: 'bg-teal-500/10 border border-teal-500/20', color: 'text-teal-400' },
-      review: { icon: Star, bg: 'bg-yellow-500/10 border border-yellow-500/20', color: 'text-yellow-400' },
     }
     const cfg = configs[type] || configs.offer
     return (

@@ -73,6 +73,14 @@ export default async function DashboardPage() {
         .eq('uploaded_by', user.id)
     : { count: 0 }
 
+  const { count: mySupportedCount } = isSpecsMember
+    ? await supabase
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('tutor_id', user.id)
+        .in('status', ['accepted', 'completed'])
+    : { count: 0 }
+
   // activity data
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -286,11 +294,11 @@ export default async function DashboardPage() {
             delay={100}
           />
           <StatCard
-            label="Trust score"
-            value={profile?.trust_score > 0 ? profile.trust_score : '—'}
-            sub="Student ratings"
-            icon={<Star size={15} />}
-            color="bg-yellow-500/20"
+            label="Students supported"
+            value={mySupportedCount ?? 0}
+            sub="Accepted sessions"
+            icon={<Shield size={15} />}
+            color="bg-green-500/20"
             delay={200}
           />
         </div>

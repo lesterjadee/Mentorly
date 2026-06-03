@@ -17,13 +17,12 @@ export default function NewServicePage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
-  const [price, setPrice] = useState('')
   const [mode, setMode] = useState<'online' | 'in-person' | 'both'>('both')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   async function handleSubmit() {
-    if (!title || !category || !price) {
+    if (!title || !category) {
       setError('Please fill in all required fields.')
       return
     }
@@ -38,7 +37,7 @@ export default function NewServicePage() {
       title,
       description,
       category,
-      price_per_hour: parseFloat(price),
+      price_per_hour: 0,
       mode,
     })
 
@@ -91,32 +90,18 @@ export default function NewServicePage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Category *</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
-            >
-              <option value="" disabled className="bg-[#080C14]">Select category</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c} className="bg-[#080C14]">{c}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Price per hour (₱) *</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="150"
-              min="0"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
-            />
-          </div>
+        <div>
+          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Category *</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          >
+            <option value="" disabled className="bg-[#080C14]">Select category</option>
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c} className="bg-[#080C14]">{c}</option>
+            ))}
+          </select>
         </div>
 
         <div>

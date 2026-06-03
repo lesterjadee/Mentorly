@@ -10,7 +10,6 @@ type Props = {
   tutorId: string
   requestId: string
   request: any
-  proposedPrice: number
 }
 
 export default function OfferActionButtons({
@@ -18,7 +17,6 @@ export default function OfferActionButtons({
   tutorId,
   requestId,
   request,
-  proposedPrice,
 }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState<'accept' | 'decline' | null>(null)
@@ -64,8 +62,6 @@ export default function OfferActionButtons({
 
     const totalDays = request.total_days || 1
     const hoursPerDay = request.hours_per_day || 1
-    const totalPrice = proposedPrice * hoursPerDay * totalDays
-
     const { error: bookingError } = await supabase.from('bookings').insert({
       learner_id: user.id,
       tutor_id: tutorId,
@@ -75,7 +71,7 @@ export default function OfferActionButtons({
       scheduled_at: scheduledAt,
       duration_hours: hoursPerDay * totalDays,
       mode: request.mode === 'both' ? 'online' : request.mode,
-      total_price: totalPrice,
+      total_price: 0,
       notes: request.description || '',
       status: 'accepted',
       session_type: request.session_type || 'single',

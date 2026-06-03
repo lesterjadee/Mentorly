@@ -22,15 +22,15 @@ export default function FeaturesPage() {
 
       <div className="max-w-5xl mx-auto px-6 md:px-8 py-20">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Everything you need to learn and earn</h1>
-          <p className="text-white/40 text-lg max-w-xl mx-auto">Mentorly is built specifically for college students — affordable, trusted, and easy to use.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Everything you need to learn</h1>
+          <p className="text-white/40 text-lg max-w-xl mx-auto">Mentorly is built for free SPECS academic support at Gordon College.</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { icon: Shield, title: 'Verified student profiles', desc: 'Every user is a real enrolled student. Trust scores are built from session history and peer reviews.', color: 'text-[#4a8fd4]', bg: 'bg-[#26619C]/10', border: 'border-[#26619C]/20' },
+            { icon: Shield, title: 'Verified student profiles', desc: 'Every user is connected to Gordon College, keeping support within the school community.', color: 'text-[#4a8fd4]', bg: 'bg-[#26619C]/10', border: 'border-[#26619C]/20' },
             { icon: Zap, title: 'Instant booking', desc: 'Browse tutors, filter by subject, and book a session in under 2 minutes — online or in-person.', color: 'text-teal-400', bg: 'bg-teal-500/10', border: 'border-teal-500/20' },
-            { icon: Star, title: 'Trust score system', desc: 'After every session, students leave reviews. Tutors build a visible reputation over time.', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
+            { icon: Star, title: 'Free SPECS support', desc: 'Sessions and materials are offered as a good deed by the organization, with no fees attached.', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
             { icon: MessageSquare, title: 'Real-time messaging', desc: 'Chat directly with your tutor or student before and after sessions using our live chat system.', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
             { icon: Calendar, title: 'Smart scheduling', desc: 'Pick your date, time, and duration. The system automatically prevents overlapping bookings.', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20' },
             { icon: TrendingUp, title: 'Personalized recommendations', desc: 'Get tutor suggestions based on your course, activity, and subject needs.', color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },

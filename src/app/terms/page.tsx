@@ -48,18 +48,18 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-white font-semibold text-base mb-3">6. Payments and Pricing</h2>
-            <p>Tutors set their own rates on the platform. All financial transactions between users are the sole responsibility of those involved. Mentorly does not process, hold, or guarantee payments between users at this time. Users are encouraged to agree on payment terms before a session begins.</p>
+            <h2 className="text-white font-semibold text-base mb-3">6. Free Academic Support</h2>
+            <p>SPECS tutoring and academic support sessions are provided free of charge as a service to Gordon College students. Users must not request, require, or collect payment for SPECS support arranged through the platform.</p>
           </section>
 
           <section>
-            <h2 className="text-white font-semibold text-base mb-3">7. Reviews and Trust Scores</h2>
-            <p>Users may leave honest reviews after completed sessions. Reviews must be truthful and based on actual experience. Fake, malicious, or retaliatory reviews are prohibited and may be removed. Trust scores are calculated automatically based on submitted ratings.</p>
+            <h2 className="text-white font-semibold text-base mb-3">7. Community Expectations</h2>
+            <p>Students and SPECS members are expected to communicate respectfully, show up prepared, and use the platform for academic support. Concerns should be reported to the organization or platform administrators instead of being handled through public ratings.</p>
           </section>
 
           <section>
             <h2 className="text-white font-semibold text-base mb-3">8. Prohibited Conduct</h2>
-            <p>Users may not use Mentorly to engage in academic dishonesty, harassment, discrimination, or any unlawful activity. Sharing false information, impersonating others, or attempting to manipulate the review system is strictly prohibited and may result in permanent account termination.</p>
+            <p>Users may not use Mentorly to engage in academic dishonesty, harassment, discrimination, or any unlawful activity. Sharing false information or impersonating others is strictly prohibited and may result in permanent account termination.</p>
           </section>
 
           <section>

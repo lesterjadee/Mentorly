@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { User, School, BookOpen, Mail, Star, Briefcase, Edit3, Check, Award, ExternalLink } from 'lucide-react'
+import { User, School, BookOpen, Mail, Edit3, Check, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 const COURSES = [
@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
-  const [stats, setStats] = useState({ services: 0, bookings: 0, reviews: 0, completedSessions: 0 })
+  const [stats, setStats] = useState({ services: 0, bookings: 0, completedSessions: 0 })
 
   const [fullName, setFullName] = useState('')
   const [school, setSchool] = useState('')
@@ -55,11 +55,6 @@ export default function ProfilePage() {
         .select('*', { count: 'exact', head: true })
         .eq('learner_id', user.id)
 
-      const { count: reviewsCount } = await supabase
-        .from('reviews')
-        .select('*', { count: 'exact', head: true })
-        .eq('reviewee_id', user.id)
-
       const { count: completedCount } = await supabase
         .from('bookings')
         .select('*', { count: 'exact', head: true })
@@ -69,7 +64,6 @@ export default function ProfilePage() {
       setStats({
         services: servicesCount || 0,
         bookings: bookingsCount || 0,
-        reviews: reviewsCount || 0,
         completedSessions: completedCount || 0,
       })
     }
@@ -91,32 +85,6 @@ export default function ProfilePage() {
     setTimeout(() => setSaved(false), 3000)
   }
 
-  function ScoreBar({ score, color }: { score: number; color: string }) {
-    return (
-      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden flex-1">
-        <div
-          className={'h-full rounded-full transition-all duration-700 ' + color}
-          style={{ width: ((score / 5) * 100) + '%' }}
-        />
-      </div>
-    )
-  }
-
-  function StarRating({ score }: { score: number }) {
-    return (
-      <div className="flex items-center gap-0.5">
-        {[1, 2, 3, 4, 5].map((s) => (
-          <Star
-            key={s}
-            size={12}
-            className={s <= Math.round(score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
-          />
-        ))}
-        <span className="text-xs text-white/40 ml-1">{score > 0 ? score : 'No ratings yet'}</span>
-      </div>
-    )
-  }
-
   if (!profile) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -124,9 +92,6 @@ export default function ProfilePage() {
       </div>
     )
   }
-
-  const mentorScore = profile.mentor_score || profile.trust_score || 0
-  const learnerScore = profile.learner_score || 0
 
   return (
     <div className="max-w-2xl">
@@ -191,12 +156,11 @@ export default function ProfilePage() {
       </div>
 
       {/* stats */}
-      <div className="grid grid-cols-4 gap-3 mb-5">
+      <div className="grid grid-cols-3 gap-3 mb-5">
         {[
           { label: 'Services', value: stats.services },
           { label: 'Booked', value: stats.bookings },
           { label: 'Completed', value: stats.completedSessions },
-          { label: 'Reviews', value: stats.reviews },
         ].map((s) => (
           <div key={s.label} className="bg-white/3 border border-white/8 rounded-2xl p-4 text-center">
             <p className="text-xl font-black">{s.value}</p>
@@ -205,27 +169,26 @@ export default function ProfilePage() {
         ))}
       </div>
 
-      {/* dual trust scores */}
+      {/* SPECS support */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-6 mb-5">
         <div className="flex items-center gap-2 mb-5">
-          <Award size={15} className="text-yellow-400" />
-          <p className="text-sm font-bold">Trust scores</p>
+          <BookOpen size={15} className="text-[#4a8fd4]" />
+          <p className="text-sm font-bold">SPECS support</p>
         </div>
 
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
               <div>
-                <p className="text-sm font-semibold">Mentor score</p>
-                <p className="text-xs text-white/30">How good you are as a tutor</p>
+                <p className="text-sm font-semibold">Free tutoring</p>
+                <p className="text-xs text-white/30">SPECS members volunteer their time to help Gordon College students.</p>
               </div>
               <p className="text-xl font-black text-yellow-400">
-                {mentorScore > 0 ? mentorScore : '—'}
+                Free
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <StarRating score={mentorScore} />
-              <ScoreBar score={mentorScore} color="bg-gradient-to-r from-yellow-500 to-yellow-400" />
+              <span className="text-xs text-white/30">No payment required</span>
             </div>
           </div>
 
@@ -234,25 +197,19 @@ export default function ProfilePage() {
           <div>
             <div className="flex items-center justify-between mb-2">
               <div>
-                <p className="text-sm font-semibold">Learner score</p>
-                <p className="text-xs text-white/30">How engaged you are as a student</p>
+                <p className="text-sm font-semibold">Community service</p>
+                <p className="text-xs text-white/30">Sessions are offered as academic support, not paid tutoring.</p>
               </div>
               <p className="text-xl font-black text-[#4a8fd4]">
-                {learnerScore > 0 ? learnerScore : '—'}
+                Free
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <StarRating score={learnerScore} />
-              <ScoreBar score={learnerScore} color="bg-gradient-to-r from-[#26619C] to-[#4a8fd4]" />
+              <span className="text-xs text-white/30">Focused on helping students learn</span>
             </div>
           </div>
         </div>
 
-        {mentorScore === 0 && learnerScore === 0 && (
-          <p className="text-xs text-white/20 mt-4 text-center">
-            Complete sessions to earn your trust scores
-          </p>
-        )}
       </div>
 
       {/* edit form */}

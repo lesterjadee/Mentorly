@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { ArrowLeft, Star, Calendar, Clock } from 'lucide-react'
+import { ArrowLeft, User, Calendar, Clock } from 'lucide-react'
 import Link from 'next/link'
 import OfferActionButtons from './OfferActionButtons'
 
@@ -26,7 +26,7 @@ export default async function RequestOffersPage({
 
   const { data: offers } = await supabase
     .from('offers')
-    .select('*, tutor:users!offers_tutor_id_fkey(id, full_name, school, course, trust_score)')
+    .select('*, tutor:users!offers_tutor_id_fkey(id, full_name, school, course)')
     .eq('request_id', requestId)
     .order('created_at', { ascending: false })
 
@@ -46,21 +46,6 @@ export default async function RequestOffersPage({
     const period = (t: number) => t >= 12 ? 'PM' : 'AM'
     const fmt = (t: number) => t % 12 === 0 ? 12 : t % 12
     return fmt(h) + ':' + String(m).padStart(2, '0') + ' ' + period(h) + ' – ' + fmt(endH) + ':' + String(endM).padStart(2, '0') + ' ' + period(endH)
-  }
-
-  function StarRating({ score }: { score: number }) {
-    return (
-      <div className="flex items-center gap-0.5">
-        {[1, 2, 3, 4, 5].map((s) => (
-          <Star
-            key={s}
-            size={11}
-            className={s <= Math.round(score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
-          />
-        ))}
-        <span className="text-xs text-white/40 ml-1">{score > 0 ? score : 'New'}</span>
-      </div>
-    )
   }
 
   const isMulti = request.session_type === 'multi'
@@ -103,9 +88,6 @@ export default async function RequestOffersPage({
       {offers && offers.length > 0 ? (
         <div className="space-y-4">
           {offers.map((offer: any) => {
-            const estimatedTotal = offer.proposed_price * request.hours_per_day * (request.total_days || 1)
-            const tutorScore = offer.tutor?.trust_score || 0
-
             return (
               <div
                 key={offer.id}
@@ -129,12 +111,6 @@ export default async function RequestOffersPage({
                       <p className="text-xs text-white/30 mt-0.5">
                         {offer.tutor?.course} · {offer.tutor?.school}
                       </p>
-                      <div className="mt-1.5">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] text-white/30 uppercase tracking-wider">Trust score</span>
-                          <StarRating score={tutorScore} />
-                        </div>
-                      </div>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
@@ -163,18 +139,6 @@ export default async function RequestOffersPage({
                   </div>
                 )}
 
-                {/* price */}
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-xs text-white/30">Proposed rate</p>
-                    <p className="text-lg font-bold text-[#4a8fd4]">₱{offer.proposed_price}/hr</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-white/30">Estimated total</p>
-                    <p className="text-lg font-bold text-white/70">₱{estimatedTotal.toFixed(2)}</p>
-                  </div>
-                </div>
-
                 {/* action buttons */}
                 {offer.status === 'pending' && (
                   <OfferActionButtons
@@ -182,7 +146,6 @@ export default async function RequestOffersPage({
                     tutorId={offer.tutor_id}
                     requestId={requestId}
                     request={request}
-                    proposedPrice={offer.proposed_price}
                   />
                 )}
 
@@ -200,7 +163,7 @@ export default async function RequestOffersPage({
         </div>
       ) : (
         <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <Star size={32} className="text-white/10 mx-auto mb-4" />
+          <User size={32} className="text-white/10 mx-auto mb-4" />
           <p className="text-white/40 text-sm">No offers yet</p>
           <p className="text-white/20 text-xs mt-1">Tutors will send you offers once they see your request</p>
         </div>

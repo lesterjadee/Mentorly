@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Star, TrendingUp, BookOpen, Zap } from 'lucide-react'
+import { TrendingUp, BookOpen, Zap } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function RecommendationsPage() {
@@ -73,15 +73,6 @@ export default async function RecommendationsPage() {
     repeatRecommendations = data || []
   }
 
-  const { data: topTutors } = await supabase
-    .from('users')
-    .select('id, full_name, school, course, trust_score, role')
-    .in('role', ['tutor', 'both'])
-    .neq('id', user.id)
-    .gt('trust_score', 0)
-    .order('trust_score', { ascending: false })
-    .limit(4)
-
   function ServiceCard({ service }: { service: any }) {
     const isOwn = service.tutor_id === user!.id
     return (
@@ -104,13 +95,8 @@ export default async function RecommendationsPage() {
         <p className="font-medium text-sm mb-1">{service.title}</p>
         <p className="text-xs text-white/30 mb-3">{service.users?.full_name} · {service.users?.school}</p>
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1">
-            <Star size={11} className="text-yellow-400" />
-            <span className="text-xs text-white/40">
-              {(service.users?.trust_score ?? 0) > 0 ? service.users.trust_score : 'New'}
-            </span>
-          </div>
-          <p className="text-sm font-semibold text-[#4a8fd4]">₱{service.price_per_hour}/hr</p>
+          <span className="text-xs text-white/40">SPECS volunteer support</span>
+          <p className="text-sm font-semibold text-green-400">Free</p>
         </div>
         {isOwn ? (
           <Link
@@ -166,42 +152,6 @@ export default async function RecommendationsPage() {
         </section>
       )}
 
-      {topTutors && topTutors.length > 0 && (
-        <section className="mb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Star size={15} className="text-yellow-400" />
-            <h2 className="text-sm font-medium text-white">Top rated tutors</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {topTutors.map((tutor: any) => (
-              <div key={tutor.id} className="bg-white/3 border border-white/8 rounded-2xl p-5 text-center hover:border-yellow-500/20 transition-colors">
-                <div className="w-12 h-12 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-lg font-medium text-[#4a8fd4] mx-auto mb-3">
-                  {tutor.full_name?.[0]}
-                </div>
-                <p className="font-medium text-sm mb-0.5">{tutor.full_name}</p>
-                <p className="text-xs text-white/30 mb-3">{tutor.course}</p>
-                <div className="flex items-center justify-center gap-1 mb-3">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star
-                      key={s}
-                      size={12}
-                      className={s <= Math.round(tutor.trust_score) ? 'text-yellow-400 fill-yellow-400' : 'text-white/10'}
-                    />
-                  ))}
-                  <span className="text-xs text-white/30 ml-1">{tutor.trust_score}</span>
-                </div>
-                <Link
-                  href={'/dashboard/marketplace?tutor=' + tutor.id}
-                  className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-all py-1.5 rounded-xl text-xs font-medium text-white/50 hover:text-white"
-                >
-                  View services
-                </Link>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       <section className="mb-10">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp size={15} className="text-green-400" />
@@ -224,7 +174,6 @@ export default async function RecommendationsPage() {
 
       {recommendedServices.length === 0 &&
         repeatRecommendations.length === 0 &&
-        (!topTutors || topTutors.length === 0) &&
         (!popularServices || popularServices.length === 0) && (
           <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
             <Zap size={32} className="text-white/10 mx-auto mb-4" />
