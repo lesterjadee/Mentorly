@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { Mail, Lock, Eye, EyeOff, X, GraduationCap } from 'lucide-react'
 
@@ -45,14 +46,12 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/30">
-              <span className="text-white font-black text-xs">SC</span>
-            </div>
+            <Image src="/specs-logo.png" alt="SPECS logo" width={40} height={40} className="h-10 w-10 object-contain" priority />
             <div className="text-left">
               <p className="font-black text-[15px] tracking-tight leading-none">SPECS</p>
               <p className="text-white/30 text-[10px]">Academic Support</p>
@@ -63,11 +62,11 @@ export default function LoginPage() {
         </div>
 
         {/* gordon college badge */}
-        <div className="flex items-center justify-center gap-2 mb-6 bg-[#26619C]/5 border border-[#26619C]/20 rounded-xl px-4 py-3">
-          <GraduationCap size={15} className="text-[#4a8fd4] flex-shrink-0" />
+        <div className="flex items-center justify-center gap-2 mb-6 bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl px-4 py-3">
+          <GraduationCap size={15} className="text-[#F58A32] flex-shrink-0" />
           <p className="text-xs text-white/50 text-center">
             Exclusive to{' '}
-            <span className="text-[#4a8fd4] font-semibold">Gordon College</span>{' '}
+            <span className="text-[#F58A32] font-semibold">Gordon College</span>{' '}
             students · @gordoncollege.edu.ph only
           </p>
         </div>
@@ -101,7 +100,7 @@ export default function LoginPage() {
                       ? isValidEmail
                         ? 'border-green-500/30 focus:border-green-500/50'
                         : 'border-red-500/30 focus:border-red-500/50'
-                      : 'border-white/10 focus:border-[#26619C]/60')
+                      : 'border-white/10 focus:border-[#E96118]/60')
                   }
                   onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                 />
@@ -118,7 +117,7 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs text-white/40 uppercase tracking-wider">Password</label>
-                <Link href="/forgot-password" className="text-xs text-[#26619C] hover:text-[#4a8fd4] transition-colors">
+                <Link href="/forgot-password" className="text-xs text-[#E96118] hover:text-[#F58A32] transition-colors">
                   Forgot password?
                 </Link>
               </div>
@@ -129,7 +128,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
                   onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                 />
                 <button
@@ -145,7 +144,7 @@ export default function LoginPage() {
             <button
               onClick={handleLogin}
               disabled={loading || !email || !password || !isValidEmail}
-              className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-semibold mt-2"
+              className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-semibold mt-2"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
@@ -154,7 +153,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-white/8 text-center">
             <p className="text-white/30 text-sm">
               Don't have an account?{' '}
-              <Link href="/register" className="text-[#26619C] hover:text-[#4a8fd4] transition-colors">
+              <Link href="/register" className="text-[#E96118] hover:text-[#F58A32] transition-colors">
                 Create one
               </Link>
             </p>

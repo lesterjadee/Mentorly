@@ -2,10 +2,10 @@ import Link from 'next/link'
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-[#080C14] text-white">
+    <main className="min-h-screen bg-[#FFFDF8] text-white">
       <nav className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#E96118] flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
               <circle cx="7" cy="7" r="2" fill="white"/>
@@ -85,7 +85,7 @@ export default function TermsPage() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/5 text-center">
-          <Link href="/register" className="inline-flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-all px-6 py-3 rounded-xl font-medium text-sm">
+          <Link href="/register" className="inline-flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-all px-6 py-3 rounded-xl font-medium text-sm">
             Back to registration
           </Link>
         </div>

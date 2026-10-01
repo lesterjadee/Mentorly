@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import {
   ArrowRight, BookOpen, Users, Shield,
@@ -37,14 +38,12 @@ export default async function Home() {
   const displayMaterials = Math.max(materialsCount || 0, 40)
 
   return (
-    <main className="min-h-screen bg-[#050810] text-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#FFFDF8] text-[#233B27] overflow-x-hidden">
 
       {/* ── STICKY NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 border-b border-white/5 bg-[#050810]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-3 border-b border-[#E6D7C9] bg-[#FFFDF8]/95 backdrop-blur-xl">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#26619C] flex items-center justify-center shadow-lg shadow-[#26619C]/30">
-            <span className="text-white font-black text-xs tracking-tighter">SC</span>
-          </div>
+          <Image src="/specs-logo.png" alt="SPECS logo" width={40} height={40} className="h-10 w-10 object-contain" priority />
           <div>
             <span className="font-black text-[15px] tracking-tight">SPECS</span>
             <span className="hidden sm:inline text-white/30 text-xs ml-2">Academic Support</span>
@@ -62,7 +61,7 @@ export default async function Home() {
           </Link>
           <Link
             href="/register"
-            className="flex items-center gap-1.5 bg-[#26619C] hover:bg-[#1e4f82] active:scale-95 transition-all duration-150 px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-[#26619C]/20"
+            className="flex items-center gap-1.5 bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all duration-150 px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-[#E96118]/20"
           >
             Get started free
             <ArrowRight size={13} />
@@ -73,32 +72,18 @@ export default async function Home() {
       {/* ── HERO ── */}
       <section className="relative pt-32 pb-20 px-6 md:px-10 max-w-7xl mx-auto">
 
-        {/* background glows */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[#26619C]/10 rounded-full blur-[140px]" />
-          <div className="absolute top-40 left-1/4 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[100px]" />
-          <div className="absolute top-40 right-1/4 w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[100px]" />
-        </div>
-
-        {/* grid lines */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '80px 80px'
-          }}
-        />
-
         <div className="relative text-center max-w-4xl mx-auto">
+
+          <Image src="/specs-logo.png" alt="Society of Programming Enthusiasts in Computer Science" width={176} height={176} className="h-32 w-32 sm:h-40 sm:w-40 object-contain mx-auto mb-6" priority />
 
           {/* org pill */}
           <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs text-white/60 mb-10">
             <span className="flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4a8fd4] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#26619C]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F58A32] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E96118]"></span>
               </span>
-              <span className="text-[#4a8fd4] font-medium">Society of Programming Enthusiasts</span>
+              <span className="text-[#F58A32] font-medium">Society of Programming Enthusiasts</span>
             </span>
             <span className="text-white/20">·</span>
             <span>Gordon College</span>
@@ -109,10 +94,10 @@ export default async function Home() {
             Free academic
             <br />
             <span className="relative inline-block">
-              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-[#4a8fd4] via-[#26619C] to-[#5b9bd5]">
+              <span className="relative z-10 text-[#E96118]">
                 support.
               </span>
-              <span className="absolute -inset-2 bg-[#26619C]/10 rounded-xl blur-xl -z-0" />
+              <span className="absolute -inset-2 bg-[#E96118]/10 rounded-xl -z-0" />
             </span>
           </h1>
 
@@ -129,7 +114,7 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
             <Link
               href="/register"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] shadow-lg shadow-[#26619C]/25 active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-bold text-base"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] shadow-lg shadow-[#E96118]/25 active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-bold text-base"
             >
               Get academic help now
               <ArrowRight size={16} />
@@ -151,7 +136,7 @@ export default async function Home() {
               'Real study materials'
             ].map((t) => (
               <span key={t} className="flex items-center gap-1.5">
-                <CheckCircle size={11} className="text-[#26619C]/80" />
+                <CheckCircle size={11} className="text-[#E96118]/80" />
                 {t}
               </span>
             ))}
@@ -166,9 +151,9 @@ export default async function Home() {
                 {specsMembers.slice(0, 5).map((member, i) => (
                   <div
                     key={member.id}
-                    className="w-9 h-9 rounded-full border-2 border-[#050810] flex items-center justify-center text-sm font-bold flex-shrink-0"
+                    className="w-9 h-9 rounded-full border-2 border-[#FFFDF8] flex items-center justify-center text-sm font-bold flex-shrink-0"
                     style={{
-                      background: ['#26619C', '#0ea5e9', '#6366f1', '#10b981', '#8b5cf6'][i % 5],
+                      background: ['#E96118', '#315C36', '#F58A32', '#315C36', '#E96118'][i % 5],
                       zIndex: 5 - i
                     }}
                   >
@@ -223,10 +208,10 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
           {/* big left card */}
-          <div className="md:col-span-2 bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-3xl p-8 relative overflow-hidden group hover:border-[#26619C]/40 transition-colors">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#26619C]/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="w-12 h-12 rounded-2xl bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center mb-6">
-              <Calendar size={20} className="text-[#4a8fd4]" />
+          <div className="md:col-span-2 bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-3xl p-8 relative overflow-hidden group hover:border-[#E96118]/40 transition-colors">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#E96118]/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="w-12 h-12 rounded-2xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center mb-6">
+              <Calendar size={20} className="text-[#F58A32]" />
             </div>
             <h3 className="text-xl font-bold mb-3">Book a tutoring session</h3>
             <p className="text-white/40 text-sm leading-relaxed mb-6">
@@ -243,9 +228,9 @@ export default async function Home() {
           </div>
 
           {/* study materials */}
-          <div className="bg-gradient-to-br from-[#0d1a2e] to-[#0a1020] border border-blue-500/20 rounded-3xl p-7 group hover:border-blue-500/40 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6">
-              <FileText size={20} className="text-blue-400" />
+          <div className="bg-gradient-to-br from-[#FFF5EC] to-[#FFFDF8] border border-[#E96118]/20 rounded-3xl p-7 group hover:border-[#E96118]/40 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mb-6">
+              <FileText size={20} className="text-[#E96118]" />
             </div>
             <h3 className="text-lg font-bold mb-2">Study materials library</h3>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -254,9 +239,9 @@ export default async function Home() {
           </div>
 
           {/* post a request */}
-          <div className="bg-gradient-to-br from-[#1a0d2e] to-[#140a24] border border-purple-500/20 rounded-3xl p-7 group hover:border-purple-500/40 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6">
-              <BookOpen size={20} className="text-purple-400" />
+          <div className="bg-gradient-to-br from-[#FFF2E7] to-[#FFFBF6] border border-[#E96118]/20 rounded-3xl p-7 group hover:border-[#E96118]/40 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mb-6">
+              <BookOpen size={20} className="text-[#E96118]" />
             </div>
             <h3 className="text-lg font-bold mb-2">Post a help request</h3>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -265,7 +250,7 @@ export default async function Home() {
           </div>
 
           {/* verified tutors */}
-          <div className="bg-gradient-to-br from-[#0d2015] to-[#0a1a10] border border-green-500/20 rounded-3xl p-7 group hover:border-green-500/40 transition-colors">
+          <div className="bg-gradient-to-br from-[#F1F8F1] to-[#FBFFFA] border border-green-500/20 rounded-3xl p-7 group hover:border-green-500/40 transition-colors">
             <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-6">
               <Shield size={20} className="text-green-400" />
             </div>
@@ -276,9 +261,9 @@ export default async function Home() {
           </div>
 
           {/* messaging */}
-          <div className="bg-gradient-to-br from-[#001a1a] to-[#001414] border border-teal-500/20 rounded-3xl p-7 group hover:border-teal-500/40 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center mb-6">
-              <MessageSquare size={20} className="text-teal-400" />
+          <div className="bg-gradient-to-br from-[#EFF8F2] to-[#FBFFFA] border border-[#315C36]/20 rounded-3xl p-7 group hover:border-[#315C36]/40 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center mb-6">
+              <MessageSquare size={20} className="text-[#315C36]" />
             </div>
             <h3 className="text-lg font-bold mb-2">Direct messaging</h3>
             <p className="text-white/40 text-sm leading-relaxed">
@@ -297,7 +282,7 @@ export default async function Home() {
               <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-5">
                 Students helping
                 <br />
-                <span className="text-[#26619C]">students.</span>
+                <span className="text-[#E96118]">students.</span>
               </h2>
               <p className="text-white/40 leading-relaxed mb-6">
                 The Society of Programming Enthusiasts (SPECS) is a student organization at Gordon College committed to academic excellence and community support. We believe that peer learning is the most effective form of education.
@@ -307,7 +292,7 @@ export default async function Home() {
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-6 py-3 rounded-xl font-semibold text-sm"
+                className="inline-flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-6 py-3 rounded-xl font-semibold text-sm"
               >
                 Join the platform
                 <ArrowRight size={14} />
@@ -320,8 +305,8 @@ export default async function Home() {
                   icon: GraduationCap,
                   title: 'Academic excellence',
                   desc: 'SPECS tutors are top-performing students who genuinely understand the material.',
-                  color: 'text-[#4a8fd4]',
-                  bg: 'bg-[#26619C]/10 border-[#26619C]/20',
+                  color: 'text-[#F58A32]',
+                  bg: 'bg-[#E96118]/10 border-[#E96118]/20',
                 },
                 {
                   icon: Users,
@@ -334,8 +319,8 @@ export default async function Home() {
                   icon: Shield,
                   title: 'Safe and trusted',
                   desc: 'Exclusive to Gordon College students. Every account is verified with a @gordoncollege.edu.ph email.',
-                  color: 'text-purple-400',
-                  bg: 'bg-purple-500/10 border-purple-500/20',
+                  color: 'text-[#E96118]',
+                  bg: 'bg-[#E96118]/10 border-[#E96118]/20',
                 },
               ].map((item) => (
                 <div key={item.title} className="flex items-start gap-4 bg-white/3 border border-white/8 rounded-2xl p-5">
@@ -361,7 +346,7 @@ export default async function Home() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tight">
               Get help in
               <br />
-              <span className="text-[#26619C]">three simple steps.</span>
+              <span className="text-[#E96118]">three simple steps.</span>
             </h2>
           </div>
 
@@ -371,17 +356,17 @@ export default async function Home() {
                 step: '01',
                 title: 'Create your free account',
                 desc: 'Sign up with your Gordon College email. No credit card, no fees, no commitment.',
-                color: 'text-[#4a8fd4]',
-                border: 'border-[#26619C]/20',
-                bg: 'bg-[#26619C]/5',
+                color: 'text-[#F58A32]',
+                border: 'border-[#E96118]/20',
+                bg: 'bg-[#E96118]/5',
               },
               {
                 step: '02',
                 title: 'Browse or request help',
                 desc: 'Find a SPECS tutoring session that fits your schedule, or post a request for the subject you need.',
-                color: 'text-purple-400',
-                border: 'border-purple-500/20',
-                bg: 'bg-purple-500/5',
+                color: 'text-[#E96118]',
+                border: 'border-[#E96118]/20',
+                bg: 'bg-[#E96118]/5',
               },
               {
                 step: '03',
@@ -405,27 +390,27 @@ export default async function Home() {
       {/* ── FINAL CTA ── */}
       <section className="py-24 px-6 md:px-10">
         <div className="max-w-4xl mx-auto relative">
-          <div className="absolute inset-0 bg-[#26619C]/8 rounded-3xl blur-3xl" />
-          <div className="relative bg-gradient-to-br from-[#0d1f35] via-[#0a1628] to-[#050810] border border-[#26619C]/25 rounded-3xl p-12 md:p-16 text-center overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-[#26619C]/15 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-[#E96118]/8 rounded-3xl blur-3xl" />
+          <div className="relative bg-gradient-to-br from-[#FFF3E9] via-[#F7FBF5] to-[#FFFDF8] border border-[#E96118]/25 rounded-3xl p-12 md:p-16 text-center overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-[#E96118]/15 rounded-full blur-3xl" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 mb-6 bg-[#26619C]/10 border border-[#26619C]/20 rounded-full px-4 py-2">
-                <span className="w-7 h-7 rounded-md bg-[#26619C] flex items-center justify-center flex-shrink-0">
+              <div className="inline-flex items-center gap-2 mb-6 bg-[#E96118]/10 border border-[#E96118]/20 rounded-full px-4 py-2">
+                <span className="w-7 h-7 rounded-md bg-[#E96118] flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-black text-[10px]">SC</span>
                 </span>
-                <span className="text-xs text-[#4a8fd4] font-medium">Society of Programming Enthusiasts</span>
+                <span className="text-xs text-[#F58A32] font-medium">Society of Programming Enthusiasts</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-5">
                 Your classmates want
                 <br />
-                <span className="text-[#26619C]">to help you.</span>
+                <span className="text-[#E96118]">to help you.</span>
               </h2>
               <p className="text-white/40 mb-10 max-w-md mx-auto">
                 SPECS members are ready to support you — free tutoring, free materials, free of charge. All you have to do is show up.
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2.5 bg-white text-[#050810] hover:bg-white/90 active:scale-95 transition-all duration-150 px-10 py-4 rounded-xl font-black text-base shadow-2xl shadow-white/10"
+                className="inline-flex items-center gap-2.5 bg-[#E96118] text-white hover:bg-[#C94A0D] active:scale-95 transition-all duration-150 px-10 py-4 rounded-xl font-black text-base shadow-2xl shadow-[#E96118]/20"
               >
                 Get started — it's completely free
                 <ArrowRight size={16} />
@@ -443,7 +428,7 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-[#26619C] flex items-center justify-center">
+              <div className="w-6 h-6 rounded-md bg-[#E96118] flex items-center justify-center">
                 <span className="text-white font-black text-[9px]">SC</span>
               </div>
               <div>
@@ -468,10 +453,10 @@ export default async function Home() {
       </footer>
 
       {/* ── STICKY MOBILE CTA ── */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#050810] via-[#050810]/95 to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#FFFDF8] via-[#FFFDF8]/95 to-transparent">
         <Link
           href="/register"
-          className="flex items-center justify-center gap-2 w-full bg-[#26619C] hover:bg-[#1e4f82] py-4 rounded-xl font-bold text-sm shadow-xl shadow-[#26619C]/30 active:scale-95 transition-all"
+          className="flex items-center justify-center gap-2 w-full bg-[#E96118] hover:bg-[#C94A0D] py-4 rounded-xl font-bold text-sm shadow-xl shadow-[#E96118]/30 active:scale-95 transition-all"
         >
           Get started free
           <ArrowRight size={15} />

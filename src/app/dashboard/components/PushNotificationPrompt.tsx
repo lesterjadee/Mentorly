@@ -41,7 +41,7 @@ export default function PushNotificationPrompt() {
   if (!show) return null
 
   return (
-    <div className="fixed bottom-24 right-6 z-50 w-80 bg-[#0d1117] border border-white/15 rounded-2xl p-5 shadow-2xl shadow-black/50 animate-fade-in-up">
+    <div className="fixed bottom-24 right-6 z-50 w-80 bg-[#FFFFFF] border border-white/15 rounded-2xl p-5 shadow-2xl shadow-black/50 animate-fade-in-up">
       <button
         onClick={dismiss}
         className="absolute top-3 right-3 w-6 h-6 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/30 hover:text-white transition-colors"
@@ -72,8 +72,8 @@ export default function PushNotificationPrompt() {
       ) : (
         <>
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-              <Bell size={16} className="text-[#4a8fd4]" />
+            <div className="w-10 h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
+              <Bell size={16} className="text-[#F58A32]" />
             </div>
             <div>
               <p className="text-sm font-bold">Never miss a booking</p>
@@ -85,7 +85,7 @@ export default function PushNotificationPrompt() {
           <div className="flex gap-2">
             <button
               onClick={requestPermission}
-              className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] active:scale-95 transition-all py-2.5 rounded-xl text-xs font-bold"
+              className="flex-1 bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all py-2.5 rounded-xl text-xs font-bold"
             >
               Enable notifications
             </button>

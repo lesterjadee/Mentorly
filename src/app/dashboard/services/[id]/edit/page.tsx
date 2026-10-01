@@ -87,7 +87,7 @@ export default function EditServicePage() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -128,7 +128,7 @@ export default function EditServicePage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Calculus tutoring for Engineering students"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
           />
         </div>
 
@@ -139,7 +139,7 @@ export default function EditServicePage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe what you'll teach, your experience, and what students can expect..."
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
@@ -148,11 +148,11 @@ export default function EditServicePage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
           >
-            <option value="" disabled className="bg-[#080C14]">Select category</option>
+            <option value="" disabled className="bg-[#FFFDF8]">Select category</option>
             {CATEGORIES.map((c) => (
-              <option key={c} value={c} className="bg-[#080C14]">{c}</option>
+              <option key={c} value={c} className="bg-[#FFFDF8]">{c}</option>
             ))}
           </select>
         </div>
@@ -167,7 +167,7 @@ export default function EditServicePage() {
                 className={
                   'py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ' +
                   (mode === m
-                    ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
+                    ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
                     : 'border-white/10 text-white/40 hover:border-white/20')
                 }
               >
@@ -187,7 +187,7 @@ export default function EditServicePage() {
             onClick={() => setIsActive(!isActive)}
             className={
               'w-11 h-6 rounded-full border transition-all duration-200 relative ' +
-              (isActive ? 'bg-[#26619C] border-[#26619C]' : 'bg-white/5 border-white/10')
+              (isActive ? 'bg-[#E96118] border-[#E96118]' : 'bg-white/5 border-white/10')
             }
           >
             <div className={
@@ -200,7 +200,7 @@ export default function EditServicePage() {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
         >
           {loading ? 'Saving...' : 'Save changes'}
         </button>

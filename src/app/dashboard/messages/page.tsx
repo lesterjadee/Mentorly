@@ -66,7 +66,7 @@ export default async function MessagesPage() {
                 href={'/dashboard/messages/' + contact.id}
                 className="flex items-center gap-3 px-4 py-4 hover:bg-white/3 border-b border-white/5 transition-colors"
               >
-                <div className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4] flex-shrink-0">
+                <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32] flex-shrink-0">
                   {contact.full_name?.[0]}
                 </div>
                 <div className="min-w-0">

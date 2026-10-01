@@ -37,7 +37,7 @@ export default function ActivityGraph({ data }: Props) {
             <div
               className={
                 'w-full rounded-sm transition-all duration-700 ' +
-                (d.count > 0 ? 'bg-[#26619C] group-hover:bg-[#4a8fd4]' : 'bg-white/5 group-hover:bg-white/10')
+                (d.count > 0 ? 'bg-[#E96118] group-hover:bg-[#F58A32]' : 'bg-white/5 group-hover:bg-white/10')
               }
               style={{
                 height: animated ? height + '%' : '4%',
@@ -45,7 +45,7 @@ export default function ActivityGraph({ data }: Props) {
               }}
             />
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block z-10">
-              <div className="bg-[#0d1117] border border-white/10 rounded-lg px-2 py-1 text-[10px] text-white/70 whitespace-nowrap">
+              <div className="bg-[#FFFFFF] border border-white/10 rounded-lg px-2 py-1 text-[10px] text-white/70 whitespace-nowrap">
                 {d.count} session{d.count !== 1 ? 's' : ''}
               </div>
             </div>

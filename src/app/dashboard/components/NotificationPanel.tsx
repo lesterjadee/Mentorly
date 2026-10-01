@@ -216,13 +216,13 @@ export default function NotificationPanel({ userId }: Props) {
 
   function NotifIcon({ type }: { type: Notif['type'] }) {
     const configs: Record<string, { icon: any; bg: string; color: string }> = {
-      offer: { icon: Star, bg: 'bg-[#26619C]/10 border border-[#26619C]/20', color: 'text-[#4a8fd4]' },
+      offer: { icon: Star, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#F58A32]' },
       booking_pending: { icon: Clock, bg: 'bg-yellow-500/10 border border-yellow-500/20', color: 'text-yellow-400' },
       booking_accepted: { icon: CheckCircle, bg: 'bg-green-500/10 border border-green-500/20', color: 'text-green-400' },
       booking_declined: { icon: XCircle, bg: 'bg-red-500/10 border border-red-500/20', color: 'text-red-400' },
-      booking_completed: { icon: CheckCircle, bg: 'bg-blue-500/10 border border-blue-500/20', color: 'text-blue-400' },
-      message: { icon: MessageSquare, bg: 'bg-purple-500/10 border border-purple-500/20', color: 'text-purple-400' },
-      trade_request: { icon: ArrowLeftRight, bg: 'bg-teal-500/10 border border-teal-500/20', color: 'text-teal-400' },
+      booking_completed: { icon: CheckCircle, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#E96118]' },
+      message: { icon: MessageSquare, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#E96118]' },
+      trade_request: { icon: ArrowLeftRight, bg: 'bg-[#315C36]/10 border border-[#315C36]/20', color: 'text-[#315C36]' },
     }
     const cfg = configs[type] || configs.offer
     return (
@@ -241,7 +241,7 @@ export default function NotificationPanel({ userId }: Props) {
       >
         <Bell size={17} />
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#26619C] rounded-full text-[9px] font-black text-white flex items-center justify-center border-2 border-[#080C14] animate-pulse">
+          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#E96118] rounded-full text-[9px] font-black text-white flex items-center justify-center border-2 border-[#FFFDF8] animate-pulse">
             {unread > 9 ? '9+' : unread}
           </span>
         )}
@@ -249,14 +249,14 @@ export default function NotificationPanel({ userId }: Props) {
 
       {/* panel */}
       {open && (
-        <div className="absolute right-0 top-12 w-96 bg-[#0d1117] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden">
+        <div className="absolute right-0 top-12 w-96 bg-[#FFFFFF] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden">
 
           {/* header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
             <div className="flex items-center gap-2">
               <p className="text-sm font-bold">Notifications</p>
               {unread > 0 && (
-                <span className="bg-[#26619C] text-white text-[10px] font-black px-2 py-0.5 rounded-full">
+                <span className="bg-[#E96118] text-white text-[10px] font-black px-2 py-0.5 rounded-full">
                   {unread} new
                 </span>
               )}
@@ -282,7 +282,7 @@ export default function NotificationPanel({ userId }: Props) {
           <div className="max-h-[420px] overflow-y-auto">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
               </div>
             ) : notifs.length === 0 ? (
               <div className="py-12 text-center">

@@ -121,7 +121,7 @@ export default function NewBookingPage() {
   if (!session) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -141,16 +141,16 @@ export default function NewBookingPage() {
       </div>
 
       {/* session summary */}
-      <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-2xl p-5 mb-6">
+      <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-2xl p-5 mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-11 h-11 rounded-full bg-[#26619C] flex items-center justify-center text-base font-black text-white flex-shrink-0">
+          <div className="w-11 h-11 rounded-full bg-[#E96118] flex items-center justify-center text-base font-black text-white flex-shrink-0">
             {session.users?.full_name?.[0]}
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-bold text-sm">{session.title}</p>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <Shield size={10} className="text-[#4a8fd4]" />
-              <p className="text-xs text-[#4a8fd4]">
+              <Shield size={10} className="text-[#F58A32]" />
+              <p className="text-xs text-[#F58A32]">
                 {session.users?.full_name} · SPECS {session.users?.specs_role || 'Member'}
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function NewBookingPage() {
               className={
                 'py-3 rounded-xl border text-sm font-semibold transition-all ' +
                 (sessionType === t
-                  ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
+                  ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
                   : 'border-white/10 text-white/40 hover:border-white/20')
               }
             >
@@ -199,7 +199,7 @@ export default function NewBookingPage() {
               value={startDate}
               onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
             />
           </div>
         ) : (
@@ -213,7 +213,7 @@ export default function NewBookingPage() {
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
             </div>
             <div>
@@ -225,7 +225,7 @@ export default function NewBookingPage() {
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 min={startDate || new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
             </div>
           </div>
@@ -240,10 +240,10 @@ export default function NewBookingPage() {
             type="time"
             value={dailyStartTime}
             onChange={(e) => setDailyStartTime(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
           />
           {dailyStartTime && hoursPerDay && (
-            <p className="text-xs text-[#4a8fd4] mt-2">
+            <p className="text-xs text-[#F58A32] mt-2">
               {formatEndTime(dailyStartTime, hoursPerDay)}
             </p>
           )}
@@ -260,7 +260,7 @@ export default function NewBookingPage() {
                 className={
                   'py-2.5 rounded-xl border text-sm font-medium transition-all ' +
                   (hoursPerDay === h
-                    ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
+                    ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
                     : 'border-white/10 text-white/40 hover:border-white/20')
                 }
               >
@@ -282,7 +282,7 @@ export default function NewBookingPage() {
                   className={
                     'py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ' +
                     (mode === m
-                      ? 'border-[#26619C] bg-[#26619C]/10 text-[#4a8fd4]'
+                      ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
                       : 'border-white/10 text-white/40 hover:border-white/20')
                   }
                 >
@@ -303,7 +303,7 @@ export default function NewBookingPage() {
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Topics you need help with, your current level, questions you have..."
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
@@ -351,7 +351,7 @@ export default function NewBookingPage() {
         <button
           onClick={handleBooking}
           disabled={loading}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
         >
           {loading ? 'Sending request...' : 'Confirm booking — Free'}
         </button>

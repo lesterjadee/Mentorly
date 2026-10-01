@@ -104,7 +104,7 @@ export default async function SessionsPage({ searchParams }: Props) {
         {isSpecsMember && (
           <Link
             href="/dashboard/sessions/new"
-            className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-[#26619C]/20"
+            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-[#E96118]/20"
           >
             <Plus size={15} />
             Post session
@@ -119,7 +119,7 @@ export default async function SessionsPage({ searchParams }: Props) {
           name="q"
           defaultValue={query}
           placeholder="Search sessions by title..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
         />
         {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
         {sessionType !== 'all' && <input type="hidden" name="type" value={sessionType} />}
@@ -134,7 +134,7 @@ export default async function SessionsPage({ searchParams }: Props) {
             className={
               'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
               (sessionType === t.value
-                ? 'bg-[#26619C] border-[#26619C] text-white'
+                ? 'bg-[#E96118] border-[#E96118] text-white'
                 : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70')
             }
           >
@@ -171,12 +171,12 @@ export default async function SessionsPage({ searchParams }: Props) {
             return (
               <div
                 key={session.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#26619C]/30 transition-all group"
+                className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#E96118]/30 transition-all group"
               >
                 {/* tutor info */}
                 <div className="flex items-start justify-between gap-3 mb-4">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-full bg-[#26619C] flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-[#E96118] flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
                       {session.tutor?.full_name?.[0]}
                     </div>
                     <div className="min-w-0">
@@ -184,8 +184,8 @@ export default async function SessionsPage({ searchParams }: Props) {
                         {session.tutor?.full_name}
                       </p>
                       <div className="flex items-center gap-1 mt-0.5">
-                        <Shield size={9} className="text-[#4a8fd4] flex-shrink-0" />
-                        <p className="text-[10px] text-[#4a8fd4]">
+                        <Shield size={9} className="text-[#F58A32] flex-shrink-0" />
+                        <p className="text-[10px] text-[#F58A32]">
                           SPECS {session.tutor?.specs_role || 'Member'}
                         </p>
                       </div>
@@ -245,8 +245,8 @@ export default async function SessionsPage({ searchParams }: Props) {
                 {/* materials */}
                 {matCount > 0 && (
                   <div className="flex items-center gap-1.5 mb-3">
-                    <FileText size={11} className="text-blue-400 flex-shrink-0" />
-                    <span className="text-[10px] text-blue-400">
+                    <FileText size={11} className="text-[#E96118] flex-shrink-0" />
+                    <span className="text-[10px] text-[#E96118]">
                       {matCount} study material{matCount !== 1 ? 's' : ''} attached
                     </span>
                   </div>
@@ -259,7 +259,7 @@ export default async function SessionsPage({ searchParams }: Props) {
                   ) : (
                     <Link
                       href={'/dashboard/sessions/' + session.id}
-                      className="block w-full text-center bg-[#26619C]/10 group-hover:bg-[#26619C] border border-[#26619C]/20 group-hover:border-[#26619C] transition-all py-2.5 rounded-xl text-xs font-semibold text-[#4a8fd4] group-hover:text-white"
+                      className="block w-full text-center bg-[#E96118]/10 group-hover:bg-[#E96118] border border-[#E96118]/20 group-hover:border-[#E96118] transition-all py-2.5 rounded-xl text-xs font-semibold text-[#F58A32] group-hover:text-white"
                     >
                       View details & book
                     </Link>
@@ -280,7 +280,7 @@ export default async function SessionsPage({ searchParams }: Props) {
           </p>
           <Link
             href="/dashboard/requests/new"
-            className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+            className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
           >
             Post a help request instead →
           </Link>

@@ -3,11 +3,11 @@ import { Shield, Zap, Star, BookOpen, MessageSquare, Calendar, TrendingUp, Users
 
 export default function FeaturesPage() {
   return (
-    <main className="min-h-screen bg-[#080C14] text-white">
+    <main className="min-h-screen bg-[#FFFDF8] text-white">
 
       <nav className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#E96118] flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
               <circle cx="7" cy="7" r="2" fill="white"/>
@@ -15,7 +15,7 @@ export default function FeaturesPage() {
           </div>
           <span className="font-semibold text-[15px]">Mentorly</span>
         </Link>
-        <Link href="/register" className="text-sm bg-[#26619C] hover:bg-[#1e4f82] transition-all px-4 py-2 rounded-lg font-medium">
+        <Link href="/register" className="text-sm bg-[#E96118] hover:bg-[#C94A0D] transition-all px-4 py-2 rounded-lg font-medium">
           Get started
         </Link>
       </nav>
@@ -28,10 +28,10 @@ export default function FeaturesPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { icon: Shield, title: 'Verified student profiles', desc: 'Every user is connected to Gordon College, keeping support within the school community.', color: 'text-[#4a8fd4]', bg: 'bg-[#26619C]/10', border: 'border-[#26619C]/20' },
-            { icon: Zap, title: 'Instant booking', desc: 'Browse tutors, filter by subject, and book a session in under 2 minutes — online or in-person.', color: 'text-teal-400', bg: 'bg-teal-500/10', border: 'border-teal-500/20' },
+            { icon: Shield, title: 'Verified student profiles', desc: 'Every user is connected to Gordon College, keeping support within the school community.', color: 'text-[#F58A32]', bg: 'bg-[#E96118]/10', border: 'border-[#E96118]/20' },
+            { icon: Zap, title: 'Instant booking', desc: 'Browse tutors, filter by subject, and book a session in under 2 minutes — online or in-person.', color: 'text-[#315C36]', bg: 'bg-[#315C36]/10', border: 'border-[#315C36]/20' },
             { icon: Star, title: 'Free SPECS support', desc: 'Sessions and materials are offered as a good deed by the organization, with no fees attached.', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
-            { icon: MessageSquare, title: 'Real-time messaging', desc: 'Chat directly with your tutor or student before and after sessions using our live chat system.', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+            { icon: MessageSquare, title: 'Real-time messaging', desc: 'Chat directly with your tutor or student before and after sessions using our live chat system.', color: 'text-[#E96118]', bg: 'bg-[#E96118]/10', border: 'border-[#E96118]/20' },
             { icon: Calendar, title: 'Smart scheduling', desc: 'Pick your date, time, and duration. The system automatically prevents overlapping bookings.', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20' },
             { icon: TrendingUp, title: 'Personalized recommendations', desc: 'Get tutor suggestions based on your course, activity, and subject needs.', color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
             { icon: BookOpen, title: 'Help request board', desc: 'Post what you need help with and let tutors come to you with their offers.', color: 'text-pink-400', bg: 'bg-pink-500/10', border: 'border-pink-500/20' },
@@ -48,7 +48,7 @@ export default function FeaturesPage() {
         </div>
 
         <div className="text-center mt-16">
-          <Link href="/register" className="inline-flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-all px-6 py-3 rounded-xl font-medium text-sm">
+          <Link href="/register" className="inline-flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-all px-6 py-3 rounded-xl font-medium text-sm">
             Create free account
           </Link>
         </div>

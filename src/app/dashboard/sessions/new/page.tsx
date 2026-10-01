@@ -190,7 +190,7 @@ export default function NewSessionPage() {
   if (isSpecsMember === null) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -205,7 +205,7 @@ export default function NewSessionPage() {
           <p className="text-white/40 text-sm leading-relaxed mb-5">
             Only SPECS members can post sessions. If you're a SPECS member, please contact an officer to update your account.
           </p>
-          <Link href="/dashboard/sessions" className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
+          <Link href="/dashboard/sessions" className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
             Browse existing sessions
           </Link>
         </div>
@@ -221,8 +221,8 @@ export default function NewSessionPage() {
         </Link>
         <div>
           <div className="flex items-center gap-2 mb-0.5">
-            <Shield size={14} className="text-[#4a8fd4]" />
-            <span className="text-[11px] text-[#4a8fd4] font-semibold uppercase tracking-wider">SPECS Member</span>
+            <Shield size={14} className="text-[#F58A32]" />
+            <span className="text-[11px] text-[#F58A32] font-semibold uppercase tracking-wider">SPECS Member</span>
           </div>
           <h1 className="text-2xl font-black tracking-tight">Post a session</h1>
           <p className="text-white/40 text-sm mt-0.5">Share your knowledge with fellow Gordon College students</p>
@@ -249,11 +249,11 @@ export default function NewSessionPage() {
                 className={
                   'p-3 rounded-xl border text-left transition-all ' +
                   (sessionType === t.value
-                    ? 'border-[#26619C]/60 bg-[#26619C]/10'
+                    ? 'border-[#E96118]/60 bg-[#E96118]/10'
                     : 'border-white/8 bg-white/3 hover:border-white/20')
                 }
               >
-                <p className={'text-xs font-semibold mb-0.5 ' + (sessionType === t.value ? 'text-[#4a8fd4]' : 'text-white/70')}>
+                <p className={'text-xs font-semibold mb-0.5 ' + (sessionType === t.value ? 'text-[#F58A32]' : 'text-white/70')}>
                   {t.label}
                 </p>
                 <p className="text-[10px] text-white/30">{t.desc}</p>
@@ -269,7 +269,7 @@ export default function NewSessionPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Basic Calculus — Derivatives and Integrals"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
           />
         </div>
 
@@ -281,7 +281,7 @@ export default function NewSessionPage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What will students learn? What topics will be covered? What's the expected level?"
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
@@ -292,11 +292,11 @@ export default function NewSessionPage() {
             <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
             >
-              <option value="" disabled className="bg-[#080C14]">Select subject</option>
+              <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
               {SUBJECTS.map((s) => (
-                <option key={s} value={s} className="bg-[#080C14]">{s}</option>
+                <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
               ))}
             </select>
           </div>
@@ -310,7 +310,7 @@ export default function NewSessionPage() {
                   className={
                     'px-3 py-2 rounded-lg border text-xs font-medium transition-all capitalize ' +
                     (mode === m
-                      ? 'border-[#26619C]/60 bg-[#26619C]/10 text-[#4a8fd4]'
+                      ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
                       : 'border-white/8 text-white/40 hover:border-white/20')
                   }
                 >
@@ -334,7 +334,7 @@ export default function NewSessionPage() {
                 className={
                   'flex-1 py-2 rounded-xl border text-xs font-medium transition-all ' +
                   (maxParticipants === n
-                    ? 'border-[#26619C]/60 bg-[#26619C]/10 text-[#4a8fd4]'
+                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
                     : 'border-white/8 text-white/40 hover:border-white/20')
                 }
               >
@@ -357,7 +357,7 @@ export default function NewSessionPage() {
                 className={
                   'py-2.5 rounded-xl border text-xs font-semibold transition-all ' +
                   (dateType === t
-                    ? 'border-[#26619C]/60 bg-[#26619C]/10 text-[#4a8fd4]'
+                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
                     : 'border-white/8 text-white/40 hover:border-white/20')
                 }
               >
@@ -377,7 +377,7 @@ export default function NewSessionPage() {
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
             </div>
           ) : (
@@ -391,7 +391,7 @@ export default function NewSessionPage() {
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
                 />
               </div>
               <div>
@@ -403,7 +403,7 @@ export default function NewSessionPage() {
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={startDate || new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
                 />
               </div>
             </div>
@@ -419,10 +419,10 @@ export default function NewSessionPage() {
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
               {startTime && hoursPerDay && (
-                <p className="text-xs text-[#4a8fd4] mt-1.5">{formatEndTime(startTime, hoursPerDay)}</p>
+                <p className="text-xs text-[#F58A32] mt-1.5">{formatEndTime(startTime, hoursPerDay)}</p>
               )}
             </div>
             <div>
@@ -437,7 +437,7 @@ export default function NewSessionPage() {
                     className={
                       'py-3 rounded-xl border text-xs font-medium transition-all ' +
                       (hoursPerDay === h
-                        ? 'border-[#26619C]/60 bg-[#26619C]/10 text-[#4a8fd4]'
+                        ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
                         : 'border-white/8 text-white/40 hover:border-white/20')
                     }
                   >
@@ -459,10 +459,10 @@ export default function NewSessionPage() {
           </p>
 
           {selectedFile ? (
-            <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+            <div className="bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                  <FileText size={16} className="text-blue-400" />
+                <div className="w-9 h-9 rounded-lg bg-[#E96118]/10 flex items-center justify-center flex-shrink-0">
+                  <FileText size={16} className="text-[#E96118]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium text-white/70 truncate">{selectedFile.name}</p>
@@ -483,7 +483,7 @@ export default function NewSessionPage() {
                   value={materialTitle}
                   onChange={(e) => setMaterialTitle(e.target.value)}
                   placeholder="e.g. Calculus Reviewer — Derivatives"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-blue-500/40 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/40 transition-colors"
                 />
               </div>
             </div>
@@ -519,7 +519,7 @@ export default function NewSessionPage() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
         >
           {loading
             ? (uploadingFile ? 'Uploading materials...' : 'Posting session...')

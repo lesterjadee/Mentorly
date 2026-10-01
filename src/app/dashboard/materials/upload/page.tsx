@@ -142,7 +142,7 @@ export default function UploadMaterialPage() {
   if (isSpecsMember === null) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -159,7 +159,7 @@ export default function UploadMaterialPage() {
           </p>
           <Link
             href="/dashboard/materials"
-            className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+            className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
           >
             Browse existing materials
           </Link>
@@ -176,8 +176,8 @@ export default function UploadMaterialPage() {
         </Link>
         <div>
           <div className="flex items-center gap-2 mb-0.5">
-            <Shield size={14} className="text-[#4a8fd4]" />
-            <span className="text-[11px] text-[#4a8fd4] font-semibold uppercase tracking-wider">
+            <Shield size={14} className="text-[#F58A32]" />
+            <span className="text-[11px] text-[#F58A32] font-semibold uppercase tracking-wider">
               SPECS Member
             </span>
           </div>
@@ -204,8 +204,8 @@ export default function UploadMaterialPage() {
           </label>
 
           {selectedFile ? (
-            <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-lg flex-shrink-0">
+            <div className="bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl p-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center text-lg flex-shrink-0">
                 {getFileEmoji(selectedFile)}
               </div>
               <div className="flex-1 min-w-0">
@@ -225,10 +225,10 @@ export default function UploadMaterialPage() {
           ) : (
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full flex flex-col items-center justify-center gap-3 bg-white/3 border-2 border-dashed border-white/15 hover:border-[#26619C]/40 hover:bg-[#26619C]/3 transition-all rounded-xl py-10 cursor-pointer group"
+              className="w-full flex flex-col items-center justify-center gap-3 bg-white/3 border-2 border-dashed border-white/15 hover:border-[#E96118]/40 hover:bg-[#E96118]/3 transition-all rounded-xl py-10 cursor-pointer group"
             >
-              <div className="w-12 h-12 rounded-2xl bg-white/5 group-hover:bg-[#26619C]/10 border border-white/10 group-hover:border-[#26619C]/20 flex items-center justify-center transition-all">
-                <Upload size={20} className="text-white/20 group-hover:text-[#4a8fd4] transition-colors" />
+              <div className="w-12 h-12 rounded-2xl bg-white/5 group-hover:bg-[#E96118]/10 border border-white/10 group-hover:border-[#E96118]/20 flex items-center justify-center transition-all">
+                <Upload size={20} className="text-white/20 group-hover:text-[#F58A32] transition-colors" />
               </div>
               <div className="text-center">
                 <p className="text-sm text-white/40 group-hover:text-white/70 transition-colors font-medium">
@@ -258,7 +258,7 @@ export default function UploadMaterialPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Differential Calculus Reviewer — Finals"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
           />
         </div>
 
@@ -272,7 +272,7 @@ export default function UploadMaterialPage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What's covered? What level is it for? Any important notes?"
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
@@ -289,7 +289,7 @@ export default function UploadMaterialPage() {
                 className={
                   'py-2 px-2 rounded-xl border text-xs font-medium transition-all text-center ' +
                   (subject === s
-                    ? 'border-[#26619C]/60 bg-[#26619C]/10 text-[#4a8fd4]'
+                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
                     : 'border-white/8 text-white/40 hover:border-white/20 hover:text-white/70')
                 }
               >
@@ -310,13 +310,13 @@ export default function UploadMaterialPage() {
               <select
                 value={linkedSession}
                 onChange={(e) => setLinkedSession(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
               >
-                <option value="" className="bg-[#080C14]">
+                <option value="" className="bg-[#FFFDF8]">
                   No session link (standalone material)
                 </option>
                 {sessions.map((s) => (
-                  <option key={s.id} value={s.id} className="bg-[#080C14]">
+                  <option key={s.id} value={s.id} className="bg-[#FFFDF8]">
                     {s.title}
                   </option>
                 ))}
@@ -329,8 +329,8 @@ export default function UploadMaterialPage() {
         )}
 
         {/* notice */}
-        <div className="bg-[#26619C]/5 border border-[#26619C]/15 rounded-xl px-4 py-3 flex items-start gap-3">
-          <Shield size={13} className="text-[#4a8fd4] flex-shrink-0 mt-0.5" />
+        <div className="bg-[#E96118]/5 border border-[#E96118]/15 rounded-xl px-4 py-3 flex items-start gap-3">
+          <Shield size={13} className="text-[#F58A32] flex-shrink-0 mt-0.5" />
           <p className="text-xs text-white/40 leading-relaxed">
             This material will be{' '}
             <span className="text-white/70 font-medium">publicly available</span> to all
@@ -343,7 +343,7 @@ export default function UploadMaterialPage() {
           <div className="bg-white/3 border border-white/8 rounded-xl p-4">
             <p className="text-[10px] text-white/20 uppercase tracking-wider mb-3">Preview</p>
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-base flex-shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center text-base flex-shrink-0">
                 {getFileEmoji(selectedFile)}
               </div>
               <div className="flex-1 min-w-0">
@@ -358,8 +358,8 @@ export default function UploadMaterialPage() {
                 </div>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0">
-                <Shield size={9} className="text-[#4a8fd4]" />
-                <span className="text-[10px] text-[#4a8fd4]">SPECS</span>
+                <Shield size={9} className="text-[#F58A32]" />
+                <span className="text-[10px] text-[#F58A32]">SPECS</span>
               </div>
             </div>
           </div>
@@ -369,7 +369,7 @@ export default function UploadMaterialPage() {
         <button
           onClick={handleUpload}
           disabled={loading || !title || !subject || !selectedFile}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">

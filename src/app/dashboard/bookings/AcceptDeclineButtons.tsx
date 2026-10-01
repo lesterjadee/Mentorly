@@ -54,7 +54,7 @@ export default function AcceptDeclineButtons({ bookingId, status, isLearner }: P
       <button
         onClick={() => updateStatus('completed')}
         disabled={loading !== null}
-        className="flex items-center gap-1 px-3 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 text-blue-400 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 mt-1"
+        className="flex items-center gap-1 px-3 py-1.5 bg-[#E96118]/10 hover:bg-[#E96118]/20 border border-[#E96118]/20 text-[#E96118] rounded-lg text-xs font-medium transition-colors disabled:opacity-50 mt-1"
       >
         <CheckCircle size={11} />
         {loading === 'completed' ? '...' : 'Mark complete'}

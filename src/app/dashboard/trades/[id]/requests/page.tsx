@@ -75,7 +75,7 @@ export default async function TradeRequestsPage({
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-11 h-11 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-base font-medium text-teal-400 flex-shrink-0">
+                  <div className="w-11 h-11 rounded-full bg-[#315C36]/20 border border-[#315C36]/30 flex items-center justify-center text-base font-medium text-[#315C36] flex-shrink-0">
                     {req.requester?.full_name?.[0]}
                   </div>
                   <div>

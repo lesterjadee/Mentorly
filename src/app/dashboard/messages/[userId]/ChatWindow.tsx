@@ -239,8 +239,8 @@ export default function ChatWindow({
                 <div className={
                   'w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 ' +
                   (contact.id === activeUserId
-                    ? 'bg-[#26619C] text-white border border-[#26619C]'
-                    : 'bg-[#26619C]/20 border border-[#26619C]/30 text-[#4a8fd4]')
+                    ? 'bg-[#E96118] text-white border border-[#E96118]'
+                    : 'bg-[#E96118]/20 border border-[#E96118]/30 text-[#F58A32]')
                 }>
                   {contact.full_name?.[0]}
                 </div>
@@ -263,7 +263,7 @@ export default function ChatWindow({
 
         {/* chat header */}
         <div className="flex items-center gap-3 px-4 md:px-6 py-4 border-b border-white/5 flex-shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4]">
+          <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32]">
             {otherUser.full_name?.[0]}
           </div>
           <div>
@@ -283,8 +283,8 @@ export default function ChatWindow({
           {grouped.length === 0 && (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center mx-auto mb-3">
-                  <Send size={16} className="text-[#4a8fd4]" />
+                <div className="w-12 h-12 rounded-full bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mx-auto mb-3">
+                  <Send size={16} className="text-[#F58A32]" />
                 </div>
                 <p className="text-white/30 text-sm">No messages yet</p>
                 <p className="text-white/20 text-xs mt-1">Say hi to {otherUser.full_name?.split(' ')[0]}!</p>
@@ -309,7 +309,7 @@ export default function ChatWindow({
                           <div className={
                             'px-4 py-2.5 rounded-2xl text-sm leading-relaxed ' +
                             (isMe
-                              ? 'bg-[#26619C] text-white rounded-br-md'
+                              ? 'bg-[#E96118] text-white rounded-br-md'
                               : 'bg-white/5 text-white/80 border border-white/8 rounded-bl-md')
                           }>
                             {msg.content}
@@ -331,8 +331,8 @@ export default function ChatWindow({
         {selectedFile && (
           <div className="px-4 md:px-6 py-2 border-t border-white/5 flex-shrink-0">
             <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-              <div className="w-7 h-7 rounded-lg bg-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-                <FileText size={13} className="text-[#4a8fd4]" />
+              <div className="w-7 h-7 rounded-lg bg-[#E96118]/20 flex items-center justify-center flex-shrink-0">
+                <FileText size={13} className="text-[#F58A32]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-white/70 truncate">{selectedFile.name}</p>
@@ -379,12 +379,12 @@ export default function ChatWindow({
               }}
               placeholder={'Message ' + (otherUser.full_name?.split(' ')[0] || 'them') + '...'}
               rows={1}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
             />
             <button
               onClick={sendMessage}
               disabled={sending || (!content.trim() && !selectedFile)}
-              className="w-10 h-10 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-30 transition-colors rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-30 transition-colors rounded-xl flex items-center justify-center flex-shrink-0"
             >
               {uploadProgress
                 ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

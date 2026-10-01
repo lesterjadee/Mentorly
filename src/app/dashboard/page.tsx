@@ -187,10 +187,10 @@ export default async function DashboardPage() {
         <div className={
           'px-3 py-1.5 rounded-full border text-xs font-semibold flex items-center gap-1.5 ' +
           (isSpecsMember
-            ? 'border-[#26619C]/40 text-[#4a8fd4] bg-[#26619C]/10'
+            ? 'border-[#E96118]/40 text-[#F58A32] bg-[#E96118]/10'
             : 'border-white/10 text-white/40 bg-white/3')
         }>
-          <div className={'w-1.5 h-1.5 rounded-full animate-pulse ' + (isSpecsMember ? 'bg-[#4a8fd4]' : 'bg-white/30')} />
+          <div className={'w-1.5 h-1.5 rounded-full animate-pulse ' + (isSpecsMember ? 'bg-[#F58A32]' : 'bg-white/30')} />
           <span className="hidden sm:inline">
             {isSpecsMember
               ? 'SPECS ' + (profile?.specs_role || 'Member') + ' ⚡'
@@ -236,14 +236,14 @@ export default async function DashboardPage() {
           {(unreadMessages || 0) > 0 && (
             <Link
               href="/dashboard/messages"
-              className="flex items-center justify-between bg-[#26619C]/5 border border-[#26619C]/20 hover:border-[#26619C]/40 rounded-xl p-4 transition-all group"
+              className="flex items-center justify-between bg-[#E96118]/5 border border-[#E96118]/20 hover:border-[#E96118]/40 rounded-xl p-4 transition-all group"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#26619C]/10 flex items-center justify-center">
-                  <MessageSquare size={14} className="text-[#4a8fd4]" />
+                <div className="w-8 h-8 rounded-lg bg-[#E96118]/10 flex items-center justify-center">
+                  <MessageSquare size={14} className="text-[#F58A32]" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#4a8fd4]">
+                  <p className="text-xs font-semibold text-[#F58A32]">
                     {unreadMessages} message{(unreadMessages || 0) > 1 ? 's' : ''}
                   </p>
                   <p className="text-[10px] text-white/30">unread</p>
@@ -282,7 +282,7 @@ export default async function DashboardPage() {
             value={mySessionsCount ?? 0}
             sub="Your SPECS sessions"
             icon={<Calendar size={15} />}
-            color="bg-[#26619C]/20"
+            color="bg-[#E96118]/20"
             delay={0}
           />
           <StatCard
@@ -290,7 +290,7 @@ export default async function DashboardPage() {
             value={myMaterialsCount ?? 0}
             sub="Files you uploaded"
             icon={<FileText size={15} />}
-            color="bg-blue-500/20"
+            color="bg-[#E96118]/20"
             delay={100}
           />
           <StatCard
@@ -309,7 +309,7 @@ export default async function DashboardPage() {
             value={bookingsCount ?? 0}
             sub="Total sessions attended"
             icon={<Calendar size={15} />}
-            color="bg-[#26619C]/20"
+            color="bg-[#E96118]/20"
             delay={0}
           />
           <StatCard
@@ -325,7 +325,7 @@ export default async function DashboardPage() {
             value={materialsCount ?? 0}
             sub="Free to download"
             icon={<FileText size={15} />}
-            color="bg-blue-500/20"
+            color="bg-[#E96118]/20"
             delay={200}
           />
         </div>
@@ -354,11 +354,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/sessions/new"
-            className="flex items-center justify-between bg-[#26619C]/5 border border-[#26619C]/15 rounded-2xl p-4 md:p-5 hover:border-[#26619C]/40 hover:bg-[#26619C]/10 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-[#E96118]/5 border border-[#E96118]/15 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/40 hover:bg-[#E96118]/10 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Plus size={15} className="text-[#4a8fd4]" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <Plus size={15} className="text-[#F58A32]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Post a session</p>
@@ -370,11 +370,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/materials/upload"
-            className="flex items-center justify-between bg-blue-500/3 border border-blue-500/10 rounded-2xl p-4 md:p-5 hover:border-blue-500/25 hover:bg-blue-500/8 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-[#E96118]/3 border border-[#E96118]/10 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/8 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <FileText size={15} className="text-blue-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <FileText size={15} className="text-[#E96118]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Upload material</p>
@@ -386,11 +386,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/sessions"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-teal-500/25 hover:bg-teal-500/3 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#315C36]/25 hover:bg-[#315C36]/3 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Search size={15} className="text-teal-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <Search size={15} className="text-[#315C36]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Browse sessions</p>
@@ -402,11 +402,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/requests/browse"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-purple-500/25 hover:bg-purple-500/3 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <ClipboardList size={15} className="text-purple-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <ClipboardList size={15} className="text-[#E96118]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Student requests</p>
@@ -418,11 +418,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/messages"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#26619C]/25 active:scale-98 transition-all duration-200 group sm:col-span-2"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 active:scale-98 transition-all duration-200 group sm:col-span-2"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <MessageSquare size={15} className="text-[#4a8fd4]" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <MessageSquare size={15} className="text-[#F58A32]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Messages</p>
@@ -442,11 +442,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/sessions"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#26619C]/25 hover:bg-[#26619C]/3 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Calendar size={15} className="text-[#4a8fd4]" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <Calendar size={15} className="text-[#F58A32]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Browse sessions</p>
@@ -458,11 +458,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/materials"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-blue-500/25 hover:bg-blue-500/3 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <FileText size={15} className="text-blue-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <FileText size={15} className="text-[#E96118]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Study materials</p>
@@ -474,11 +474,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/requests/new"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-purple-500/25 hover:bg-purple-500/3 active:scale-98 transition-all duration-200 group"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <BookOpen size={15} className="text-purple-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <BookOpen size={15} className="text-[#E96118]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Post a request</p>
@@ -506,11 +506,11 @@ export default async function DashboardPage() {
 
           <Link
             href="/dashboard/messages"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-teal-500/25 hover:bg-teal-500/3 active:scale-98 transition-all duration-200 group sm:col-span-2"
+            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#315C36]/25 hover:bg-[#315C36]/3 active:scale-98 transition-all duration-200 group sm:col-span-2"
           >
             <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <MessageSquare size={15} className="text-teal-400" />
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <MessageSquare size={15} className="text-[#315C36]" />
               </div>
               <div>
                 <p className="font-semibold text-sm">Messages</p>

@@ -88,10 +88,10 @@ export default async function NotificationsPage() {
           <Link
             key={'offer-' + o.id}
             href={'/dashboard/requests/' + o.request_id + '/offers'}
-            className="flex items-start gap-4 bg-white/3 border border-[#26619C]/20 rounded-2xl p-4 hover:border-[#26619C]/40 transition-all group"
+            className="flex items-start gap-4 bg-white/3 border border-[#E96118]/20 rounded-2xl p-4 hover:border-[#E96118]/40 transition-all group"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-              <Star size={15} className="text-[#4a8fd4]" />
+            <div className="w-9 h-9 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
+              <Star size={15} className="text-[#F58A32]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">New tutor offer</p>
@@ -101,7 +101,7 @@ export default async function NotificationsPage() {
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(o.created_at)}</p>
             </div>
-            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-1 rounded-full flex-shrink-0">
               Offer
             </span>
           </Link>
@@ -184,10 +184,10 @@ export default async function NotificationsPage() {
           <Link
             key={'msg-' + m.id}
             href={'/dashboard/messages/' + m.sender_id}
-            className="flex items-start gap-4 bg-white/3 border border-[#26619C]/20 rounded-2xl p-4 hover:border-[#26619C]/40 transition-all group"
+            className="flex items-start gap-4 bg-white/3 border border-[#E96118]/20 rounded-2xl p-4 hover:border-[#E96118]/40 transition-all group"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-              <MessageSquare size={15} className="text-[#4a8fd4]" />
+            <div className="w-9 h-9 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
+              <MessageSquare size={15} className="text-[#F58A32]" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium">New message</p>
@@ -197,7 +197,7 @@ export default async function NotificationsPage() {
               </p>
               <p className="text-xs text-white/20 mt-1">{timeAgo(m.created_at)}</p>
             </div>
-            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-1 rounded-full flex-shrink-0">
               Message
             </span>
           </Link>

@@ -131,7 +131,7 @@ export default function CommandPalette() {
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] px-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
-      <div className="relative w-full max-w-lg bg-[#0d1117] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-lg bg-[#FFFFFF] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
 
         {/* search input */}
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/8">
@@ -157,7 +157,7 @@ export default function CommandPalette() {
               <div key={group.name}>
                 <div className="flex items-center gap-2 px-4 py-2">
                   {group.name === 'SPECS' && (
-                    <Shield size={9} className="text-[#4a8fd4]" />
+                    <Shield size={9} className="text-[#F58A32]" />
                   )}
                   <p className="text-[10px] text-white/20 uppercase tracking-widest">
                     {group.name}
@@ -172,14 +172,14 @@ export default function CommandPalette() {
                       onMouseEnter={() => setSelected(idx)}
                       className={
                         'w-full flex items-center gap-3 px-4 py-2.5 transition-colors text-left ' +
-                        (selected === idx ? 'bg-[#26619C]/20' : 'hover:bg-white/3')
+                        (selected === idx ? 'bg-[#E96118]/20' : 'hover:bg-white/3')
                       }
                     >
                       <item.icon
                         size={14}
                         className={
                           selected === idx
-                            ? (item.specsOnly ? 'text-[#4a8fd4]' : 'text-[#4a8fd4]')
+                            ? (item.specsOnly ? 'text-[#F58A32]' : 'text-[#F58A32]')
                             : 'text-white/30'
                         }
                       />
@@ -208,7 +208,7 @@ export default function CommandPalette() {
             <span className="font-mono bg-white/5 px-1 rounded">esc</span> close
           </span>
           {isSpecsMember && (
-            <span className="ml-auto flex items-center gap-1 text-[#4a8fd4]/40">
+            <span className="ml-auto flex items-center gap-1 text-[#F58A32]/40">
               <Shield size={8} /> SPECS commands unlocked
             </span>
           )}

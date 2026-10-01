@@ -60,15 +60,15 @@ export default function ResetPasswordPage() {
 
   if (checking) {
     return (
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center">
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </main>
     )
   }
 
   if (!validSession) {
     return (
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
             <Lock size={24} className="text-red-400" />
@@ -79,7 +79,7 @@ export default function ResetPasswordPage() {
           </p>
           <Link
             href="/forgot-password"
-            className="inline-flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-5 py-2.5 rounded-xl text-sm font-medium text-white"
+            className="inline-flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-5 py-2.5 rounded-xl text-sm font-medium text-white"
           >
             Request new link
           </Link>
@@ -90,10 +90,10 @@ export default function ResetPasswordPage() {
 
   if (done) {
     return (
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="w-16 h-16 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle size={28} className="text-[#26619C]" />
+          <div className="w-16 h-16 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center mx-auto mb-6">
+            <CheckCircle size={28} className="text-[#E96118]" />
           </div>
           <h1 className="text-2xl font-bold text-white mb-3">Password updated!</h1>
           <p className="text-white/40 text-sm leading-relaxed mb-2">
@@ -106,12 +106,12 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-[#E96118] flex items-center justify-center">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
                 <circle cx="7" cy="7" r="2" fill="white"/>
@@ -144,7 +144,7 @@ export default function ResetPasswordPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
                 />
                 <button
                   type="button"
@@ -169,7 +169,7 @@ export default function ResetPasswordPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleReset()}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
                 />
                 <button
                   type="button"
@@ -190,7 +190,7 @@ export default function ResetPasswordPage() {
             <button
               onClick={handleReset}
               disabled={loading}
-              className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
+              className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
             >
               {loading ? 'Updating password...' : 'Update password'}
             </button>

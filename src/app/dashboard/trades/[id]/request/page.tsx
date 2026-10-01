@@ -79,7 +79,7 @@ export default function RequestSwapPage() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-teal-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#315C36] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -103,7 +103,7 @@ export default function RequestSwapPage() {
       {/* trade summary */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-6">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-sm font-medium text-teal-400">
+          <div className="w-9 h-9 rounded-full bg-[#315C36]/20 border border-[#315C36]/30 flex items-center justify-center text-sm font-medium text-[#315C36]">
             {trade.users?.full_name?.[0]}
           </div>
           <div>
@@ -156,12 +156,12 @@ export default function RequestSwapPage() {
           </div>
         )}
 
-        <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl p-4">
-          <p className="text-xs text-teal-400/70 leading-relaxed">
+        <div className="bg-[#315C36]/5 border border-[#315C36]/20 rounded-xl p-4">
+          <p className="text-xs text-[#315C36]/70 leading-relaxed">
             By sending this request, you're agreeing to tutor{' '}
-            <span className="text-teal-400 font-medium">{trade.users?.full_name?.split(' ')[0]}</span>{' '}
-            in <span className="text-teal-400 font-medium">{trade.offer_subject}</span> in exchange for them
-            tutoring you in <span className="text-teal-400 font-medium">{trade.need_subject}</span>.
+            <span className="text-[#315C36] font-medium">{trade.users?.full_name?.split(' ')[0]}</span>{' '}
+            in <span className="text-[#315C36] font-medium">{trade.offer_subject}</span> in exchange for them
+            tutoring you in <span className="text-[#315C36] font-medium">{trade.need_subject}</span>.
             No payment is involved.
           </p>
         </div>
@@ -175,14 +175,14 @@ export default function RequestSwapPage() {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Introduce yourself and explain why you'd be a good match..."
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-teal-500/40 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#315C36]/40 transition-colors resize-none"
           />
         </div>
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2"
+          className="w-full bg-[#2C5131] hover:bg-[#233B27] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2"
         >
           <Send size={15} />
           {loading ? 'Sending request...' : 'Send swap request'}

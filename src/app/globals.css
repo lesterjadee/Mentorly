@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+:root {
+  --specs-orange: #E96118;
+  --specs-orange-dark: #C94A0D;
+  --specs-green: #315C36;
+  --specs-ink: #233B27;
+  --specs-paper: #FFFDF8;
+  --specs-line: #E6D7C9;
+}
+
 /* animations */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -14,8 +23,8 @@
   to { opacity: 1; transform: translateX(0); }
 }
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(38,97,156,0); }
-  50% { box-shadow: 0 0 20px 4px rgba(38,97,156,0.3); }
+  0%, 100% { box-shadow: 0 0 0 0 rgb(233 97 24 / 0); }
+  50% { box-shadow: 0 0 20px 4px rgb(233 97 24 / 0.24); }
 }
 @keyframes shimmer {
   0% { background-position: -200% 0; }
@@ -37,39 +46,79 @@
 /* custom scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+::-webkit-scrollbar-thumb { background: #D8C8BA; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #BFAE9D; }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background: linear-gradient(90deg, #FFF8F2 25%, #F6E9DE 50%, #FFF8F2 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
 .nav-active {
-  background: rgba(38,97,156,0.15) !important;
-  color: white !important;
-  border-right: 2px solid #26619C;
+  background: #FFF0E5 !important;
+  color: var(--specs-orange-dark) !important;
+  border-right: 2px solid var(--specs-orange);
 }
 
 .glass {
-  background: rgba(255,255,255,0.03);
+  background: rgb(255 255 255 / 0.86);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--specs-line);
 }
 
 html { scroll-behavior: smooth; }
-body { overflow-x: hidden; }
+body { overflow-x: hidden; background: var(--specs-paper); color: var(--specs-ink); }
 
 input:focus, textarea:focus, select:focus {
-  box-shadow: 0 0 0 3px rgba(38,97,156,0.15);
+  box-shadow: 0 0 0 3px rgb(233 97 24 / 0.16);
 }
 
 button:active:not(:disabled) { transform: scale(0.97); }
 
 ::selection {
-  background: rgba(38,97,156,0.4);
+  background: rgb(233 97 24 / 0.24);
   color: white;
+}
+
+/* Legacy utility colors are kept readable on the new warm, light palette. */
+[class~="text-white"] { color: var(--specs-ink) !important; }
+[class~="text-white/80"] { color: rgb(35 59 39 / 0.8) !important; }
+[class~="text-white/70"] { color: rgb(35 59 39 / 0.7) !important; }
+[class~="text-white/60"] { color: rgb(35 59 39 / 0.6) !important; }
+[class~="text-white/50"] { color: rgb(35 59 39 / 0.5) !important; }
+[class~="text-white/40"] { color: rgb(35 59 39 / 0.48) !important; }
+[class~="text-white/35"] { color: rgb(35 59 39 / 0.42) !important; }
+[class~="text-white/30"] { color: rgb(35 59 39 / 0.38) !important; }
+[class~="text-white/25"] { color: rgb(35 59 39 / 0.32) !important; }
+[class~="text-white/20"] { color: rgb(35 59 39 / 0.28) !important; }
+[class~="text-white/15"] { color: rgb(35 59 39 / 0.22) !important; }
+[class~="text-white/10"] { color: rgb(35 59 39 / 0.16) !important; }
+
+[class~="bg-white"] { background-color: #FFFFFF !important; }
+[class~="bg-white/3"], [class~="bg-white/2"] { background-color: #FFFFFF !important; }
+[class~="bg-white/5"] { background-color: #FFFDF8 !important; }
+[class~="bg-white/8"] { background-color: #FFF8F2 !important; }
+[class~="bg-white/10"] { background-color: #FFF3EA !important; }
+[class~="bg-white/15"] { background-color: #FDEBDD !important; }
+[class~="bg-white/20"] { background-color: #F9E1D0 !important; }
+[class~="bg-white/30"] { background-color: #F1D5C1 !important; }
+[class~="bg-white/90"] { background-color: rgb(255 255 255 / 0.9) !important; }
+
+[class~="border-white"] { border-color: var(--specs-line) !important; }
+[class~="border-white/5"] { border-color: #F1E5D9 !important; }
+[class~="border-white/8"] { border-color: #ECDFD4 !important; }
+[class~="border-white/10"] { border-color: #E6D7C9 !important; }
+[class~="border-white/15"] { border-color: #DECFC1 !important; }
+[class~="border-white/20"] { border-color: #D7C7B9 !important; }
+[class~="border-white/30"] { border-color: #C5B3A3 !important; }
+[class~="placeholder-white/20"]::placeholder { color: rgb(35 59 39 / 0.32) !important; }
+
+[class*="bg-[#E96118]"] .text-white,
+[class*="bg-[#E96118]"].text-white,
+[class*="bg-[#C94A0D]"] .text-white,
+[class*="bg-[#C94A0D]"].text-white {
+  color: #FFFFFF !important;
 }
 /* hide scrollbar but keep scroll */
 .scrollbar-hide {

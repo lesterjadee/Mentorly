@@ -38,7 +38,7 @@ export default function TutorModal({ serviceId, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#0d1117] border border-white/10 rounded-3xl w-full max-w-xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+      <div className="relative bg-[#FFFFFF] border border-white/10 rounded-3xl w-full max-w-xl max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
 
         <button
           onClick={onClose}
@@ -49,15 +49,15 @@ export default function TutorModal({ serviceId, onClose }: Props) {
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
-            <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : service ? (
           <div className="overflow-y-auto">
 
             {/* header */}
-            <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] p-7 pb-5">
+            <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] p-7 pb-5">
               <div className="flex items-start gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-xl font-black text-[#4a8fd4] flex-shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-xl font-black text-[#F58A32] flex-shrink-0">
                   {service.users?.full_name?.[0]}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -82,9 +82,9 @@ export default function TutorModal({ serviceId, onClose }: Props) {
                   {/* quick details */}
                   <div className="flex items-center gap-3 mt-3">
                     <div className="flex items-center gap-1.5">
-                      <BookOpen size={11} className="text-[#4a8fd4]" />
+                      <BookOpen size={11} className="text-[#F58A32]" />
                       <span className="text-xs text-white/50">Sessions:</span>
-                      <span className="text-xs font-bold text-[#4a8fd4]">
+                      <span className="text-xs font-bold text-[#F58A32]">
                         {service.users?.total_sessions || 0}
                       </span>
                     </div>
@@ -102,8 +102,8 @@ export default function TutorModal({ serviceId, onClose }: Props) {
             {/* service */}
             <div className="p-6 border-t border-white/8">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center flex-shrink-0">
-                  <BookOpen size={14} className="text-[#4a8fd4]" />
+                <div className="w-9 h-9 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
+                  <BookOpen size={14} className="text-[#F58A32]" />
                 </div>
                 <div className="flex-1">
                   <p className="font-bold text-sm">{service.title}</p>
@@ -123,7 +123,7 @@ export default function TutorModal({ serviceId, onClose }: Props) {
                 <Link
                   href={'/dashboard/bookings/new?service=' + service.id}
                   onClick={onClose}
-                  className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] active:scale-95 transition-all px-5 py-3 rounded-xl text-sm font-bold"
+                  className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all px-5 py-3 rounded-xl text-sm font-bold"
                 >
                   Book now
                   <ArrowRight size={14} />

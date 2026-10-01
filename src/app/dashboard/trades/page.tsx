@@ -92,7 +92,7 @@ export default async function TradesPage({ searchParams }: Props) {
           </Link>
           <Link
             href="/dashboard/trades/new"
-            className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
           >
             <Plus size={16} />
             Post a swap
@@ -103,8 +103,8 @@ export default async function TradesPage({ searchParams }: Props) {
       {/* how it works banner */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-8">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center flex-shrink-0">
-            <ArrowLeftRight size={16} className="text-teal-400" />
+          <div className="w-10 h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center flex-shrink-0">
+            <ArrowLeftRight size={16} className="text-[#315C36]" />
           </div>
           <div>
             <p className="font-medium text-sm mb-1">How Skill Swap works</p>
@@ -124,7 +124,7 @@ export default async function TradesPage({ searchParams }: Props) {
           name="q"
           defaultValue={query}
           placeholder="Search by subject or description..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
         />
         {selectedSubject !== 'All' && (
           <input type="hidden" name="subject" value={selectedSubject} />
@@ -139,7 +139,7 @@ export default async function TradesPage({ searchParams }: Props) {
             href={'/dashboard/trades?subject=' + sub + (query ? '&q=' + query : '')}
             className={
               selectedSubject === sub
-                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-teal-500 border-teal-500 text-white'
+                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#315C36] border-[#315C36] text-white'
                 : 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
             }
           >
@@ -159,11 +159,11 @@ export default async function TradesPage({ searchParams }: Props) {
             return (
               <div
                 key={trade.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-teal-500/20 transition-colors"
+                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#315C36]/20 transition-colors"
               >
                 {/* poster */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/30 flex items-center justify-center text-sm font-medium text-teal-400 flex-shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-[#315C36]/20 border border-[#315C36]/30 flex items-center justify-center text-sm font-medium text-[#315C36] flex-shrink-0">
                     {trade.users?.full_name?.[0] ?? '?'}
                   </div>
                   <div className="min-w-0">
@@ -171,7 +171,7 @@ export default async function TradesPage({ searchParams }: Props) {
                     <p className="text-xs text-white/30 truncate">{trade.users?.school}</p>
                   </div>
                   {isOwn && (
-                    <span className="ml-auto text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="ml-auto text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full flex-shrink-0">
                       Your swap
                     </span>
                   )}
@@ -209,7 +209,7 @@ export default async function TradesPage({ searchParams }: Props) {
                         ? formatDate(trade.start_date) + ' → ' + formatDate(trade.end_date)
                         : formatDate(trade.start_date)}
                       {isMulti && (
-                        <span className="text-teal-400 border border-teal-500/20 bg-teal-500/10 px-2 py-0.5 rounded-full text-[10px]">
+                        <span className="text-[#315C36] border border-[#315C36]/20 bg-[#315C36]/10 px-2 py-0.5 rounded-full text-[10px]">
                           {trade.total_days} day{trade.total_days !== 1 ? 's' : ''}
                         </span>
                       )}
@@ -232,7 +232,7 @@ export default async function TradesPage({ searchParams }: Props) {
                     {!isOwn && !alreadyRequested && (
                       <Link
                         href={'/dashboard/trades/' + trade.id + '/request'}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/20 hover:border-teal-500/40 text-teal-400 rounded-xl text-xs font-medium transition-all"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#315C36]/10 hover:bg-[#315C36]/20 border border-[#315C36]/20 hover:border-[#315C36]/40 text-[#315C36] rounded-xl text-xs font-medium transition-all"
                       >
                         <ArrowLeftRight size={12} />
                         Request swap
@@ -264,7 +264,7 @@ export default async function TradesPage({ searchParams }: Props) {
           <p className="text-white/20 text-xs mt-1">Be the first to post a swap!</p>
           <Link
             href="/dashboard/trades/new"
-            className="inline-block mt-4 text-teal-400 hover:text-teal-300 text-sm transition-colors"
+            className="inline-block mt-4 text-[#315C36] hover:text-[#427A49] text-sm transition-colors"
           >
             Post a skill swap
           </Link>

@@ -47,7 +47,7 @@ export default async function BookingsPage({
       pending: 'border-yellow-500/20 text-yellow-400 bg-yellow-500/10',
       accepted: 'border-green-500/20 text-green-400 bg-green-500/10',
       declined: 'border-red-500/20 text-red-400 bg-red-500/10',
-      completed: 'border-blue-500/20 text-blue-400 bg-blue-500/10',
+      completed: 'border-[#E96118]/20 text-[#E96118] bg-[#E96118]/10',
       cancelled: 'border-white/10 text-white/30',
     }
     const icons: Record<string, any> = {
@@ -113,7 +113,7 @@ export default async function BookingsPage({
           </span>
         )}
         {isMulti && booking.total_days && (
-          <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full">
+          <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
             {booking.total_days} day{booking.total_days !== 1 ? 's' : ''} · {booking.hours_per_day}hr/day
           </span>
         )}
@@ -128,13 +128,13 @@ export default async function BookingsPage({
   function SourceBadge({ booking }: { booking: any }) {
     if (booking.request_id) {
       return (
-        <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+        <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
           From request
         </span>
       )
     }
     return (
-      <span className="text-[10px] text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full">
+      <span className="text-[10px] text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
         Marketplace
       </span>
     )

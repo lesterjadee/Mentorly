@@ -21,7 +21,7 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
   if (dismissed || completed === total) return null
 
   return (
-    <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-2xl p-6 mb-6 relative">
+    <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-2xl p-6 mb-6 relative">
       <button
         onClick={() => setDismissed(true)}
         className="absolute top-4 right-4 text-white/20 hover:text-white/50 transition-colors"
@@ -39,7 +39,7 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
           </p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-2xl font-black text-[#4a8fd4]">{percent}%</p>
+          <p className="text-2xl font-black text-[#F58A32]">{percent}%</p>
           <p className="text-[10px] text-white/30">{completed}/{total} done</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
       {/* progress bar */}
       <div className="h-1.5 bg-white/5 rounded-full mb-5 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[#26619C] to-[#4a8fd4] rounded-full transition-all duration-700"
+          className="h-full bg-gradient-to-r from-[#E96118] to-[#F58A32] rounded-full transition-all duration-700"
           style={{ width: percent + '%' }}
         />
       </div>
@@ -67,7 +67,7 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
           >
             {step.done
               ? <CheckCircle size={16} className="text-green-400 flex-shrink-0" />
-              : <Circle size={16} className="text-white/20 flex-shrink-0 group-hover:text-[#26619C] transition-colors" />
+              : <Circle size={16} className="text-white/20 flex-shrink-0 group-hover:text-[#E96118] transition-colors" />
             }
             <div className="flex-1 min-w-0">
               <p className={'text-xs font-medium ' + (step.done ? 'line-through text-white/30' : 'text-white/70')}>

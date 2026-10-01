@@ -35,10 +35,10 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="w-16 h-16 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle size={28} className="text-[#26619C]" />
+          <div className="w-16 h-16 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center mx-auto mb-6">
+            <CheckCircle size={28} className="text-[#E96118]" />
           </div>
           <h1 className="text-2xl font-bold text-white mb-3">Check your email</h1>
           <p className="text-white/40 text-sm leading-relaxed mb-2">
@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
           </p>
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+            className="inline-flex items-center gap-2 text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
           >
             <ArrowLeft size={14} />
             Back to sign in
@@ -61,12 +61,12 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+    <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-[#E96118] flex items-center justify-center">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
                 <circle cx="7" cy="7" r="2" fill="white"/>
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleReset()}
                   placeholder="you@university.edu"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
                 />
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
             <button
               onClick={handleReset}
               disabled={loading}
-              className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+              className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
             >
               {loading ? 'Sending reset link...' : 'Send reset link'}
             </button>

@@ -114,11 +114,11 @@ export default async function MaterialsPage({ searchParams }: Props) {
     if (type.includes('pdf') || name.endsWith('.pdf'))
       return 'bg-red-500/10 border-red-500/20 text-red-400'
     if (type.includes('word') || name.endsWith('.doc') || name.endsWith('.docx'))
-      return 'bg-blue-500/10 border-blue-500/20 text-blue-400'
+      return 'bg-[#E96118]/10 border-[#E96118]/20 text-[#E96118]'
     if (type.includes('presentation') || name.endsWith('.ppt') || name.endsWith('.pptx'))
       return 'bg-orange-500/10 border-orange-500/20 text-orange-400'
     if (type.startsWith('image/'))
-      return 'bg-purple-500/10 border-purple-500/20 text-purple-400'
+      return 'bg-[#E96118]/10 border-[#E96118]/20 text-[#E96118]'
     return 'bg-white/5 border-white/10 text-white/40'
   }
 
@@ -142,7 +142,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
           <h1 className="text-2xl font-black tracking-tight mb-1">Study Materials</h1>
           <p className="text-white/40 text-sm">
             Free academic resources uploaded by SPECS members ·{' '}
-            <span className="text-[#4a8fd4]">
+            <span className="text-[#F58A32]">
               {totalMaterials} file{totalMaterials !== 1 ? 's' : ''}
             </span>
           </p>
@@ -150,7 +150,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
         {isSpecsMember && (
           <Link
             href="/dashboard/materials/upload"
-            className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-[#26619C]/20"
+            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-[#E96118]/20"
           >
             <Plus size={15} />
             Upload material
@@ -170,11 +170,11 @@ export default async function MaterialsPage({ searchParams }: Props) {
 
       {/* notice for students */}
       {!isSpecsMember && (
-        <div className="flex items-start gap-3 bg-[#26619C]/5 border border-[#26619C]/15 rounded-xl p-4 mb-6">
-          <Shield size={14} className="text-[#4a8fd4] flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-3 bg-[#E96118]/5 border border-[#E96118]/15 rounded-xl p-4 mb-6">
+          <Shield size={14} className="text-[#F58A32] flex-shrink-0 mt-0.5" />
           <p className="text-xs text-white/50 leading-relaxed">
             All study materials are uploaded and maintained by{' '}
-            <span className="text-[#4a8fd4] font-semibold">SPECS members</span> as a free
+            <span className="text-[#F58A32] font-semibold">SPECS members</span> as a free
             academic resource for Gordon College students. Download anything — no booking or
             payment required.
           </p>
@@ -188,7 +188,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
           name="q"
           defaultValue={query}
           placeholder="Search materials by title, subject..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
         />
         {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
         {fileType !== 'all' && <input type="hidden" name="type" value={fileType} />}
@@ -207,7 +207,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
             className={
               'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
               (fileType === t.value
-                ? 'bg-[#26619C] border-[#26619C] text-white'
+                ? 'bg-[#E96118] border-[#E96118] text-white'
                 : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70')
             }
           >
@@ -294,7 +294,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
           {!isFiltered && (
             <Link
               href="/dashboard/requests/new"
-              className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+              className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
             >
               Post a help request instead →
             </Link>
@@ -350,8 +350,8 @@ function MaterialCard({
       {/* linked session */}
       {mat.session && (
         <div className="flex items-center gap-1.5 mb-3">
-          <BookOpen size={10} className="text-[#4a8fd4] flex-shrink-0" />
-          <p className="text-[10px] text-[#4a8fd4] truncate">
+          <BookOpen size={10} className="text-[#F58A32] flex-shrink-0" />
+          <p className="text-[10px] text-[#F58A32] truncate">
             From: {mat.session.title}
           </p>
         </div>
@@ -359,12 +359,12 @@ function MaterialCard({
 
       {/* uploader + date */}
       <div className="flex items-center gap-2 mb-3">
-        <div className="w-5 h-5 rounded-full bg-[#26619C] flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0">
+        <div className="w-5 h-5 rounded-full bg-[#E96118] flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0">
           {mat.uploader?.full_name?.[0]}
         </div>
         <p className="text-[10px] text-white/30 truncate flex items-center gap-1">
           {mat.uploader?.full_name}
-          <Shield size={8} className="text-[#4a8fd4] flex-shrink-0 inline" />
+          <Shield size={8} className="text-[#F58A32] flex-shrink-0 inline" />
         </p>
         <span className="text-white/10 text-[10px] ml-auto flex-shrink-0">
           {formatDate(mat.created_at)}
@@ -381,7 +381,7 @@ function MaterialCard({
         </div>
         <button
           onClick={() => window.open(mat.file_url, '_blank')}
-          className="flex items-center gap-1.5 bg-[#26619C]/10 hover:bg-[#26619C] border border-[#26619C]/20 hover:border-[#26619C] transition-all px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[#4a8fd4] hover:text-white"
+          className="flex items-center gap-1.5 bg-[#E96118]/10 hover:bg-[#E96118] border border-[#E96118]/20 hover:border-[#E96118] transition-all px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[#F58A32] hover:text-white"
         >
           <Download size={11} />
           Download

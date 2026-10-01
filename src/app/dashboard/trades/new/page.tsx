@@ -132,9 +132,9 @@ export default function NewTradePage() {
                 onChange={(e) => setNeedSubject(e.target.value)}
                 className="w-full bg-red-500/5 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-red-500/40 transition-colors"
               >
-                <option value="" disabled className="bg-[#080C14]">Select subject</option>
+                <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
                 {SUBJECTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#080C14]">{s}</option>
+                  <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
                 ))}
               </select>
             </div>
@@ -145,9 +145,9 @@ export default function NewTradePage() {
                 onChange={(e) => setOfferSubject(e.target.value)}
                 className="w-full bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-green-500/40 transition-colors"
               >
-                <option value="" disabled className="bg-[#080C14]">Select subject</option>
+                <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
                 {SUBJECTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#080C14]">{s}</option>
+                  <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
                 ))}
               </select>
             </div>
@@ -173,7 +173,7 @@ export default function NewTradePage() {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe your level in both subjects, what you're looking for, and any other details..."
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
@@ -188,7 +188,7 @@ export default function NewTradePage() {
                 className={
                   'py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ' +
                   (mode === m
-                    ? 'border-teal-500 bg-teal-500/10 text-teal-400'
+                    ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
                     : 'border-white/10 text-white/40 hover:border-white/20')
                 }
               >
@@ -208,7 +208,7 @@ export default function NewTradePage() {
               className={
                 'py-3 rounded-xl border text-sm font-medium transition-all ' +
                 (sessionType === 'single'
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-400'
+                  ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
                   : 'border-white/10 text-white/40 hover:border-white/20')
               }
             >
@@ -219,7 +219,7 @@ export default function NewTradePage() {
               className={
                 'py-3 rounded-xl border text-sm font-medium transition-all ' +
                 (sessionType === 'multi'
-                  ? 'border-teal-500 bg-teal-500/10 text-teal-400'
+                  ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
                   : 'border-white/10 text-white/40 hover:border-white/20')
               }
             >
@@ -237,7 +237,7 @@ export default function NewTradePage() {
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500/40 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
               />
             </div>
           ) : (
@@ -251,7 +251,7 @@ export default function NewTradePage() {
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500/40 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ export default function NewTradePage() {
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={startDate || new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500/40 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
                 />
               </div>
             </div>
@@ -277,10 +277,10 @@ export default function NewTradePage() {
               type="time"
               value={dailyStartTime}
               onChange={(e) => setDailyStartTime(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-teal-500/40 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
             />
             {dailyStartTime && hoursPerDay && (
-              <p className="text-xs text-teal-400 mt-2">
+              <p className="text-xs text-[#315C36] mt-2">
                 Each session: {formatEndTime(dailyStartTime, hoursPerDay)}
               </p>
             )}
@@ -296,7 +296,7 @@ export default function NewTradePage() {
                   className={
                     'py-2.5 rounded-xl border text-sm font-medium transition-all ' +
                     (hoursPerDay === h
-                      ? 'border-teal-500 bg-teal-500/10 text-teal-400'
+                      ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
                       : 'border-white/10 text-white/40 hover:border-white/20')
                   }
                 >
@@ -309,8 +309,8 @@ export default function NewTradePage() {
 
         {/* summary */}
         {needSubject && offerSubject && startDate && dailyStartTime && (
-          <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl p-4 space-y-2">
-            <p className="text-xs text-teal-400/60 uppercase tracking-wider">Swap summary</p>
+          <div className="bg-[#315C36]/5 border border-[#315C36]/20 rounded-xl p-4 space-y-2">
+            <p className="text-xs text-[#315C36]/60 uppercase tracking-wider">Swap summary</p>
             <p className="text-sm">
               <span className="text-red-400 font-medium">{needSubject}</span>
               <span className="text-white/30 mx-2">↔</span>
@@ -323,14 +323,14 @@ export default function NewTradePage() {
               {' · '}{formatEndTime(dailyStartTime, hoursPerDay)}
               {' · '}{hoursPerDay}hr/day
             </p>
-            <p className="text-xs text-teal-400 font-medium">Free — no payment involved</p>
+            <p className="text-xs text-[#315C36] font-medium">Free — no payment involved</p>
           </div>
         )}
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+          className="w-full bg-[#2C5131] hover:bg-[#233B27] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
         >
           {loading ? 'Posting...' : 'Post skill swap'}
         </button>

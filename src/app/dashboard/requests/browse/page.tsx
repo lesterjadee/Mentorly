@@ -93,7 +93,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
           name="q"
           defaultValue={query}
           placeholder="Search requests..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
         />
         {selectedCategory !== 'All' && (
           <input type="hidden" name="category" value={selectedCategory} />
@@ -107,7 +107,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
             href={'/dashboard/requests/browse?category=' + cat + (query ? '&q=' + query : '')}
             className={
               selectedCategory === cat
-                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#26619C] border-[#26619C] text-white'
+                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#E96118] border-[#E96118] text-white'
                 : 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
             }
           >
@@ -129,11 +129,11 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
             return (
               <div
                 key={req.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#26619C]/20 transition-colors"
+                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#E96118]/20 transition-colors"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-sm font-medium text-purple-400 flex-shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#E96118] flex-shrink-0">
                       {req.users?.full_name?.[0] ?? '?'}
                     </div>
 
@@ -141,7 +141,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <h3 className="font-medium text-sm">{req.title}</h3>
                         {isOwn && (
-                          <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
                             Your request
                           </span>
                         )}
@@ -173,7 +173,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                               ? formatDate(req.start_date) + ' → ' + formatDate(req.end_date)
                               : formatDate(req.start_date)}
                             {isMulti && (
-                              <span className="text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full text-[10px]">
+                              <span className="text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full text-[10px]">
                                 {req.total_days} day{req.total_days !== 1 ? 's' : ''}
                               </span>
                             )}
@@ -202,7 +202,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
                     {!isOwn && !alreadyOffered && (
                       <Link
                         href={'/dashboard/requests/' + req.id + '/offer'}
-                        className="flex items-center gap-1.5 px-3 py-2 bg-[#26619C]/10 hover:bg-[#26619C]/20 border border-[#26619C]/20 hover:border-[#26619C]/40 text-[#4a8fd4] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-3 py-2 bg-[#E96118]/10 hover:bg-[#E96118]/20 border border-[#E96118]/20 hover:border-[#E96118]/40 text-[#F58A32] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
                       >
                         Offer help
                       </Link>

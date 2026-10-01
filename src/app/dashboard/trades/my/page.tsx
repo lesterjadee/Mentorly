@@ -33,7 +33,7 @@ export default async function MyTradesPage() {
         </div>
         <Link
           href="/dashboard/trades/new"
-          className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+          className="flex items-center gap-2 bg-[#2C5131] hover:bg-[#233B27] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
         >
           <Plus size={16} />
           New swap
@@ -59,7 +59,7 @@ export default async function MyTradesPage() {
                     <span className={
                       'text-xs px-2 py-1 rounded-full border ' +
                       (trade.status === 'open' ? 'border-green-500/20 text-green-400 bg-green-500/10' :
-                      trade.status === 'matched' ? 'border-[#26619C]/20 text-[#4a8fd4] bg-[#26619C]/10' :
+                      trade.status === 'matched' ? 'border-[#E96118]/20 text-[#F58A32] bg-[#E96118]/10' :
                       'border-white/10 text-white/30')
                     }>
                       {trade.status}
@@ -79,7 +79,7 @@ export default async function MyTradesPage() {
         ) : (
           <div className="bg-white/3 border border-white/8 rounded-2xl p-8 text-center">
             <p className="text-white/30 text-sm">You haven't posted any swaps yet</p>
-            <Link href="/dashboard/trades/new" className="text-teal-400 hover:text-teal-300 text-sm mt-2 inline-block transition-colors">
+            <Link href="/dashboard/trades/new" className="text-[#315C36] hover:text-[#427A49] text-sm mt-2 inline-block transition-colors">
               Post your first swap
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default async function MyTradesPage() {
         ) : (
           <div className="bg-white/3 border border-white/8 rounded-2xl p-8 text-center">
             <p className="text-white/30 text-sm">You haven't requested any swaps yet</p>
-            <Link href="/dashboard/trades" className="text-teal-400 hover:text-teal-300 text-sm mt-2 inline-block transition-colors">
+            <Link href="/dashboard/trades" className="text-[#315C36] hover:text-[#427A49] text-sm mt-2 inline-block transition-colors">
               Browse skill swaps
             </Link>
           </div>

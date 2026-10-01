@@ -86,7 +86,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
       <div
         className={
           'bg-white/3 border border-white/8 rounded-2xl overflow-hidden transition-all duration-200 group ' +
-          'hover:border-[#26619C]/40 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#26619C]/5 cursor-pointer ' +
+          'hover:border-[#E96118]/40 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#E96118]/5 cursor-pointer ' +
           (large ? 'p-6' : 'p-5')
         }
         onClick={() => !isOwn && setSelectedServiceId(service.id)}
@@ -94,7 +94,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className={
-              'rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center font-bold text-[#4a8fd4] flex-shrink-0 ' +
+              'rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center font-bold text-[#F58A32] flex-shrink-0 ' +
               (large ? 'w-11 h-11 text-base' : 'w-9 h-9 text-sm')
             }>
               {service.users?.full_name?.[0] ?? '?'}
@@ -106,7 +106,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {isOwn && (
-              <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
                 Yours
               </span>
             )}
@@ -134,7 +134,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
         {!isOwn && (
           <div className="mt-3 pt-3 border-t border-white/5">
-            <div className="w-full text-center bg-white/3 group-hover:bg-[#26619C] border border-white/8 group-hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-semibold text-white/40 group-hover:text-white">
+            <div className="w-full text-center bg-white/3 group-hover:bg-[#E96118] border border-white/8 group-hover:border-[#E96118] transition-all py-2 rounded-xl text-xs font-semibold text-white/40 group-hover:text-white">
               View profile & book
             </div>
           </div>
@@ -189,7 +189,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search tutors, subjects, schools..."
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
             />
             {query && (
               <button
@@ -206,9 +206,9 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none pr-8 cursor-pointer"
+              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none pr-8 cursor-pointer"
             >
-              <option value="newest" className="bg-[#0d1117]">Newest</option>
+              <option value="newest" className="bg-[#FFFFFF]">Newest</option>
             </select>
             <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
           </div>
@@ -219,14 +219,14 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
             className={
               'flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-semibold transition-all ' +
               (hasFilters || showFilters
-                ? 'bg-[#26619C]/20 border-[#26619C]/40 text-[#4a8fd4]'
+                ? 'bg-[#E96118]/20 border-[#E96118]/40 text-[#F58A32]'
                 : 'bg-white/5 border-white/10 text-white/50 hover:border-white/20 hover:text-white')
             }
           >
             <Filter size={13} />
             Filters
             {hasFilters && (
-              <span className="w-4 h-4 bg-[#26619C] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+              <span className="w-4 h-4 bg-[#E96118] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
                 !
               </span>
             )}
@@ -249,7 +249,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
                       className={
                         'text-left px-3 py-1.5 rounded-lg text-xs transition-all capitalize ' +
                         (selectedMode === m
-                          ? 'bg-[#26619C]/20 text-[#4a8fd4] border border-[#26619C]/30'
+                          ? 'bg-[#E96118]/20 text-[#F58A32] border border-[#E96118]/30'
                           : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent')
                       }
                     >
@@ -284,7 +284,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
               className={
                 'px-4 py-2 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
                 (selectedCategory === cat
-                  ? 'bg-[#26619C] border-[#26619C] text-white shadow-lg shadow-[#26619C]/20'
+                  ? 'bg-[#E96118] border-[#E96118] text-white shadow-lg shadow-[#E96118]/20'
                   : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70')
               }
             >
@@ -297,7 +297,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen size={14} className="text-[#4a8fd4]" />
+              <BookOpen size={14} className="text-[#F58A32]" />
               <p className="text-sm font-bold">Featured SPECS support</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -332,7 +332,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
             {hasFilters && (
               <button
                 onClick={clearFilters}
-                className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+                className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
               >
                 Clear all filters
               </button>

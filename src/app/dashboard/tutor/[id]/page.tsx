@@ -50,9 +50,9 @@ export default async function TutorProfilePage({
         <p className="text-white/40 text-sm">Back to marketplace</p>
       </div>
 
-      <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-3xl p-8 mb-6">
+      <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-3xl p-8 mb-6">
         <div className="flex items-start gap-6">
-          <div className="w-20 h-20 rounded-2xl bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-3xl font-black text-[#4a8fd4] flex-shrink-0">
+          <div className="w-20 h-20 rounded-2xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-3xl font-black text-[#F58A32] flex-shrink-0">
             {tutor.full_name?.[0]}
           </div>
           <div className="flex-1 min-w-0">
@@ -96,7 +96,7 @@ export default async function TutorProfilePage({
 
       <div className="bg-white/3 border border-white/8 rounded-2xl p-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Shield size={16} className="text-[#4a8fd4]" />
+          <Shield size={16} className="text-[#F58A32]" />
           <p className="text-sm font-bold">SPECS volunteer support</p>
         </div>
         <p className="text-sm text-white/35 leading-relaxed">
@@ -107,14 +107,14 @@ export default async function TutorProfilePage({
       {services && services.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <BookOpen size={15} className="text-[#4a8fd4]" />
+            <BookOpen size={15} className="text-[#F58A32]" />
             <p className="text-sm font-bold">Support offered</p>
           </div>
           <div className="space-y-3">
             {services.map((service: any) => (
               <div
                 key={service.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#26619C]/30 transition-colors group"
+                className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#E96118]/30 transition-colors group"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -139,7 +139,7 @@ export default async function TutorProfilePage({
                   {!isOwnProfile && (
                     <Link
                       href={'/dashboard/bookings/new?service=' + service.id}
-                      className="inline-flex items-center gap-1.5 bg-[#26619C] hover:bg-[#1e4f82] active:scale-95 transition-all px-3 py-1.5 rounded-lg text-xs font-bold flex-shrink-0"
+                      className="inline-flex items-center gap-1.5 bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all px-3 py-1.5 rounded-lg text-xs font-bold flex-shrink-0"
                     >
                       Book
                       <BookOpen size={11} />

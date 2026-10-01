@@ -24,7 +24,7 @@ export default async function ServicesPage() {
         </div>
         <Link
           href="/dashboard/services/new"
-          className="flex items-center gap-2 bg-[#26619C] hover:bg-[#1e4f82] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+          className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
         >
           <Plus size={16} />
           New service
@@ -39,8 +39,8 @@ export default async function ServicesPage() {
               className="bg-white/3 border border-white/8 rounded-2xl p-6 flex items-center justify-between"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[#26619C]/10 border border-[#26619C]/20 flex items-center justify-center">
-                  <Briefcase size={16} className="text-[#4a8fd4]" />
+                <div className="w-10 h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center">
+                  <Briefcase size={16} className="text-[#F58A32]" />
                 </div>
                 <div>
                   <p className="font-medium text-sm">{service.title}</p>
@@ -76,7 +76,7 @@ export default async function ServicesPage() {
           <p className="text-white/40 text-sm mb-4">You haven't listed any services yet</p>
           <Link
             href="/dashboard/services/new"
-            className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors"
+            className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
           >
             Create your first service
           </Link>

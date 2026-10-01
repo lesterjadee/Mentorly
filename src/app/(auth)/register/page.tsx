@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import {
   GraduationCap, Mail, Lock, User,
@@ -19,7 +20,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#0f1623] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
+      <div className="relative bg-[#FFFFFF] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/8 flex-shrink-0">
           <div>
             <h2 className="font-semibold text-white">Terms and Conditions</h2>
@@ -68,7 +69,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
           </section>
         </div>
         <div className="px-6 py-4 border-t border-white/8 flex-shrink-0">
-          <button onClick={onClose} className="w-full bg-[#26619C] hover:bg-[#1e4f82] transition-colors py-2.5 rounded-xl text-white text-sm font-medium">
+          <button onClick={onClose} className="w-full bg-[#E96118] hover:bg-[#C94A0D] transition-colors py-2.5 rounded-xl text-white text-sm font-medium">
             Close
           </button>
         </div>
@@ -202,20 +203,20 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4">
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4">
         <div className="text-center max-w-md">
-          <div className="w-16 h-16 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center mx-auto mb-6">
             {isSpecsMember
-              ? <ShieldCheck className="text-[#26619C]" size={28} />
-              : <CheckCircle className="text-[#26619C]" size={28} />
+              ? <ShieldCheck className="text-[#E96118]" size={28} />
+              : <CheckCircle className="text-[#E96118]" size={28} />
             }
           </div>
           <h1 className="text-2xl font-bold text-white mb-3">
             {isSpecsMember ? 'Welcome to SPECS!' : 'Check your email'}
           </h1>
           {isSpecsMember && (
-            <div className="mb-4 bg-[#26619C]/10 border border-[#26619C]/20 rounded-xl px-4 py-3">
-              <p className="text-[#4a8fd4] text-xs font-medium">
+            <div className="mb-4 bg-[#E96118]/10 border border-[#E96118]/20 rounded-xl px-4 py-3">
+              <p className="text-[#F58A32] text-xs font-medium">
                 🎉 You've been registered as a SPECS member. Your account has elevated privileges.
               </p>
             </div>
@@ -225,7 +226,7 @@ export default function RegisterPage() {
             <span className="text-white/70">{email}</span>.
             Click it to activate your account.
           </p>
-          <Link href="/login" className="text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
+          <Link href="/login" className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
             Back to sign in
           </Link>
         </div>
@@ -237,17 +238,12 @@ export default function RegisterPage() {
     <>
       {showTerms && <TermsModal onClose={() => setShowTerms(false)} />}
 
-      <main className="min-h-screen bg-[#080C14] flex items-center justify-center px-4 py-12">
+      <main className="min-h-screen bg-[#FFFDF8] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-lg">
 
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="w-7 h-7 rounded-lg bg-[#26619C] flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M7 1L12 4V10L7 13L2 10V4L7 1Z" stroke="white" strokeWidth="1.2" fill="none"/>
-                  <circle cx="7" cy="7" r="2" fill="white"/>
-                </svg>
-              </div>
+              <Image src="/specs-logo.png" alt="SPECS logo" width={36} height={36} className="h-9 w-9 object-contain" priority />
               <span className="font-semibold text-white text-[15px]">SPECS</span>
             </Link>
             <h1 className="text-2xl font-bold text-white mb-2">Create your account</h1>
@@ -255,11 +251,11 @@ export default function RegisterPage() {
           </div>
 
           {/* gordon college badge */}
-          <div className="flex items-center justify-center gap-2 mb-6 bg-[#26619C]/5 border border-[#26619C]/20 rounded-xl px-4 py-3">
-            <GraduationCap size={15} className="text-[#4a8fd4] flex-shrink-0" />
+          <div className="flex items-center justify-center gap-2 mb-6 bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl px-4 py-3">
+            <GraduationCap size={15} className="text-[#F58A32] flex-shrink-0" />
             <p className="text-xs text-white/50 text-center">
               Requires a{' '}
-              <span className="text-[#4a8fd4] font-semibold">@gordoncollege.edu.ph</span>{' '}
+              <span className="text-[#F58A32] font-semibold">@gordoncollege.edu.ph</span>{' '}
               email to register
             </p>
           </div>
@@ -270,12 +266,12 @@ export default function RegisterPage() {
               <div key={s} className="flex items-center gap-2">
                 <div className={
                   'w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-colors ' +
-                  (step >= s ? 'bg-[#26619C] text-white' : 'bg-white/5 text-white/30')
+                  (step >= s ? 'bg-[#E96118] text-white' : 'bg-white/5 text-white/30')
                 }>
                   {step > s ? '✓' : s}
                 </div>
                 {s < 3 && (
-                  <div className={'w-10 h-px transition-colors ' + (step > s ? 'bg-[#26619C]' : 'bg-white/10')} />
+                  <div className={'w-10 h-px transition-colors ' + (step > s ? 'bg-[#E96118]' : 'bg-white/10')} />
                 )}
               </div>
             ))}
@@ -306,7 +302,7 @@ export default function RegisterPage() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Juan dela Cruz"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
                     />
                   </div>
                 </div>
@@ -328,11 +324,11 @@ export default function RegisterPage() {
                     <select
                       value={course}
                       onChange={(e) => setCourse(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
                     >
-                      <option value="" disabled className="bg-[#080C14]">Select your course</option>
+                      <option value="" disabled className="bg-[#FFFDF8]">Select your course</option>
                       {COURSES.map((c) => (
-                        <option key={c} value={c} className="bg-[#080C14]">{c}</option>
+                        <option key={c} value={c} className="bg-[#FFFDF8]">{c}</option>
                       ))}
                     </select>
                   </div>
@@ -343,7 +339,7 @@ export default function RegisterPage() {
                     if (!fullName || !course) { setError('Please fill in all fields.'); return }
                     setError(''); setStep(2)
                   }}
-                  className="w-full bg-[#26619C] hover:bg-[#1e4f82] transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
+                  className="w-full bg-[#E96118] hover:bg-[#C94A0D] transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
                 >
                   Continue
                 </button>
@@ -368,7 +364,7 @@ export default function RegisterPage() {
                       placeholder="yourname@gordoncollege.edu.ph"
                       className={
                         'w-full bg-white/5 border rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none transition-colors ' +
-                        (email ? (isValidEmail ? 'border-green-500/40' : 'border-red-500/40') : 'border-white/10 focus:border-[#26619C]/60')
+                        (email ? (isValidEmail ? 'border-green-500/40' : 'border-red-500/40') : 'border-white/10 focus:border-[#E96118]/60')
                       }
                     />
                   </div>
@@ -391,7 +387,7 @@ export default function RegisterPage() {
                       placeholder="Min 8 chars, 1 uppercase, 1 symbol"
                       className={
                         'w-full bg-white/5 border rounded-xl pl-10 pr-10 py-3 text-white text-sm placeholder-white/20 focus:outline-none transition-colors ' +
-                        (password ? (isValidPassword ? 'border-green-500/40' : 'border-orange-500/30') : 'border-white/10 focus:border-[#26619C]/60')
+                        (password ? (isValidPassword ? 'border-green-500/40' : 'border-orange-500/30') : 'border-white/10 focus:border-[#E96118]/60')
                       }
                     />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50 transition-colors">
@@ -412,7 +408,7 @@ export default function RegisterPage() {
                       setError(''); setStep(3)
                     }}
                     disabled={!isValidEmail || !isValidPassword}
-                    className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+                    className="flex-1 bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 transition-colors py-3 rounded-xl text-white text-sm font-medium"
                   >
                     Continue
                   </button>
@@ -428,9 +424,9 @@ export default function RegisterPage() {
                 </p>
 
                 {/* SPECS invite code */}
-                <div className="bg-[#26619C]/5 border border-[#26619C]/15 rounded-xl p-4">
+                <div className="bg-[#E96118]/5 border border-[#E96118]/15 rounded-xl p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <ShieldCheck size={16} className="text-[#4a8fd4] flex-shrink-0 mt-0.5" />
+                    <ShieldCheck size={16} className="text-[#F58A32] flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm font-medium text-white/80">Are you a SPECS member?</p>
                       <p className="text-xs text-white/40 mt-0.5 leading-relaxed">
@@ -444,7 +440,7 @@ export default function RegisterPage() {
                     className={
                       'w-full py-2.5 rounded-xl text-xs font-semibold border transition-all ' +
                       (showInviteCode
-                        ? 'bg-[#26619C]/20 border-[#26619C]/40 text-[#4a8fd4]'
+                        ? 'bg-[#E96118]/20 border-[#E96118]/40 text-[#F58A32]'
                         : 'bg-white/5 border-white/10 text-white/50 hover:text-white hover:border-white/20')
                     }
                   >
@@ -464,7 +460,7 @@ export default function RegisterPage() {
                             'w-full bg-white/5 border rounded-xl pl-9 pr-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none transition-colors uppercase tracking-wider ' +
                             (codeStatus === 'valid' ? 'border-green-500/40' :
                              codeStatus === 'invalid' ? 'border-red-500/40' :
-                             'border-white/10 focus:border-[#26619C]/60')
+                             'border-white/10 focus:border-[#E96118]/60')
                           }
                         />
                       </div>
@@ -496,16 +492,16 @@ export default function RegisterPage() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className={
                     'rounded-xl p-3 border text-center transition-all ' +
-                    (!isSpecsMember ? 'border-[#26619C]/30 bg-[#26619C]/5' : 'border-white/8 bg-white/3')
+                    (!isSpecsMember ? 'border-[#E96118]/30 bg-[#E96118]/5' : 'border-white/8 bg-white/3')
                   }>
                     <p className="text-xs font-semibold text-white/70 mb-1">Regular Student</p>
                     <p className="text-[10px] text-white/30 leading-relaxed">Browse sessions · Book sessions · Post requests · Message</p>
                   </div>
                   <div className={
                     'rounded-xl p-3 border text-center transition-all ' +
-                    (isSpecsMember ? 'border-[#26619C]/30 bg-[#26619C]/5' : 'border-white/8 bg-white/3')
+                    (isSpecsMember ? 'border-[#E96118]/30 bg-[#E96118]/5' : 'border-white/8 bg-white/3')
                   }>
-                    <p className="text-xs font-semibold text-[#4a8fd4] mb-1">SPECS Member ⚡</p>
+                    <p className="text-xs font-semibold text-[#F58A32] mb-1">SPECS Member ⚡</p>
                     <p className="text-[10px] text-white/30 leading-relaxed">All above + Post sessions + Upload study materials</p>
                   </div>
                 </div>
@@ -519,7 +515,7 @@ export default function RegisterPage() {
                     <div className="flex-shrink-0 mt-0.5">
                       <div className={
                         'w-5 h-5 rounded border-2 flex items-center justify-center transition-all ' +
-                        (agreedToTerms ? 'bg-[#26619C] border-[#26619C]' : 'border-white/20 bg-transparent')
+                        (agreedToTerms ? 'bg-[#E96118] border-[#E96118]' : 'border-white/20 bg-transparent')
                       }>
                         {agreedToTerms && (
                           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -532,7 +528,7 @@ export default function RegisterPage() {
                       I have read and agree to the{' '}
                       <span
                         onClick={(e) => { e.stopPropagation(); setShowTerms(true) }}
-                        className="text-[#26619C] hover:text-[#4a8fd4] transition-colors underline underline-offset-2 cursor-pointer"
+                        className="text-[#E96118] hover:text-[#F58A32] transition-colors underline underline-offset-2 cursor-pointer"
                       >
                         Terms and Conditions
                       </span>
@@ -548,7 +544,7 @@ export default function RegisterPage() {
                   <button
                     onClick={handleRegister}
                     disabled={loading || !agreedToTerms}
-                    className="flex-1 bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-medium"
+                    className="flex-1 bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-medium"
                   >
                     {loading ? 'Creating account...' : isSpecsMember ? 'Join as SPECS member' : 'Create account'}
                   </button>
@@ -559,7 +555,7 @@ export default function RegisterPage() {
             <div className="mt-6 pt-6 border-t border-white/8 text-center">
               <p className="text-white/30 text-sm">
                 Already have an account?{' '}
-                <Link href="/login" className="text-[#26619C] hover:text-[#4a8fd4] transition-colors">
+                <Link href="/login" className="text-[#E96118] hover:text-[#F58A32] transition-colors">
                   Sign in
                 </Link>
               </p>

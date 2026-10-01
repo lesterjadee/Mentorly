@@ -76,14 +76,14 @@ export default async function RecommendationsPage() {
   function ServiceCard({ service }: { service: any }) {
     const isOwn = service.tutor_id === user!.id
     return (
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#26619C]/30 transition-colors">
+      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#E96118]/30 transition-colors">
         <div className="flex items-start justify-between mb-3">
-          <div className="w-9 h-9 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-sm font-medium text-[#4a8fd4]">
+          <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32]">
             {service.users?.full_name?.[0] ?? '?'}
           </div>
           <div className="flex items-center gap-1.5">
             {isOwn && (
-              <span className="text-[10px] text-purple-400 border border-purple-500/20 bg-purple-500/10 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
                 Yours
               </span>
             )}
@@ -108,7 +108,7 @@ export default async function RecommendationsPage() {
         ) : (
           <Link
             href={'/dashboard/bookings/new?service=' + service.id}
-            className="block w-full text-center bg-white/5 hover:bg-[#26619C] border border-white/10 hover:border-[#26619C] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
+            className="block w-full text-center bg-white/5 hover:bg-[#E96118] border border-white/10 hover:border-[#E96118] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
           >
             Book session
           </Link>
@@ -127,7 +127,7 @@ export default async function RecommendationsPage() {
       {recommendedServices.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <Zap size={15} className="text-[#4a8fd4]" />
+            <Zap size={15} className="text-[#F58A32]" />
             <h2 className="text-sm font-medium text-white">Recommended for {userCourse} students</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -141,7 +141,7 @@ export default async function RecommendationsPage() {
       {repeatRecommendations.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <BookOpen size={15} className="text-purple-400" />
+            <BookOpen size={15} className="text-[#E96118]" />
             <h2 className="text-sm font-medium text-white">Based on your past sessions</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -179,7 +179,7 @@ export default async function RecommendationsPage() {
             <Zap size={32} className="text-white/10 mx-auto mb-4" />
             <p className="text-white/40 text-sm">No recommendations yet</p>
             <p className="text-white/20 text-xs mt-1">Book a few sessions and we'll tailor suggestions for you</p>
-            <Link href="/dashboard/marketplace" className="inline-block mt-4 text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
+            <Link href="/dashboard/marketplace" className="inline-block mt-4 text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
               Browse marketplace
             </Link>
           </div>

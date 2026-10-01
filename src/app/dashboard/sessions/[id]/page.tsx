@@ -87,7 +87,7 @@ export default async function SessionDetailPage({
         <div className="md:col-span-2 space-y-5">
 
           {/* session header */}
-          <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-2xl p-6">
+          <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-2xl p-6">
             <div className="flex items-start justify-between gap-3 mb-4">
               <span className="text-xs font-bold text-green-400 border border-green-500/20 bg-green-500/10 px-3 py-1 rounded-full">
                 FREE SESSION
@@ -106,15 +106,15 @@ export default async function SessionDetailPage({
           <div className="bg-white/3 border border-white/8 rounded-2xl p-5">
             <p className="text-xs text-white/30 uppercase tracking-wider mb-4">Your SPECS tutor</p>
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#26619C] flex items-center justify-center text-lg font-black text-white flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#E96118] flex items-center justify-center text-lg font-black text-white flex-shrink-0">
                 {session.tutor?.full_name?.[0]}
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-0.5">
                   <p className="font-semibold text-sm">{session.tutor?.full_name}</p>
                   <div className="flex items-center gap-1">
-                    <Shield size={10} className="text-[#4a8fd4]" />
-                    <span className="text-[10px] text-[#4a8fd4] font-medium">
+                    <Shield size={10} className="text-[#F58A32]" />
+                    <span className="text-[10px] text-[#F58A32] font-medium">
                       SPECS {session.tutor?.specs_role || 'Member'}
                     </span>
                   </div>
@@ -190,7 +190,7 @@ export default async function SessionDetailPage({
           {materials && materials.length > 0 && (
             <div className="bg-white/3 border border-white/8 rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
-                <FileText size={14} className="text-blue-400" />
+                <FileText size={14} className="text-[#E96118]" />
                 <p className="text-xs text-white/30 uppercase tracking-wider">
                   Study materials ({materials.length})
                 </p>
@@ -200,10 +200,10 @@ export default async function SessionDetailPage({
                   <div
                     key={mat.id}
                     onClick={() => window.open(mat.file_url, '_blank')}
-                    className="flex items-center gap-3 bg-white/3 hover:bg-blue-500/5 border border-white/8 hover:border-blue-500/20 rounded-xl p-3 cursor-pointer transition-all group"
+                    className="flex items-center gap-3 bg-white/3 hover:bg-[#E96118]/5 border border-white/8 hover:border-[#E96118]/20 rounded-xl p-3 cursor-pointer transition-all group"
                   >
-                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <FileText size={14} className="text-blue-400" />
+                    <div className="w-8 h-8 rounded-lg bg-[#E96118]/10 flex items-center justify-center flex-shrink-0">
+                      <FileText size={14} className="text-[#E96118]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium text-white/70 truncate group-hover:text-white transition-colors">
@@ -213,7 +213,7 @@ export default async function SessionDetailPage({
                         <p className="text-[10px] text-white/30">{formatFileSize(mat.file_size)}</p>
                       )}
                     </div>
-                    <Download size={13} className="text-white/20 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+                    <Download size={13} className="text-white/20 group-hover:text-[#E96118] transition-colors flex-shrink-0" />
                   </div>
                 ))}
               </div>
@@ -256,7 +256,7 @@ export default async function SessionDetailPage({
             ) : (
               <Link
                 href={'/dashboard/bookings/new?service=' + session.id}
-                className="block w-full text-center bg-[#26619C] hover:bg-[#1e4f82] active:scale-95 transition-all py-3.5 rounded-xl text-sm font-bold"
+                className="block w-full text-center bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all py-3.5 rounded-xl text-sm font-bold"
               >
                 Book this session
               </Link>
@@ -269,7 +269,7 @@ export default async function SessionDetailPage({
                 'Gordon College students only',
               ].map((t) => (
                 <div key={t} className="flex items-center gap-2">
-                  <Shield size={10} className="text-[#4a8fd4] flex-shrink-0" />
+                  <Shield size={10} className="text-[#F58A32] flex-shrink-0" />
                   <p className="text-[10px] text-white/30">{t}</p>
                 </div>
               ))}
@@ -283,7 +283,7 @@ export default async function SessionDetailPage({
             </p>
             <Link
               href="/dashboard/requests/new"
-              className="flex items-center justify-center gap-1.5 text-xs text-[#4a8fd4] hover:text-white transition-colors"
+              className="flex items-center justify-center gap-1.5 text-xs text-[#F58A32] hover:text-white transition-colors"
             >
               <BookOpen size={12} />
               Post a help request

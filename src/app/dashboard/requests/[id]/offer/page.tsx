@@ -96,7 +96,7 @@ export default function SendOfferPage() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -105,7 +105,7 @@ export default function SendOfferPage() {
     return (
       <div className="text-center py-20">
         <p className="text-white/40">Request not found.</p>
-        <Link href="/dashboard/requests/browse" className="text-[#26619C] text-sm mt-3 inline-block">Back to browse</Link>
+        <Link href="/dashboard/requests/browse" className="text-[#E96118] text-sm mt-3 inline-block">Back to browse</Link>
       </div>
     )
   }
@@ -122,7 +122,7 @@ export default function SendOfferPage() {
         <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-8 text-center">
           <p className="text-yellow-400 font-medium mb-2">Offer already sent</p>
           <p className="text-white/40 text-sm">You've already sent an offer for this request. Wait for the learner to respond.</p>
-          <Link href="/dashboard/requests/browse" className="inline-block mt-4 text-[#26619C] hover:text-[#4a8fd4] text-sm transition-colors">
+          <Link href="/dashboard/requests/browse" className="inline-block mt-4 text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
             Back to browse
           </Link>
         </div>
@@ -147,7 +147,7 @@ export default function SendOfferPage() {
       {/* request summary */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-6">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-sm font-medium text-purple-400 flex-shrink-0">
+          <div className="w-10 h-10 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#E96118] flex-shrink-0">
             {request.users?.full_name?.[0]}
           </div>
           <div className="flex-1">
@@ -169,7 +169,7 @@ export default function SendOfferPage() {
                     ? formatDate(request.start_date) + ' → ' + formatDate(request.end_date)
                     : formatDate(request.start_date)}
                   {isMulti && (
-                    <span className="text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full text-[10px]">
+                    <span className="text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full text-[10px]">
                       {request.total_days} day{request.total_days !== 1 ? 's' : ''}
                     </span>
                   )}
@@ -210,14 +210,14 @@ export default function SendOfferPage() {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Introduce yourself, describe your experience with this subject, and why you'd be a great fit..."
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
           />
         </div>
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2"
+          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2"
         >
           <Send size={15} />
           {loading ? 'Sending offer...' : 'Send offer to learner'}

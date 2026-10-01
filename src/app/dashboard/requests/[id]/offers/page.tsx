@@ -78,7 +78,7 @@ export default async function RequestOffersPage({
             </div>
           )}
           {isMulti && (
-            <span className="text-xs text-[#4a8fd4] border border-[#26619C]/20 bg-[#26619C]/10 px-2 py-0.5 rounded-full">
+            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
               {request.total_days} day{request.total_days !== 1 ? 's' : ''}
             </span>
           )}
@@ -103,7 +103,7 @@ export default async function RequestOffersPage({
                 {/* tutor info */}
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-base font-medium text-[#4a8fd4] flex-shrink-0">
+                    <div className="w-11 h-11 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-base font-medium text-[#F58A32] flex-shrink-0">
                       {offer.tutor?.full_name?.[0]}
                     </div>
                     <div>

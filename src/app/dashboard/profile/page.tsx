@@ -88,7 +88,7 @@ export default function ProfilePage() {
   if (!profile) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#26619C] border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -118,9 +118,9 @@ export default function ProfilePage() {
       </div>
 
       {/* profile card */}
-      <div className="bg-gradient-to-br from-[#0d1f35] to-[#0a1628] border border-[#26619C]/20 rounded-2xl p-6 mb-5">
+      <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-2xl p-6 mb-5">
         <div className="flex items-start gap-5">
-          <div className="w-16 h-16 rounded-2xl bg-[#26619C]/20 border border-[#26619C]/30 flex items-center justify-center text-2xl font-black text-[#4a8fd4] flex-shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-2xl font-black text-[#F58A32] flex-shrink-0">
             {profile.full_name?.[0] || user?.email?.[0]}
           </div>
           <div className="flex-1 min-w-0">
@@ -140,9 +140,9 @@ export default function ProfilePage() {
 
             <div className={
               'mt-2 px-2.5 py-1 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5 ' +
-              (profile.role === 'tutor' ? 'border-[#26619C]/40 text-[#4a8fd4] bg-[#26619C]/10' :
-              profile.role === 'learner' ? 'border-teal-500/30 text-teal-400 bg-teal-500/10' :
-              'border-purple-500/30 text-purple-400 bg-purple-500/10')
+              (profile.role === 'tutor' ? 'border-[#E96118]/40 text-[#F58A32] bg-[#E96118]/10' :
+              profile.role === 'learner' ? 'border-[#315C36]/30 text-[#315C36] bg-[#315C36]/10' :
+              'border-[#E96118]/30 text-[#E96118] bg-[#E96118]/10')
             }>
               <div className="w-1.5 h-1.5 rounded-full bg-current" />
               {profile.role === 'both' ? 'Tutor & Learner' : profile.role === 'tutor' ? 'Tutor' : 'Learner'}
@@ -172,7 +172,7 @@ export default function ProfilePage() {
       {/* SPECS support */}
       <div className="bg-white/3 border border-white/8 rounded-2xl p-6 mb-5">
         <div className="flex items-center gap-2 mb-5">
-          <BookOpen size={15} className="text-[#4a8fd4]" />
+          <BookOpen size={15} className="text-[#F58A32]" />
           <p className="text-sm font-bold">SPECS support</p>
         </div>
 
@@ -200,7 +200,7 @@ export default function ProfilePage() {
                 <p className="text-sm font-semibold">Community service</p>
                 <p className="text-xs text-white/30">Sessions are offered as academic support, not paid tutoring.</p>
               </div>
-              <p className="text-xl font-black text-[#4a8fd4]">
+              <p className="text-xl font-black text-[#F58A32]">
                 Free
               </p>
             </div>
@@ -224,7 +224,7 @@ export default function ProfilePage() {
               <input
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function ProfilePage() {
               <input
                 value={school}
                 onChange={(e) => setSchool(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
               />
             </div>
           </div>
@@ -248,10 +248,10 @@ export default function ProfilePage() {
               <select
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#26619C]/60 transition-colors appearance-none"
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
               >
                 {COURSES.map((c) => (
-                  <option key={c} value={c} className="bg-[#0d1117]">{c}</option>
+                  <option key={c} value={c} className="bg-[#FFFFFF]">{c}</option>
                 ))}
               </select>
             </div>
@@ -264,14 +264,14 @@ export default function ProfilePage() {
               onChange={(e) => setBio(e.target.value)}
               placeholder="Tell others about yourself, your strengths, and what you enjoy teaching or learning..."
               rows={3}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#26619C]/60 transition-colors resize-none"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
             />
           </div>
 
           <button
             onClick={handleSave}
             disabled={saving}
-            className="w-full bg-[#26619C] hover:bg-[#1e4f82] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-bold"
+            className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-bold"
           >
             {saving ? 'Saving...' : 'Save changes'}
           </button>
