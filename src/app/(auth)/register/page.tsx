@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
@@ -61,7 +61,7 @@ function TermsModal({ onClose }: { onClose: () => void }) {
           </section>
           <section>
             <h3 className="text-white/80 font-medium mb-2">9. Limitation of Liability</h3>
-            <p>This platform is provided on an "as is" basis. SPECS and Gordon College shall not be held liable for any damages arising from use of the platform.</p>
+            <p>This platform is provided on an &quot;as is&quot; basis. SPECS and Gordon College shall not be held liable for any damages arising from use of the platform.</p>
           </section>
         </div>
         <div className="px-6 py-4 border-t border-white/8 flex-shrink-0">
@@ -114,6 +114,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [inviteCode, setInviteCode] = useState('')
+  const inviteCodeRef = useRef('')
   const [showInviteCode, setShowInviteCode] = useState(false)
   const [codeStatus, setCodeStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid'>('idle')
   const [isSpecsMember, setIsSpecsMember] = useState(false)
@@ -124,23 +125,27 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [step, setStep] = useState(1)
 
-  const isValidEmail = email.toLowerCase().endsWith('@gordoncollege.edu.ph')
+  const normalizedEmail = email.trim().toLowerCase()
+  const isValidEmail = /^[^@\s]+@gordoncollege\.edu\.ph$/.test(normalizedEmail)
   const isValidPassword =
     password.length >= 8 &&
     /[A-Z]/.test(password) &&
     /[^a-zA-Z0-9]/.test(password)
 
   async function checkInviteCode() {
-    if (!inviteCode.trim()) return
+    const code = inviteCode.trim()
+    if (!code) return
     setCodeStatus('checking')
     const supabase = createClient()
-    const { data } = await supabase
-      .from('specs_settings')
-      .select('invite_code')
-      .eq('id', 1)
-      .single()
+    const { data, error: inviteError } = await supabase.rpc('validate_specs_invite', { invite_code: code })
+    // Ignore a response for a code that was edited while validation ran.
+    if (inviteCodeRef.current.trim() !== code) return
 
-    if (data && inviteCode.trim() === data.invite_code) {
+    if (inviteError) {
+      setCodeStatus('idle')
+      setIsSpecsMember(false)
+      setError('Unable to verify the SPECS code. Please try again.')
+    } else if (data === true) {
       setCodeStatus('valid')
       setIsSpecsMember(true)
     } else {
@@ -150,8 +155,9 @@ export default function RegisterPage() {
   }
 
   async function handleRegister() {
+    if (loading || codeStatus === 'checking') return
     if (!agreedToTerms) { setError('You must agree to the Terms and Conditions.'); return }
-    if (!fullName || !email || !password) { setError('Please fill in all fields.'); return }
+    if (!fullName.trim() || !normalizedEmail || !password) { setError('Please fill in all fields.'); return }
     if (!isValidEmail) { setError('Only @gordoncollege.edu.ph emails are allowed.'); return }
     if (!isValidPassword) { setError('Password must be at least 8 characters, include 1 uppercase letter and 1 symbol.'); return }
 
@@ -159,16 +165,29 @@ export default function RegisterPage() {
     setError('')
 
     const supabase = createClient()
+    const code = inviteCode.trim()
+    if (code) {
+      const { data, error: inviteError } = await supabase.rpc('validate_specs_invite', { invite_code: code })
+      if (inviteError || data !== true) {
+        setCodeStatus(inviteError ? 'idle' : 'invalid')
+        setIsSpecsMember(false)
+        setError(inviteError ? 'Unable to verify the SPECS code. Please try again.' : 'Invalid SPECS invite code. Correct it or clear the field to register as a regular student.')
+        setLoading(false)
+        return
+      }
+      setIsSpecsMember(true)
+      setCodeStatus('valid')
+    }
+
     const { error: signUpError } = await supabase.auth.signUp({
-      email,
+      email: normalizedEmail,
       password,
       options: {
         data: {
-          full_name: fullName,
+          full_name: fullName.trim(),
           school: 'Gordon College',
           course: COURSE,
-          role: isSpecsMember ? 'specs' : 'student',
-          is_specs_member: isSpecsMember,
+          ...(code ? { specs_invite_code: code } : {}),
         },
       },
     })
@@ -177,19 +196,6 @@ export default function RegisterPage() {
       setError(signUpError.message)
       setLoading(false)
       return
-    }
-
-    // if SPECS member, update the users table after signup
-    if (isSpecsMember) {
-      // wait a moment for the trigger to create the user profile
-      await new Promise(r => setTimeout(r, 1500))
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        await supabase
-          .from('users')
-          .update({ is_specs_member: true, specs_role: 'member' })
-          .eq('id', user.id)
-      }
     }
 
     setSuccess(true)
@@ -212,7 +218,7 @@ export default function RegisterPage() {
           {isSpecsMember && (
             <div className="mb-4 bg-[#E96118]/10 border border-[#E96118]/20 rounded-xl px-4 py-3">
               <p className="text-[#F58A32] text-xs font-medium">
-                🎉 You've been registered as a SPECS member. Your account has elevated privileges.
+                🎉 You&apos;ve been registered as a SPECS member. Your account has elevated privileges.
               </p>
             </div>
           )}
@@ -408,7 +414,7 @@ export default function RegisterPage() {
                     <div>
                       <p className="text-sm font-medium text-white/80">Are you a SPECS member?</p>
                       <p className="text-xs text-white/40 mt-0.5 leading-relaxed">
-                        Enter your SPECS invite code to unlock session management and study material uploads. Leave blank if you're a regular student.
+                        Enter your SPECS invite code to unlock session management and study material uploads. Leave blank if you&apos;re a regular student.
                       </p>
                     </div>
                   </div>
@@ -432,7 +438,8 @@ export default function RegisterPage() {
                         <input
                           type="text"
                           value={inviteCode}
-                          onChange={(e) => { setInviteCode(e.target.value.toUpperCase()); setCodeStatus('idle'); setIsSpecsMember(false) }}
+                          onChange={(e) => { const code = e.target.value.toUpperCase(); inviteCodeRef.current = code; setInviteCode(code); setCodeStatus('idle'); setIsSpecsMember(false) }}
+                          disabled={loading}
                           placeholder="Enter SPECS invite code"
                           className={
                             'w-full bg-white/5 border rounded-xl pl-9 pr-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none transition-colors uppercase tracking-wider ' +
@@ -444,7 +451,7 @@ export default function RegisterPage() {
                       </div>
                       <button
                         onClick={checkInviteCode}
-                        disabled={!inviteCode.trim() || codeStatus === 'checking'}
+                        disabled={loading || !inviteCode.trim() || codeStatus === 'checking'}
                         className="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-medium text-white/50 hover:text-white transition-all disabled:opacity-40"
                       >
                         {codeStatus === 'checking' ? 'Verifying...' : 'Verify code'}
@@ -453,7 +460,7 @@ export default function RegisterPage() {
                       {codeStatus === 'valid' && (
                         <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-lg px-3 py-2">
                           <ShieldCheck size={13} className="text-green-400" />
-                          <p className="text-green-400 text-xs font-medium">Valid SPECS code — you'll be registered as a SPECS member</p>
+                          <p className="text-green-400 text-xs font-medium">Valid SPECS code — you&apos;ll be registered as a SPECS member</p>
                         </div>
                       )}
                       {codeStatus === 'invalid' && (
@@ -521,7 +528,7 @@ export default function RegisterPage() {
                   </button>
                   <button
                     onClick={handleRegister}
-                    disabled={loading || !agreedToTerms}
+                    disabled={loading || codeStatus === 'checking' || !agreedToTerms}
                     className="flex-1 bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3 rounded-xl text-white text-sm font-medium"
                   >
                     {loading ? 'Creating account...' : isSpecsMember ? 'Join as SPECS member' : 'Create account'}
