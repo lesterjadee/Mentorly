@@ -6,15 +6,11 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import {
   GraduationCap, Mail, Lock, User,
-  BookOpen, School, CheckCircle, X,
+  School, CheckCircle, X,
   Eye, EyeOff, KeyRound, ShieldCheck
 } from 'lucide-react'
 
-const COURSES = [
-  'Computer Science', 'Information Technology', 'Engineering', 'Business Administration',
-  'Nursing', 'Education', 'Architecture', 'Accountancy', 'Psychology', 'Communication',
-  'Political Science', 'Biology', 'Mathematics', 'Physics', 'Chemistry', 'Other'
-]
+const COURSE = 'Computer Science'
 
 function TermsModal({ onClose }: { onClose: () => void }) {
   return (
@@ -114,7 +110,6 @@ function PasswordStrengthBar({ password }: { password: string }) {
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('')
-  const [course, setCourse] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -156,7 +151,7 @@ export default function RegisterPage() {
 
   async function handleRegister() {
     if (!agreedToTerms) { setError('You must agree to the Terms and Conditions.'); return }
-    if (!fullName || !course || !email || !password) { setError('Please fill in all fields.'); return }
+    if (!fullName || !email || !password) { setError('Please fill in all fields.'); return }
     if (!isValidEmail) { setError('Only @gordoncollege.edu.ph emails are allowed.'); return }
     if (!isValidPassword) { setError('Password must be at least 8 characters, include 1 uppercase letter and 1 symbol.'); return }
 
@@ -171,7 +166,7 @@ export default function RegisterPage() {
         data: {
           full_name: fullName,
           school: 'Gordon College',
-          course,
+          course: COURSE,
           role: isSpecsMember ? 'specs' : 'student',
           is_specs_member: isSpecsMember,
         },
@@ -247,7 +242,7 @@ export default function RegisterPage() {
               <span className="font-semibold text-white text-[15px]">SPECS</span>
             </Link>
             <h1 className="text-2xl font-bold text-white mb-2">Create your account</h1>
-            <p className="text-white/40 text-sm">Gordon College Academic Support Platform</p>
+            <p className="text-white/40 text-sm">Gordon College Computer Science Academic Support</p>
           </div>
 
           {/* gordon college badge */}
@@ -290,7 +285,7 @@ export default function RegisterPage() {
             {step === 1 && (
               <div className="space-y-4">
                 <p className="text-xs text-white/30 uppercase tracking-wider mb-6">
-                  Step 1 — Personal and academic info
+                  Step 1 — Personal information
                 </p>
 
                 <div>
@@ -317,26 +312,9 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Course / Program</label>
-                  <div className="relative">
-                    <BookOpen size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
-                    <select
-                      value={course}
-                      onChange={(e) => setCourse(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
-                    >
-                      <option value="" disabled className="bg-[#FFFDF8]">Select your course</option>
-                      {COURSES.map((c) => (
-                        <option key={c} value={c} className="bg-[#FFFDF8]">{c}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
                 <button
                   onClick={() => {
-                    if (!fullName || !course) { setError('Please fill in all fields.'); return }
+                    if (!fullName) { setError('Please enter your full name.'); return }
                     setError(''); setStep(2)
                   }}
                   className="w-full bg-[#E96118] hover:bg-[#C94A0D] transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
