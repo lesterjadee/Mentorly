@@ -1,0 +1,51 @@
+[33mc50e738[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix(reviews): align UI with design system
+[33m7de85f1[m fix auth problem
+[33m59a6f61[m fix(reviews): align UI with design system
+[33m5c0aaf5[m UI Changes
+[33mcf625eb[m fix: trust scores removed, fee removed, and profile page fix
+[33m24f21ab[m feat: SPECS Sprint 5 - student experience cleanup, role-based dashboard, SPECS command palette fix
+[33m006bb3d[m feat: SPECS Sprint 5 - student experience cleanup, role-based dashboard, SPECS command palette
+[33mff267cf[m fix: add isSpecsMember to InAppNudge Props type
+[33mbf39673[m fix: dashboard queries run in parallel with Promise.all to prevent timeout
+[33m9801fb5[m fix: remove duplicate function implementations in upload page
+[33m150ec4f[m feat: SPECS Sprint 4 - study materials library, upload page, grouped by subject
+[33m468b67b[m feat: SPECS Sprint 3 - session directory, SPECS session creation, free booking flow
+[33mf1774ea[m feat: SPECS Sprint 2 - rebrand landing page, nav, login to SPECS academic platform
+[33m35b5c11[m feat: SPECS Sprint 1 - role system, invite code, study materials table
+[33m0192483[m feat: Gordon College email restriction on login + strong password validation
+[33mbda0cd1[m fix: rewrite FileAttachment using onClick to avoid anchor tag stripping bug
+[33mc1ee7df[m fix: file attachments now clickable and downloadable in chat
+[33m514596b[m fix: remove undefined connected variable from landing page footer
+[33me7a26b2[m feat: file attachments in chat, Gordon College email restriction, powered by footer
+[33mb08993c[m redeploy stable 9c62ef3
+[33m9c62ef3[m redeploy stable f38b281
+[33mf38b281[m feat: Sprint I - add InAppNudge to dashboard
+[33mf6658af[m fix: marketplace client with dual mentor score display
+[33m284b7a3[m feat: Sprint G - marketplace with modal, live search, filters, sort, featured row
+[33mb040bc4[m fix: add Calendar import to dashboard page
+[33mdd2ab03[m feat: Sprint F - dashboard layout with command palette
+[33m9b69003[m feat: Sprint E - conversion landing page, bento grid, social proof, sticky CTA
+[33m114f469[m feat: Skill Swap system - trade tutoring without fees
+[33m48f5b38[m feat: forgot password and reset password pages
+[33m747a36c[m fix: service_id nullable, offer bookings now save correctly, bookings page handles both types
+[33m9f45862[m fix: notifications with offers, fixed offers page module error
+[33m9cb74c4[m feat: Sprint B - enhanced request system with schedule details
+[33md6220b1[m feat: Sprint A - enhanced booking system with date range, daily time, hours per day
+[33m7c8ab13[m feat: browse requests page, tutors can now see learner requests
+[33m126bffb[m fix: marketplace shows all services, own listings marked, My Services strictly filtered
+[33m344258b[m fix: RLS policies, multi-day booking system
+[33m620851f[m feat: notifications page, profile page, fixed header links
+[33mdfd3137[m fix: terms and conditions popup modal, fixed checkbox clickability
+[33m394fe83[m fix: edit service page, explained sidebar pages
+[33mf1edb24[m feat: professional landing page, terms, features, how it works pages
+[33m07353bd[m updated website
+[33meedc7ff[m feat: Sprint 9 - UI/UX polish, animations, mobile responsiveness
+[33m3cb1f04[m feat: Sprint 8 - realtime messaging and notifications
+[33m54a3777[m feat: Sprint 7 - recommendation system
+[33m0cba38c[m feat: Sprint 6 - reviews and trust score system
+[33m83b54ec[m feat: Sprint 5 - booking system with accept/decline
+[33mb76d232[m feat: Sprint 4 - marketplace, services, requests CRUD
+[33mbc59ad0[m feat: Sprint 4 - marketplace, services, requests CRUD
+[33m32a3bee[m feat: Sprint 2 - authentication, login, register, dashboard
+[33m818497f[m feat: Sprint 1 - fresh start with Next.js, Tailwind, and Supabase
+[33me1255d3[m Initial commit from Create Next App
