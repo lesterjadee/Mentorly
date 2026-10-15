@@ -38,30 +38,31 @@ export default async function Home() {
   const displayMaterials = Math.max(materialsCount || 0, 40)
 
   return (
-    <main className="min-h-screen bg-[#FFFDF8] text-[#233B27] overflow-x-hidden">
+    <main className="min-h-screen bg-[#FFFCF7] text-[#20251F] overflow-x-hidden">
 
       {/* ── STICKY NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-3 border-b border-[#E6D7C9] bg-[#FFFDF8]/95 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-3 border-b border-[#E8E5DE] bg-[#FFFCF7]/95 backdrop-blur-xl">
         <div className="flex items-center gap-2.5">
           <Image src="/specs-logo.png" alt="SPECS logo" width={40} height={40} className="h-10 w-10 object-contain" priority />
           <div>
-            <span className="font-black text-[15px] tracking-tight">SPECS</span>
-            <span className="hidden sm:inline text-white/30 text-xs ml-2">Academic Support</span>
+            <span className="font-black text-[15px] tracking-tight text-[#20251F]">Mentorly</span>
+            <span className="hidden sm:inline text-[#939A92] text-xs ml-2">Academic Support</span>
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-8 text-sm text-white/40">
-          <Link href="/features" className="hover:text-white transition-colors duration-150">About</Link>
-          <Link href="/how-it-works" className="hover:text-white transition-colors duration-150">How it works</Link>
+        <div className="hidden md:flex items-center gap-8 text-sm text-[#6B716B]">
+          <Link href="/features" className="hover:text-[#20251F] transition-colors duration-150">About</Link>
+          <Link href="/how-it-works" className="hover:text-[#20251F] transition-colors duration-150">How it works</Link>
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/login" className="hidden sm:block text-sm text-white/50 hover:text-white transition-colors px-3 py-2">
+          <Link href="/login" className="hidden sm:block text-sm text-[#6B716B] hover:text-[#20251F] transition-colors px-3 py-2 font-medium">
             Sign in
           </Link>
           <Link
             href="/register"
-            className="flex items-center gap-1.5 bg-[#E96118] hover:bg-[#C94A0D] active:scale-95 transition-all duration-150 px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-[#E96118]/20"
+            className="flex items-center gap-1.5 text-white active:scale-95 transition-all duration-150 px-4 py-2 rounded-lg text-sm font-semibold shadow-lg shadow-[#F26A21]/20"
+            style={{ background: 'linear-gradient(135deg, #F26A21, #D95416)' }}
           >
             Get started free
             <ArrowRight size={13} />
@@ -77,36 +78,36 @@ export default async function Home() {
           <Image src="/specs-logo.png" alt="Society of Programming Enthusiasts in Computer Science" width={176} height={176} className="h-32 w-32 sm:h-40 sm:w-40 object-contain mx-auto mb-6" priority />
 
           {/* org pill */}
-          <div className="inline-flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs text-white/60 mb-10">
+          <div className="inline-flex items-center gap-2.5 bg-[#FFF0E5] border border-[#F26A21]/20 rounded-full px-4 py-2 text-xs text-[#6B716B] mb-10">
             <span className="flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F58A32] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#E96118]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#F26A21] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#F26A21]"></span>
               </span>
-              <span className="text-[#F58A32] font-medium">Society of Programming Enthusiasts</span>
+              <span className="text-[#D95416] font-semibold">Society of Programming Enthusiasts</span>
             </span>
-            <span className="text-white/20">·</span>
+            <span className="text-[#C5C8C4]">·</span>
             <span>Gordon College</span>
           </div>
 
           {/* headline */}
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[76px] font-black tracking-tighter leading-[0.95] mb-6">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[76px] font-black tracking-tighter leading-[0.95] mb-6 text-[#20251F]">
             Free academic
             <br />
             <span className="relative inline-block">
-              <span className="relative z-10 text-[#E96118]">
+              <span className="relative z-10 text-[#F26A21]">
                 support.
               </span>
-              <span className="absolute -inset-2 bg-[#E96118]/10 rounded-xl -z-0" />
+              <span className="absolute -inset-2 bg-[#F26A21]/10 rounded-xl -z-0" />
             </span>
           </h1>
 
           {/* subheadline */}
-          <p className="text-lg md:text-xl text-white/40 max-w-2xl mx-auto mb-4 leading-relaxed font-light">
+          <p className="text-lg md:text-xl text-[#6B716B] max-w-2xl mx-auto mb-4 leading-relaxed font-light">
             SPECS connects Gordon College students with peer academic support —
-            <span className="text-white/60"> completely free, no fees, no payments.</span>
+            <span className="text-[#20251F] font-medium"> completely free, no fees, no payments.</span>
           </p>
-          <p className="text-sm text-white/25 mb-10">
+          <p className="text-sm text-[#939A92] mb-10">
             Tutoring sessions, study materials, and academic help — all provided by SPECS members.
           </p>
 
@@ -114,21 +115,22 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
             <Link
               href="/register"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] shadow-lg shadow-[#E96118]/25 active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-bold text-base"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 text-white shadow-lg shadow-[#F26A21]/25 active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-bold text-base"
+              style={{ background: 'linear-gradient(135deg, #F26A21, #D95416)' }}
             >
               Get academic help now
               <ArrowRight size={16} />
             </Link>
             <Link
               href="/how-it-works"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/5 hover:bg-white/8 border border-white/10 hover:border-white/20 active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-medium text-base text-white/70 hover:text-white"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] hover:border-[#D9D4C7] active:scale-95 transition-all duration-150 px-8 py-4 rounded-xl font-medium text-base text-[#6B716B] hover:text-[#20251F]"
             >
               How SPECS helps
             </Link>
           </div>
 
           {/* trust signals */}
-          <div className="flex items-center justify-center gap-6 flex-wrap text-xs text-white/30">
+          <div className="flex items-center justify-center gap-6 flex-wrap text-xs text-[#939A92]">
             {[
               'Free for all GC students',
               'No fees ever',
@@ -136,7 +138,7 @@ export default async function Home() {
               'Real study materials'
             ].map((t) => (
               <span key={t} className="flex items-center gap-1.5">
-                <CheckCircle size={11} className="text-[#E96118]/80" />
+                <CheckCircle size={11} className="text-[#F26A21]" />
                 {t}
               </span>
             ))}
@@ -167,7 +169,7 @@ export default async function Home() {
                 ))}
               </div>
             </div>
-            <p className="text-xs text-white/30 text-center">
+            <p className="text-xs text-[#939A92] text-center">
               {specsMembers.length} SPECS members ready to help you succeed
             </p>
           </div>
@@ -175,7 +177,7 @@ export default async function Home() {
       </section>
 
       {/* ── STATS BAR ── */}
-      <section className="border-y border-white/5 bg-white/2 py-10 px-6 md:px-10">
+      <section className="border-y border-[#E8E5DE] bg-[#F5F3ED]/50 py-10 px-6 md:px-10">
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { value: displayUsers + '+', label: 'Students helped' },
@@ -184,8 +186,8 @@ export default async function Home() {
             { value: displayMaterials + '+', label: 'Study materials' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="text-3xl md:text-4xl font-black text-white mb-1 tracking-tight">{stat.value}</p>
-              <p className="text-xs text-white/30 uppercase tracking-widest">{stat.label}</p>
+              <p className="text-3xl md:text-4xl font-black text-[#20251F] mb-1 tracking-tight">{stat.value}</p>
+              <p className="text-xs text-[#939A92] uppercase tracking-widest">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -194,12 +196,12 @@ export default async function Home() {
       {/* ── WHAT SPECS OFFERS ── */}
       <section className="py-24 px-6 md:px-10 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs text-white/30 uppercase tracking-[0.2em] mb-4">What we offer</p>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-5">
+          <p className="text-xs text-[#939A92] uppercase tracking-[0.2em] mb-4">What we offer</p>
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-5 text-[#20251F]">
             Everything you need
-            <span className="text-white/30"> to succeed.</span>
+            <span className="text-[#939A92]"> to succeed.</span>
           </h2>
-          <p className="text-white/40 max-w-xl mx-auto">
+          <p className="text-[#6B716B] max-w-xl mx-auto">
             SPECS members are Gordon College students who excel in their subjects and dedicate their time to helping their fellow students — all for free.
           </p>
         </div>
@@ -213,17 +215,17 @@ export default async function Home() {
             <div className="w-12 h-12 rounded-2xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center mb-6">
               <Calendar size={20} className="text-[#F58A32]" />
             </div>
-            <h3 className="text-xl font-bold mb-3">Book a tutoring session</h3>
-            <p className="text-white/40 text-sm leading-relaxed mb-6">
+            <h3 className="text-xl font-bold mb-3 text-[#20251F]">Book a tutoring session</h3>
+            <p className="text-[#6B716B] text-sm leading-relaxed mb-6">
               Browse sessions posted by SPECS members, pick a schedule that works for you, and book a one-on-one or group tutoring session — completely free.
             </p>
-            <div className="flex items-center gap-3 text-xs text-white/30 flex-wrap">
-              <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+            <div className="flex items-center gap-3 text-xs text-[#939A92] flex-wrap">
+              <span className="flex items-center gap-1.5 bg-white border border-[#E8E5DE] px-3 py-1.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                 Free always
               </span>
-              <span className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">Online or in-person</span>
-              <span className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">Flexible scheduling</span>
+              <span className="bg-white border border-[#E8E5DE] px-3 py-1.5 rounded-full">Online or in-person</span>
+              <span className="bg-white border border-[#E8E5DE] px-3 py-1.5 rounded-full">Flexible scheduling</span>
             </div>
           </div>
 
@@ -232,19 +234,19 @@ export default async function Home() {
             <div className="w-12 h-12 rounded-2xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mb-6">
               <FileText size={20} className="text-[#E96118]" />
             </div>
-            <h3 className="text-lg font-bold mb-2">Study materials library</h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <h3 className="text-lg font-bold mb-2 text-[#20251F]">Study materials library</h3>
+            <p className="text-[#6B716B] text-sm leading-relaxed">
               Access reviewer notes, study guides, and reference materials uploaded by SPECS members — no booking required.
             </p>
           </div>
 
           {/* post a request */}
-          <div className="bg-gradient-to-br from-[#FFF2E7] to-[#FFFBF6] border border-[#E96118]/20 rounded-3xl p-7 group hover:border-[#E96118]/40 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mb-6">
-              <BookOpen size={20} className="text-[#E96118]" />
+          <div className="bg-gradient-to-br from-[#FFF2E7] to-[#FFFBF6] border border-[#F26A21]/20 rounded-3xl p-7 group hover:border-[#F26A21]/40 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#F26A21]/10 border border-[#F26A21]/20 flex items-center justify-center mb-6">
+              <BookOpen size={20} className="text-[#F26A21]" />
             </div>
-            <h3 className="text-lg font-bold mb-2">Post a help request</h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <h3 className="text-lg font-bold mb-2 text-[#20251F]">Post a help request</h3>
+            <p className="text-[#6B716B] text-sm leading-relaxed">
               Tell us what subject you need help with. SPECS members will reach out with sessions tailored to your needs.
             </p>
           </div>
@@ -254,19 +256,19 @@ export default async function Home() {
             <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-6">
               <Shield size={20} className="text-green-400" />
             </div>
-            <h3 className="text-lg font-bold mb-2">Verified SPECS tutors</h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <h3 className="text-lg font-bold mb-2 text-[#20251F]">Verified SPECS tutors</h3>
+            <p className="text-[#6B716B] text-sm leading-relaxed">
               Every tutor is a verified SPECS member — a real Gordon College student dedicated to academic excellence.
             </p>
           </div>
 
           {/* messaging */}
-          <div className="bg-gradient-to-br from-[#EFF8F2] to-[#FBFFFA] border border-[#315C36]/20 rounded-3xl p-7 group hover:border-[#315C36]/40 transition-colors">
-            <div className="w-12 h-12 rounded-2xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center mb-6">
-              <MessageSquare size={20} className="text-[#315C36]" />
+          <div className="bg-gradient-to-br from-[#EFF8F2] to-[#FBFFFA] border border-[#315B3B]/20 rounded-3xl p-7 group hover:border-[#315B3B]/40 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#315B3B]/10 border border-[#315B3B]/20 flex items-center justify-center mb-6">
+              <MessageSquare size={20} className="text-[#315B3B]" />
             </div>
-            <h3 className="text-lg font-bold mb-2">Direct messaging</h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <h3 className="text-lg font-bold mb-2 text-[#20251F]">Direct messaging</h3>
+            <p className="text-[#6B716B] text-sm leading-relaxed">
               Message SPECS tutors directly to ask questions, share files, or coordinate your session details.
             </p>
           </div>
@@ -278,21 +280,22 @@ export default async function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-xs text-white/30 uppercase tracking-[0.2em] mb-4">About SPECS</p>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-5">
+              <p className="text-xs text-[#939A92] uppercase tracking-[0.2em] mb-4">About Mentorly</p>
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-5 text-[#20251F]">
                 Students helping
                 <br />
-                <span className="text-[#E96118]">students.</span>
+                <span className="text-[#F26A21]">students.</span>
               </h2>
-              <p className="text-white/40 leading-relaxed mb-6">
+              <p className="text-[#6B716B] leading-relaxed mb-6">
                 The Society of Programming Enthusiasts (SPECS) is a student organization at Gordon College committed to academic excellence and community support. We believe that peer learning is the most effective form of education.
               </p>
-              <p className="text-white/40 leading-relaxed mb-8">
+              <p className="text-[#6B716B] leading-relaxed mb-8">
                 Our members volunteer their time and knowledge to help fellow students navigate difficult subjects — because when one student succeeds, the whole community benefits.
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-6 py-3 rounded-xl font-semibold text-sm"
+                className="inline-flex items-center gap-2 text-white transition-all px-6 py-3 rounded-xl font-semibold text-sm active:scale-[0.98]"
+                style={{ background: 'linear-gradient(135deg, #F26A21, #D95416)' }}
               >
                 Join the platform
                 <ArrowRight size={14} />
@@ -305,31 +308,31 @@ export default async function Home() {
                   icon: GraduationCap,
                   title: 'Academic excellence',
                   desc: 'SPECS tutors are top-performing students who genuinely understand the material.',
-                  color: 'text-[#F58A32]',
-                  bg: 'bg-[#E96118]/10 border-[#E96118]/20',
+                  color: 'text-[#F26A21]',
+                  bg: 'bg-[#FFF0E5] border-[#F26A21]/20',
                 },
                 {
                   icon: Users,
                   title: 'Community driven',
                   desc: 'This platform exists because SPECS believes in lifting each other up — no financial incentive needed.',
-                  color: 'text-green-400',
-                  bg: 'bg-green-500/10 border-green-500/20',
+                  color: 'text-[#315B3B]',
+                  bg: 'bg-[#E8F0E7] border-[#315B3B]/20',
                 },
                 {
                   icon: Shield,
                   title: 'Safe and trusted',
                   desc: 'Exclusive to Gordon College students. Every account is verified with a @gordoncollege.edu.ph email.',
-                  color: 'text-[#E96118]',
-                  bg: 'bg-[#E96118]/10 border-[#E96118]/20',
+                  color: 'text-[#F26A21]',
+                  bg: 'bg-[#FFF0E5] border-[#F26A21]/20',
                 },
               ].map((item) => (
-                <div key={item.title} className="flex items-start gap-4 bg-white/3 border border-white/8 rounded-2xl p-5">
+                <div key={item.title} className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-sm">
                   <div className={'w-10 h-10 rounded-xl flex items-center justify-center border flex-shrink-0 ' + item.bg}>
                     <item.icon size={18} className={item.color} />
                   </div>
                   <div>
-                    <p className="font-semibold text-sm mb-1">{item.title}</p>
-                    <p className="text-xs text-white/40 leading-relaxed">{item.desc}</p>
+                    <p className="font-semibold text-sm mb-1 text-[#20251F]">{item.title}</p>
+                    <p className="text-xs text-[#6B716B] leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -342,11 +345,11 @@ export default async function Home() {
       <section className="py-24 px-6 md:px-10 border-t border-white/5">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-xs text-white/30 uppercase tracking-[0.2em] mb-4">How it works</p>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tight">
+            <p className="text-xs text-[#939A92] uppercase tracking-[0.2em] mb-4">How it works</p>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tight text-[#20251F]">
               Get help in
               <br />
-              <span className="text-[#E96118]">three simple steps.</span>
+              <span className="text-[#F26A21]">three simple steps.</span>
             </h2>
           </div>
 
@@ -356,31 +359,31 @@ export default async function Home() {
                 step: '01',
                 title: 'Create your free account',
                 desc: 'Sign up with your Gordon College email. No credit card, no fees, no commitment.',
-                color: 'text-[#F58A32]',
-                border: 'border-[#E96118]/20',
-                bg: 'bg-[#E96118]/5',
+                color: 'text-[#F26A21]',
+                border: 'border-[#F26A21]/20',
+                bg: 'bg-[#FFF0E5]',
               },
               {
                 step: '02',
                 title: 'Browse or request help',
                 desc: 'Find a SPECS tutoring session that fits your schedule, or post a request for the subject you need.',
-                color: 'text-[#E96118]',
-                border: 'border-[#E96118]/20',
-                bg: 'bg-[#E96118]/5',
+                color: 'text-[#F26A21]',
+                border: 'border-[#F26A21]/20',
+                bg: 'bg-[#FFF0E5]',
               },
               {
                 step: '03',
                 title: 'Learn and succeed',
                 desc: 'Attend your session, download study materials, and watch your understanding — and grades — improve.',
-                color: 'text-green-400',
-                border: 'border-green-500/20',
-                bg: 'bg-green-500/5',
+                color: 'text-[#315B3B]',
+                border: 'border-[#315B3B]/20',
+                bg: 'bg-[#E8F0E7]',
               },
             ].map((s) => (
               <div key={s.step} className={'rounded-3xl border p-7 ' + s.bg + ' ' + s.border}>
                 <p className={'text-4xl font-black mb-5 ' + s.color}>{s.step}</p>
-                <h3 className="font-bold text-base mb-2">{s.title}</h3>
-                <p className="text-sm text-white/40 leading-relaxed">{s.desc}</p>
+                <h3 className="font-bold text-base mb-2 text-[#20251F]">{s.title}</h3>
+                <p className="text-sm text-[#6B716B] leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -391,31 +394,30 @@ export default async function Home() {
       <section className="py-24 px-6 md:px-10">
         <div className="max-w-4xl mx-auto relative">
           <div className="absolute inset-0 bg-[#E96118]/8 rounded-3xl blur-3xl" />
-          <div className="relative bg-gradient-to-br from-[#FFF3E9] via-[#F7FBF5] to-[#FFFDF8] border border-[#E96118]/25 rounded-3xl p-12 md:p-16 text-center overflow-hidden">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-[#E96118]/15 rounded-full blur-3xl" />
+          <div className="relative bg-gradient-to-br from-[#FFF0E5] via-[#FFF8F3] to-[#FFFCF7] border border-[#F26A21]/25 rounded-3xl p-12 md:p-16 text-center overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-[#F26A21]/10 rounded-full blur-3xl" />
             <div className="relative">
-              <div className="inline-flex items-center gap-2 mb-6 bg-[#E96118]/10 border border-[#E96118]/20 rounded-full px-4 py-2">
-                <span className="w-7 h-7 rounded-md bg-[#E96118] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white font-black text-[10px]">SC</span>
-                </span>
-                <span className="text-xs text-[#F58A32] font-medium">Society of Programming Enthusiasts</span>
+              <div className="inline-flex items-center gap-2 mb-6 bg-[#F26A21]/10 border border-[#F26A21]/20 rounded-full px-4 py-2">
+                <Image src="/specs-logo.png" alt="SPECS" width={24} height={24} className="w-6 h-6 object-contain" />
+                <span className="text-xs text-[#D95416] font-semibold">Society of Programming Enthusiasts</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-5">
+              <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-5 text-[#20251F]">
                 Your classmates want
                 <br />
-                <span className="text-[#E96118]">to help you.</span>
+                <span className="text-[#F26A21]">to help you.</span>
               </h2>
-              <p className="text-white/40 mb-10 max-w-md mx-auto">
+              <p className="text-[#6B716B] mb-10 max-w-md mx-auto">
                 SPECS members are ready to support you — free tutoring, free materials, free of charge. All you have to do is show up.
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2.5 bg-[#E96118] text-white hover:bg-[#C94A0D] active:scale-95 transition-all duration-150 px-10 py-4 rounded-xl font-black text-base shadow-2xl shadow-[#E96118]/20"
+                className="inline-flex items-center gap-2.5 text-white active:scale-95 transition-all duration-150 px-10 py-4 rounded-xl font-black text-base shadow-xl shadow-[#F26A21]/25"
+                style={{ background: 'linear-gradient(135deg, #F26A21, #D95416)' }}
               >
-                Get started — it's completely free
+                Get started — it&apos;s completely free
                 <ArrowRight size={16} />
               </Link>
-              <p className="text-white/20 text-xs mt-5">
+              <p className="text-[#939A92] text-xs mt-5">
                 Gordon College students only · @gordoncollege.edu.ph required
               </p>
             </div>
@@ -424,39 +426,38 @@ export default async function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="border-t border-white/5 px-6 md:px-10 py-8">
+      <footer className="border-t border-[#E8E5DE] px-6 md:px-10 py-8 bg-[#F5F3ED]/50">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-[#E96118] flex items-center justify-center">
-                <span className="text-white font-black text-[9px]">SC</span>
-              </div>
+              <Image src="/specs-logo.png" alt="SPECS" width={24} height={24} className="w-6 h-6 object-contain" />
               <div>
-                <span className="text-xs font-black text-white/70">SPECS</span>
-                <span className="text-white/30 text-xs ml-1.5">Academic Support</span>
+                <span className="text-xs font-black text-[#20251F]">Mentorly</span>
+                <span className="text-[#939A92] text-xs ml-1.5">Academic Support</span>
               </div>
             </div>
-            <p className="text-xs text-white/20">© 2025 · Society of Programming Enthusiasts</p>
+            <p className="text-xs text-[#939A92]">© 2025 · Society of Programming Enthusiasts</p>
             <div className="flex items-center gap-4">
-              <Link href="/features" className="text-xs text-white/20 hover:text-white/50 transition-colors">About</Link>
-              <Link href="/how-it-works" className="text-xs text-white/20 hover:text-white/50 transition-colors">How it works</Link>
-              <Link href="/terms" className="text-xs text-white/20 hover:text-white/50 transition-colors">Terms</Link>
-              <Link href="/login" className="text-xs text-white/20 hover:text-white/50 transition-colors">Sign in</Link>
+              <Link href="/features" className="text-xs text-[#939A92] hover:text-[#20251F] transition-colors">About</Link>
+              <Link href="/how-it-works" className="text-xs text-[#939A92] hover:text-[#20251F] transition-colors">How it works</Link>
+              <Link href="/terms" className="text-xs text-[#939A92] hover:text-[#20251F] transition-colors">Terms</Link>
+              <Link href="/login" className="text-xs text-[#939A92] hover:text-[#20251F] transition-colors">Sign in</Link>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-white/25">
+          <div className="flex items-center gap-1.5 text-xs text-[#939A92]">
             <span>Powered by</span>
-            <span className="text-white/50 font-semibold">Gordon College</span>
-            <span className="text-yellow-400">⚡</span>
+            <span className="text-[#6B716B] font-semibold">Gordon College</span>
+            <span className="text-yellow-500">⚡</span>
           </div>
         </div>
       </footer>
 
       {/* ── STICKY MOBILE CTA ── */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#FFFDF8] via-[#FFFDF8]/95 to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-[#FFFCF7] via-[#FFFCF7]/95 to-transparent">
         <Link
           href="/register"
-          className="flex items-center justify-center gap-2 w-full bg-[#E96118] hover:bg-[#C94A0D] py-4 rounded-xl font-bold text-sm shadow-xl shadow-[#E96118]/30 active:scale-95 transition-all"
+          className="flex items-center justify-center gap-2 w-full text-white py-4 rounded-xl font-bold text-sm shadow-xl shadow-[#F26A21]/30 active:scale-95 transition-all"
+          style={{ background: 'linear-gradient(135deg, #F26A21, #D95416)' }}
         >
           Get started free
           <ArrowRight size={15} />
