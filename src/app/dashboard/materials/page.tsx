@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import {
   FileText, Download, Search, Shield,
-  Plus, BookOpen, CheckCircle
+  Plus, BookOpen, CheckCircle2
 } from 'lucide-react'
 
 const SUBJECTS = [
@@ -112,14 +112,14 @@ export default async function MaterialsPage({ searchParams }: Props) {
     const type = (fileType || '').toLowerCase()
     const name = (fileName || '').toLowerCase()
     if (type.includes('pdf') || name.endsWith('.pdf'))
-      return 'bg-red-500/10 border-red-500/20 text-red-400'
+      return 'bg-red-50 border-red-200 text-red-600'
     if (type.includes('word') || name.endsWith('.doc') || name.endsWith('.docx'))
-      return 'bg-[#E96118]/10 border-[#E96118]/20 text-[#E96118]'
+      return 'bg-[#E8F0E7] border-[#315B3B]/20 text-[#315B3B]'
     if (type.includes('presentation') || name.endsWith('.ppt') || name.endsWith('.pptx'))
-      return 'bg-orange-500/10 border-orange-500/20 text-orange-400'
+      return 'bg-[#FFF0E5] border-[#F26A21]/20 text-[#D95416]'
     if (type.startsWith('image/'))
-      return 'bg-[#E96118]/10 border-[#E96118]/20 text-[#E96118]'
-    return 'bg-white/5 border-white/10 text-white/40'
+      return 'bg-[#FFF0E5] border-[#F26A21]/20 text-[#D95416]'
+    return 'bg-[#F5F3ED] border-[#E8E5DE] text-[#6B716B]'
   }
 
   // group by subject for default view
@@ -134,68 +134,65 @@ export default async function MaterialsPage({ searchParams }: Props) {
   const isFiltered = query || subject !== 'All' || fileType !== 'all'
 
   return (
-    <div>
-
-      {/* header */}
-      <div className="flex items-start justify-between mb-6">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
-          <h1 className="text-2xl font-black tracking-tight mb-1">Study Materials</h1>
-          <p className="text-white/40 text-sm">
-            Free academic resources uploaded by SPECS members ·{' '}
-            <span className="text-[#F58A32]">
-              {totalMaterials} file{totalMaterials !== 1 ? 's' : ''}
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+              <FileText size={14} />
             </span>
+            <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Academic Repository</span>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Study Materials & Reviewers</h1>
+          <p className="text-xs text-[#6B716B] mt-0.5">
+            Free downloadable notes, reviewers, and decks uploaded by SPECS tutors · <span className="font-bold text-[#315B3B]">{totalMaterials} files available</span>
           </p>
         </div>
+
         {isSpecsMember && (
           <Link
             href="/dashboard/materials/upload"
-            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-[#E96118]/20"
+            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all self-start sm:self-auto"
           >
             <Plus size={15} />
-            Upload material
+            Upload Materials
           </Link>
         )}
       </div>
 
-      {/* upload success banner */}
       {justUploaded && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-6 flex items-center gap-2">
-          <CheckCircle size={15} className="text-green-400 flex-shrink-0" />
-          <p className="text-green-400 text-sm">
-            Material uploaded successfully! It's now available to all students.
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/25 rounded-2xl p-4 flex items-center gap-3 shadow-2xs">
+          <CheckCircle2 size={18} className="text-[#315B3B] flex-shrink-0" />
+          <p className="text-xs font-bold text-[#315B3B]">
+            Material uploaded successfully! It is now accessible to all Gordon College students.
           </p>
         </div>
       )}
 
-      {/* notice for students */}
-      {!isSpecsMember && (
-        <div className="flex items-start gap-3 bg-[#E96118]/5 border border-[#E96118]/15 rounded-xl p-4 mb-6">
-          <Shield size={14} className="text-[#F58A32] flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-white/50 leading-relaxed">
-            All study materials are uploaded and maintained by{' '}
-            <span className="text-[#F58A32] font-semibold">SPECS members</span> as a free
-            academic resource for Gordon College students. Download anything — no booking or
-            payment required.
-          </p>
-        </div>
-      )}
+      {/* Free notice banner */}
+      <div className="flex items-start gap-3 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-2xl p-4 shadow-2xs">
+        <Shield size={16} className="text-[#315B3B] flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-[#24452D] leading-relaxed font-medium">
+          All study materials are free open-access educational assets created by <span className="font-bold underline decoration-[#315B3B]">SPECS members</span> for the Gordon College community. Download without any bookings or charges.
+        </p>
+      </div>
 
-      {/* search */}
-      <form className="relative mb-4">
-        <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+      {/* Search Input */}
+      <form className="relative">
+        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#939A92]" />
         <input
           name="q"
           defaultValue={query}
-          placeholder="Search materials by title, subject..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+          placeholder="Search materials by title, topic, or subject..."
+          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-3 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-2xs outline-none"
         />
         {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
         {fileType !== 'all' && <input type="hidden" name="type" value={fileType} />}
       </form>
 
-      {/* file type pills */}
-      <div className="flex gap-2 overflow-x-auto pb-1.5 mb-3 scrollbar-hide">
+      {/* File type filter pills */}
+      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
         {FILE_TYPES.map((t) => (
           <Link
             key={t.value}
@@ -204,20 +201,19 @@ export default async function MaterialsPage({ searchParams }: Props) {
               (subject !== 'All' ? '&subject=' + subject : '') +
               (query ? '&q=' + query : '')
             }
-            className={
-              'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
-              (fileType === t.value
-                ? 'bg-[#E96118] border-[#E96118] text-white'
-                : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70')
-            }
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
+              fileType === t.value
+                ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-2xs'
+                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/40 hover:text-[#20251F]'
+            }`}
           >
             {t.label}
           </Link>
         ))}
       </div>
 
-      {/* subject pills */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-hide">
+      {/* Subject filter pills */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
         {SUBJECTS.map((s) => (
           <Link
             key={s}
@@ -226,23 +222,21 @@ export default async function MaterialsPage({ searchParams }: Props) {
               (fileType !== 'all' ? '&type=' + fileType : '') +
               (query ? '&q=' + query : '')
             }
-            className={
-              'px-3 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
-              (subject === s
-                ? 'bg-white/10 border-white/30 text-white'
-                : 'border-white/8 text-white/30 hover:border-white/15 hover:text-white/60')
-            }
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
+              subject === s
+                ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-2xs'
+                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/40 hover:text-[#20251F]'
+            }`}
           >
             {s}
           </Link>
         ))}
       </div>
 
-      {/* materials grid */}
+      {/* Materials Display */}
       {totalMaterials > 0 ? (
         isFiltered ? (
-          // flat grid when filtered
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {(materials || []).map((mat: any) => (
               <MaterialCard
                 key={mat.id}
@@ -255,18 +249,17 @@ export default async function MaterialsPage({ searchParams }: Props) {
             ))}
           </div>
         ) : (
-          // grouped by subject when showing all
           <div className="space-y-8">
             {Object.entries(subjectGroups).map(([subj, mats]) => (
               <div key={subj}>
-                <div className="flex items-center gap-3 mb-3">
-                  <h2 className="text-sm font-bold text-white/70">{subj}</h2>
-                  <div className="flex-1 h-px bg-white/5" />
-                  <span className="text-[10px] text-white/30">
+                <div className="flex items-center gap-3 mb-3.5">
+                  <h2 className="text-sm font-bold text-[#20251F] uppercase tracking-wider">{subj}</h2>
+                  <div className="flex-1 h-px bg-[#E8E5DE]" />
+                  <span className="text-xs font-bold text-[#315B3B] bg-[#E8F0E7] px-2.5 py-0.5 rounded-full border border-[#315B3B]/20">
                     {mats.length} file{mats.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {mats.map((mat: any) => (
                     <MaterialCard
                       key={mat.id}
@@ -283,22 +276,20 @@ export default async function MaterialsPage({ searchParams }: Props) {
           </div>
         )
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-14 text-center">
-          <FileText size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 font-semibold mb-1">No materials found</p>
-          <p className="text-white/20 text-sm mb-5">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <FileText size={24} className="text-[#939A92] mx-auto mb-2" />
+          <p className="text-sm font-bold text-[#20251F]">No study materials found</p>
+          <p className="text-xs text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
             {isFiltered
-              ? 'Try different filters or search terms'
-              : "SPECS members haven't uploaded any materials yet"}
+              ? 'Try choosing a different file type or subject filter.'
+              : 'SPECS members will upload reviewers here soon. Feel free to request notes!'}
           </p>
-          {!isFiltered && (
-            <Link
-              href="/dashboard/requests/new"
-              className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
-            >
-              Post a help request instead →
-            </Link>
-          )}
+          <Link
+            href="/dashboard/requests/new"
+            className="inline-flex items-center gap-1.5 bg-[#315B3B] hover:bg-[#24452D] text-white px-4 py-2 rounded-xl text-xs font-bold shadow-2xs transition-all"
+          >
+            Post a Reviewer Request →
+          </Link>
         </div>
       )}
     </div>
@@ -321,70 +312,71 @@ function MaterialCard({
   const colorClass = getFileColor(mat.file_type, mat.file_name)
 
   return (
-    <div className="bg-white/3 border border-white/8 rounded-2xl p-4 hover:border-white/15 transition-all group flex flex-col">
-
-      {/* icon + title */}
-      <div className="flex items-start gap-3 mb-3">
-        <div className={'w-10 h-10 rounded-xl flex items-center justify-center text-lg border flex-shrink-0 ' + colorClass}>
-          {getFileIcon(mat.file_type, mat.file_name)}
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group flex flex-col justify-between">
+      <div>
+        {/* Header icon and title */}
+        <div className="flex items-start gap-3.5 mb-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg border flex-shrink-0 shadow-2xs ${colorClass}`}>
+            {getFileIcon(mat.file_type, mat.file_name)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-[#20251F] group-hover:text-[#315B3B] transition-colors line-clamp-2 leading-snug">
+              {mat.title}
+            </p>
+            {mat.subject && (
+              <span className="text-[10px] font-bold text-[#D95416] bg-[#FFF0E5] border border-[#F26A21]/20 px-2 py-0.5 rounded-full mt-1.5 inline-block">
+                {mat.subject}
+              </span>
+            )}
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-white/80 line-clamp-2 leading-snug group-hover:text-white transition-colors">
-            {mat.title}
+
+        {/* Description */}
+        {mat.description && (
+          <p className="text-xs text-[#6B716B] leading-relaxed mb-3 line-clamp-2">
+            {mat.description}
           </p>
-          {mat.subject && (
-            <span className="text-[10px] text-white/30 border border-white/8 px-2 py-0.5 rounded-full mt-1 inline-block">
-              {mat.subject}
-            </span>
-          )}
+        )}
+
+        {/* Linked session */}
+        {mat.session && (
+          <div className="flex items-center gap-1.5 mb-3 bg-[#FFFCF7] p-2 rounded-lg border border-[#E8E5DE]">
+            <BookOpen size={12} className="text-[#F26A21] flex-shrink-0" />
+            <p className="text-[11px] font-semibold text-[#20251F] truncate">
+              Session: {mat.session.title}
+            </p>
+          </div>
+        )}
+
+        {/* Uploader info */}
+        <div className="flex items-center gap-2 mb-3.5 text-xs text-[#6B716B]">
+          <div className="w-5 h-5 rounded-full bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+            {mat.uploader?.full_name?.[0] || 'U'}
+          </div>
+          <p className="text-xs font-semibold text-[#20251F] truncate flex items-center gap-1">
+            {mat.uploader?.full_name}
+            <Shield size={10} className="text-[#315B3B] flex-shrink-0 inline" />
+          </p>
+          <span className="text-[#939A92] text-[10px] ml-auto flex-shrink-0">
+            {formatDate(mat.created_at)}
+          </span>
         </div>
       </div>
 
-      {/* description */}
-      {mat.description && (
-        <p className="text-xs text-white/30 leading-relaxed mb-3 line-clamp-2 flex-1">
-          {mat.description}
-        </p>
-      )}
-
-      {/* linked session */}
-      {mat.session && (
-        <div className="flex items-center gap-1.5 mb-3">
-          <BookOpen size={10} className="text-[#F58A32] flex-shrink-0" />
-          <p className="text-[10px] text-[#F58A32] truncate">
-            From: {mat.session.title}
-          </p>
-        </div>
-      )}
-
-      {/* uploader + date */}
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-5 h-5 rounded-full bg-[#E96118] flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0">
-          {mat.uploader?.full_name?.[0]}
-        </div>
-        <p className="text-[10px] text-white/30 truncate flex items-center gap-1">
-          {mat.uploader?.full_name}
-          <Shield size={8} className="text-[#F58A32] flex-shrink-0 inline" />
-        </p>
-        <span className="text-white/10 text-[10px] ml-auto flex-shrink-0">
-          {formatDate(mat.created_at)}
-        </span>
-      </div>
-
-      {/* file info + download */}
-      <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-        <div>
-          <p className="text-[10px] text-white/20 truncate max-w-[120px]">{mat.file_name}</p>
+      {/* Download action footer */}
+      <div className="flex items-center justify-between pt-3 border-t border-[#E8E5DE] mt-auto">
+        <div className="min-w-0 pr-2">
+          <p className="text-[11px] font-medium text-[#6B716B] truncate max-w-[130px]">{mat.file_name}</p>
           {mat.file_size && (
-            <p className="text-[10px] text-white/20">{formatFileSize(mat.file_size)}</p>
+            <p className="text-[10px] text-[#939A92]">{formatFileSize(mat.file_size)}</p>
           )}
         </div>
         <button
           onClick={() => window.open(mat.file_url, '_blank')}
-          className="flex items-center gap-1.5 bg-[#E96118]/10 hover:bg-[#E96118] border border-[#E96118]/20 hover:border-[#E96118] transition-all px-3 py-1.5 rounded-lg text-[11px] font-semibold text-[#F58A32] hover:text-white"
+          className="flex items-center gap-1.5 bg-[#E8F0E7] hover:bg-[#315B3B] text-[#315B3B] hover:text-white border border-[#315B3B]/30 transition-all px-3 py-1.5 rounded-xl text-xs font-bold shadow-2xs hover:shadow-xs flex-shrink-0"
         >
-          <Download size={11} />
-          Download
+          <Download size={13} />
+          <span>Download</span>
         </button>
       </div>
     </div>

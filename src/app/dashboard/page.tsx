@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         .in('status', ['accepted', 'completed'])
     : { count: 0 }
 
-  // activity data
+  // Activity data
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
@@ -101,26 +101,26 @@ export default async function DashboardPage() {
     return { date: dateStr, count }
   })
 
-  // onboarding steps — different for students vs SPECS
+  // Onboarding steps
   const studentOnboardingSteps = [
     {
       id: 'profile',
       label: 'Complete your profile',
-      desc: 'Add your bio and course info',
+      desc: 'Add your course and campus details',
       done: !!(profile?.bio && profile?.school && profile?.course),
       href: '/dashboard/profile',
     },
     {
       id: 'browse',
-      label: 'Browse SPECS sessions',
-      desc: 'Find a free tutoring session',
+      label: 'Browse peer sessions',
+      desc: 'Find free tutoring in your subjects',
       done: (bookingsCount || 0) > 0,
       href: '/dashboard/sessions',
     },
     {
       id: 'request',
       label: 'Post a help request',
-      desc: 'Tell SPECS what you need',
+      desc: 'Tell mentors what topics you need',
       done: false,
       href: '/dashboard/requests/new',
     },
@@ -130,21 +130,21 @@ export default async function DashboardPage() {
     {
       id: 'profile',
       label: 'Complete your profile',
-      desc: 'Add your bio so students know you',
+      desc: 'Introduce your academic strengths',
       done: !!(profile?.bio && profile?.school && profile?.course),
       href: '/dashboard/profile',
     },
     {
       id: 'session',
       label: 'Post your first session',
-      desc: 'Share your knowledge with students',
+      desc: 'Offer peer tutoring to students',
       done: (mySessionsCount || 0) > 0,
       href: '/dashboard/sessions/new',
     },
     {
       id: 'material',
-      label: 'Upload a study material',
-      desc: 'Help students even outside sessions',
+      label: 'Upload study material',
+      desc: 'Share reviewers and lecture notes',
       done: (myMaterialsCount || 0) > 0,
       href: '/dashboard/materials/upload',
     },
@@ -156,7 +156,6 @@ export default async function DashboardPage() {
 
   const name = profile?.full_name || user.email
   const firstName = name?.split(' ')[0] || 'there'
-  const role = profile?.role || 'student'
 
   const hour = new Date().getHours()
   const greeting =
@@ -170,39 +169,42 @@ export default async function DashboardPage() {
     (pendingOffers || 0)
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-6">
 
-      {/* greeting */}
-      <div className="flex items-start justify-between mb-6">
+      {/* Greeting & Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
-          <p className="text-white/30 text-sm mb-1">{greeting},</p>
-          <h1 className="text-2xl md:text-3xl font-black tracking-tight">{firstName}</h1>
-          <div className="flex items-center gap-2 mt-2">
-            <GraduationCap size={13} className="text-white/20" />
-            <span className="text-xs text-white/30">
-              {profile?.course || 'Update your profile'} · {profile?.school || 'Gordon College'}
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#939A92]">{greeting},</p>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#20251F]">
+            {firstName}
+          </h1>
+          <div className="flex items-center gap-2 mt-1.5">
+            <GraduationCap size={15} className="text-[#315B3B]" />
+            <span className="text-xs text-[#6B716B] font-medium">
+              {profile?.course || 'General Student'} · {profile?.school || 'Gordon College'}
             </span>
           </div>
         </div>
-        <div className={
-          'px-3 py-1.5 rounded-full border text-xs font-semibold flex items-center gap-1.5 ' +
-          (isSpecsMember
-            ? 'border-[#E96118]/40 text-[#F58A32] bg-[#E96118]/10'
-            : 'border-white/10 text-white/40 bg-white/3')
-        }>
-          <div className={'w-1.5 h-1.5 rounded-full animate-pulse ' + (isSpecsMember ? 'bg-[#F58A32]' : 'bg-white/30')} />
-          <span className="hidden sm:inline">
-            {isSpecsMember
-              ? 'SPECS ' + (profile?.specs_role || 'Member') + ' ⚡'
-              : 'Student'}
-          </span>
+
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {isSpecsMember ? (
+            <div className="px-3.5 py-1.5 rounded-full border border-[#315B3B]/20 bg-[#E8F0E7] text-[#315B3B] text-xs font-bold flex items-center gap-2 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#315B3B] animate-pulse" />
+              <span>SPECS {profile?.specs_role || 'Mentor'} ⚡</span>
+            </div>
+          ) : (
+            <div className="px-3.5 py-1.5 rounded-full border border-[#E8E5DE] bg-white text-[#20251F] text-xs font-semibold flex items-center gap-2 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-[#F26A21]" />
+              <span>Gordon College Learner</span>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* onboarding progress */}
+      {/* Onboarding Checklist */}
       <OnboardingProgress steps={onboardingSteps} />
 
-      {/* in-app nudge */}
+      {/* In-App Action Nudge */}
       <InAppNudge
         hasProfile={!!(profile?.bio && profile?.school && profile?.course)}
         hasBooking={(bookingsCount || 0) > 0}
@@ -211,320 +213,286 @@ export default async function DashboardPage() {
         hasMaterial={(myMaterialsCount || 0) > 0}
       />
 
-      {/* alert banners */}
+      {/* Alert Banners */}
       {totalAlerts > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {(pendingCount || 0) > 0 && (
             <Link
               href="/dashboard/bookings"
-              className="flex items-center justify-between bg-yellow-500/5 border border-yellow-500/20 hover:border-yellow-500/40 rounded-xl p-4 transition-all group"
+              className="flex items-center justify-between bg-amber-50/70 border border-amber-200/80 hover:border-amber-300 rounded-2xl p-4 transition-all group shadow-2xs hover:shadow-xs"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
-                  <Calendar size={14} className="text-yellow-400" />
+                <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700">
+                  <Calendar size={16} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-yellow-400">
-                    {pendingCount} booking{(pendingCount || 0) > 1 ? 's' : ''}
+                  <p className="text-xs font-bold text-amber-900">
+                    {pendingCount} booking request{(pendingCount || 0) > 1 ? 's' : ''}
                   </p>
-                  <p className="text-[10px] text-white/30">awaiting your response</p>
+                  <p className="text-[11px] text-amber-700 font-medium">Awaiting your response</p>
                 </div>
               </div>
-              <ChevronRight size={14} className="text-white/20 group-hover:text-white/50 transition-all" />
+              <ChevronRight size={15} className="text-amber-500 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           )}
+
           {(unreadMessages || 0) > 0 && (
             <Link
               href="/dashboard/messages"
-              className="flex items-center justify-between bg-[#E96118]/5 border border-[#E96118]/20 hover:border-[#E96118]/40 rounded-xl p-4 transition-all group"
+              className="flex items-center justify-between bg-[#FFF0E5]/80 border border-[#F26A21]/20 hover:border-[#F26A21]/40 rounded-2xl p-4 transition-all group shadow-2xs hover:shadow-xs"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#E96118]/10 flex items-center justify-center">
-                  <MessageSquare size={14} className="text-[#F58A32]" />
+                <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] flex items-center justify-center text-[#D95416] border border-[#F26A21]/20">
+                  <MessageSquare size={16} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#F58A32]">
-                    {unreadMessages} message{(unreadMessages || 0) > 1 ? 's' : ''}
+                  <p className="text-xs font-bold text-[#D95416]">
+                    {unreadMessages} new message{(unreadMessages || 0) > 1 ? 's' : ''}
                   </p>
-                  <p className="text-[10px] text-white/30">unread</p>
+                  <p className="text-[11px] text-[#6B716B] font-medium">Unread student chats</p>
                 </div>
               </div>
-              <ChevronRight size={14} className="text-white/20 group-hover:text-white/50 transition-all" />
+              <ChevronRight size={15} className="text-[#F26A21] group-hover:translate-x-0.5 transition-transform" />
             </Link>
           )}
+
           {(pendingOffers || 0) > 0 && (
             <Link
               href="/dashboard/requests"
-              className="flex items-center justify-between bg-green-500/5 border border-green-500/20 hover:border-green-500/40 rounded-xl p-4 transition-all group"
+              className="flex items-center justify-between bg-[#E8F0E7]/80 border border-[#315B3B]/20 hover:border-[#315B3B]/40 rounded-2xl p-4 transition-all group shadow-2xs hover:shadow-xs"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
-                  <Star size={14} className="text-green-400" />
+                <div className="w-9 h-9 rounded-xl bg-[#E8F0E7] flex items-center justify-center text-[#315B3B] border border-[#315B3B]/20">
+                  <Star size={16} />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-green-400">
-                    {pendingOffers} offer{(pendingOffers || 0) > 1 ? 's' : ''}
+                  <p className="text-xs font-bold text-[#315B3B]">
+                    {pendingOffers} tutor offer{(pendingOffers || 0) > 1 ? 's' : ''}
                   </p>
-                  <p className="text-[10px] text-white/30">waiting for you</p>
+                  <p className="text-[11px] text-[#6B716B] font-medium">Ready for your review</p>
                 </div>
               </div>
-              <ChevronRight size={14} className="text-white/20 group-hover:text-white/50 transition-all" />
+              <ChevronRight size={15} className="text-[#315B3B] group-hover:translate-x-0.5 transition-transform" />
             </Link>
           )}
         </div>
       )}
 
-      {/* stat cards — different for student vs SPECS */}
+      {/* Stat Cards Grid (BudgetMate style) */}
       {isSpecsMember ? (
-        <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             label="Sessions posted"
             value={mySessionsCount ?? 0}
-            sub="Your SPECS sessions"
-            icon={<Calendar size={15} />}
-            color="bg-[#E96118]/20"
+            sub="Active tutoring offerings"
+            icon={<Calendar size={18} />}
+            color="bg-[#F26A21]"
             delay={0}
           />
           <StatCard
             label="Materials shared"
             value={myMaterialsCount ?? 0}
-            sub="Files you uploaded"
-            icon={<FileText size={15} />}
-            color="bg-[#E96118]/20"
+            sub="Reviewers and lecture notes"
+            icon={<FileText size={18} />}
+            color="bg-[#315B3B]"
             delay={100}
           />
           <StatCard
             label="Students supported"
             value={mySupportedCount ?? 0}
-            sub="Accepted sessions"
-            icon={<Shield size={15} />}
-            color="bg-green-500/20"
+            sub="Completed peer sessions"
+            icon={<Shield size={18} />}
+            color="bg-[#315B3B]"
             delay={200}
           />
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             label="Sessions booked"
             value={bookingsCount ?? 0}
-            sub="Total sessions attended"
-            icon={<Calendar size={15} />}
-            color="bg-[#E96118]/20"
+            sub="Your scheduled learning"
+            icon={<Calendar size={18} />}
+            color="bg-[#F26A21]"
             delay={0}
           />
           <StatCard
-            label="SPECS sessions"
+            label="Available sessions"
             value={sessionsCount ?? 0}
-            sub="Available to book"
-            icon={<Shield size={15} />}
-            color="bg-green-500/20"
+            sub="Free SPECS peer tutoring"
+            icon={<Shield size={18} />}
+            color="bg-[#315B3B]"
             delay={100}
           />
           <StatCard
-            label="Study materials"
+            label="Study resources"
             value={materialsCount ?? 0}
-            sub="Free to download"
-            icon={<FileText size={15} />}
-            color="bg-[#E96118]/20"
+            sub="Free downloads on campus"
+            icon={<FileText size={18} />}
+            color="bg-[#315B3B]"
             delay={200}
           />
         </div>
       )}
 
-      {/* activity graph */}
-      <div className="hidden sm:block bg-white/3 border border-white/8 rounded-2xl p-5 md:p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
+      {/* Activity Graph Card */}
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
+        <div className="flex items-center justify-between mb-2">
           <div>
-            <p className="text-sm font-semibold">Activity</p>
-            <p className="text-xs text-white/30 mt-0.5">Sessions in the last 14 days</p>
+            <h3 className="text-sm font-bold text-[#20251F]">Recent Activity</h3>
+            <p className="text-xs text-[#6B716B] mt-0.5">Tutoring sessions and bookings over the last 14 days</p>
           </div>
-          <TrendingUp size={15} className="text-white/20" />
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold border border-[#315B3B]/20">
+            <TrendingUp size={13} />
+            <span>Active Campus</span>
+          </div>
         </div>
         <ActivityGraph data={activityData} />
       </div>
 
-      {/* quick actions */}
-      <p className="text-[10px] text-white/20 uppercase tracking-widest mb-3 font-medium">
-        Quick actions
-      </p>
+      {/* Quick Actions (BudgetMate layout: rounded cards, colored icon box) */}
+      <div>
+        <p className="text-xs font-bold text-[#939A92] uppercase tracking-wider mb-3">
+          Quick Actions
+        </p>
 
-      {isSpecsMember ? (
-        // SPECS member quick actions
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {isSpecsMember ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <Link
+              href="/dashboard/sessions/new"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
+                  <Plus size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Post a session</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Offer tutoring to your peers</p>
+                </div>
+              </div>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/sessions/new"
-            className="flex items-center justify-between bg-[#E96118]/5 border border-[#E96118]/15 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/40 hover:bg-[#E96118]/10 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Plus size={15} className="text-[#F58A32]" />
+            <Link
+              href="/dashboard/materials/upload"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Upload material</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Share notes, decks & reviewers</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Post a session</p>
-                <p className="text-xs text-white/30 mt-0.5">Share your knowledge</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/materials/upload"
-            className="flex items-center justify-between bg-[#E96118]/3 border border-[#E96118]/10 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/8 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <FileText size={15} className="text-[#E96118]" />
+            <Link
+              href="/dashboard/sessions"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
+                  <Search size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Browse all sessions</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Explore active campus tutoring</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Upload material</p>
-                <p className="text-xs text-white/30 mt-0.5">Help students study</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/sessions"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#315C36]/25 hover:bg-[#315C36]/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Search size={15} className="text-[#315C36]" />
+            <Link
+              href="/dashboard/requests/browse"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
+                  <ClipboardList size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Student requests</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Help peers with specific topics</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Browse sessions</p>
-                <p className="text-xs text-white/30 mt-0.5">See all SPECS sessions</p>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <Link
+              href="/dashboard/sessions"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Find a session</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Join free peer tutoring</p>
+                </div>
               </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/requests/browse"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <ClipboardList size={15} className="text-[#E96118]" />
+            <Link
+              href="/dashboard/requests/new"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
+                  <Plus size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Request academic help</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Ask mentors for custom support</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Student requests</p>
-                <p className="text-xs text-white/30 mt-0.5">See what students need</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/messages"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 active:scale-98 transition-all duration-200 group sm:col-span-2"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <MessageSquare size={15} className="text-[#F58A32]" />
+            <Link
+              href="/dashboard/materials"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Download materials</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">Reviewers and lecture guides</p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Messages</p>
-                <p className="text-xs text-white/30 mt-0.5">
-                  {(unreadMessages || 0) > 0
-                    ? (unreadMessages) + ' unread message' + ((unreadMessages || 0) > 1 ? 's' : '')
-                    : 'Chat with students'}
-                </p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
-        </div>
-      ) : (
-        // student quick actions
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+            </Link>
 
-          <Link
-            href="/dashboard/sessions"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Calendar size={15} className="text-[#F58A32]" />
+            <Link
+              href="/dashboard/messages"
+              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
+                  <MessageSquare size={18} />
+                </div>
+                <div>
+                  <p className="font-bold text-sm text-[#20251F]">Messages</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5">
+                    {unreadMessages ? `${unreadMessages} unread messages` : 'Chat with your peer tutors'}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-sm">Browse sessions</p>
-                <p className="text-xs text-white/30 mt-0.5">Book a free SPECS session</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
+              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+            </Link>
+          </div>
+        )}
+      </div>
 
-          <Link
-            href="/dashboard/materials"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <FileText size={15} className="text-[#E96118]" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">Study materials</p>
-                <p className="text-xs text-white/30 mt-0.5">Free reviewers and notes</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
-
-          <Link
-            href="/dashboard/requests/new"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#E96118]/25 hover:bg-[#E96118]/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <BookOpen size={15} className="text-[#E96118]" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">Post a request</p>
-                <p className="text-xs text-white/30 mt-0.5">Tell SPECS what you need</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
-
-          <Link
-            href="/dashboard/recommendations"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-yellow-500/25 hover:bg-yellow-500/3 active:scale-98 transition-all duration-200 group"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <Sparkles size={15} className="text-yellow-400" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">For you</p>
-                <p className="text-xs text-white/30 mt-0.5">Personalized recommendations</p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
-
-          <Link
-            href="/dashboard/messages"
-            className="flex items-center justify-between bg-white/3 border border-white/8 rounded-2xl p-4 md:p-5 hover:border-[#315C36]/25 hover:bg-[#315C36]/3 active:scale-98 transition-all duration-200 group sm:col-span-2"
-          >
-            <div className="flex items-center gap-3 md:gap-4">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                <MessageSquare size={15} className="text-[#315C36]" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">Messages</p>
-                <p className="text-xs text-white/30 mt-0.5">
-                  {(unreadMessages || 0) > 0
-                    ? (unreadMessages) + ' unread message' + ((unreadMessages || 0) > 1 ? 's' : '')
-                    : 'Chat with SPECS tutors'}
-                </p>
-              </div>
-            </div>
-            <ChevronRight size={16} className="text-white/20 group-hover:text-white/50 transition-all" />
-          </Link>
-        </div>
-      )}
     </div>
   )
 }

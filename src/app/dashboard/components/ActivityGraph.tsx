@@ -16,8 +16,8 @@ export default function ActivityGraph({ data }: Props) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-16 flex items-center justify-center">
-        <p className="text-xs text-white/20">No activity yet — book your first session!</p>
+      <div className="h-20 flex items-center justify-center bg-[#F5F3ED]/40 rounded-xl border border-dashed border-[#E8E5DE]">
+        <p className="text-xs text-[#6B716B] font-medium">No activity yet — book or post your first session!</p>
       </div>
     )
   }
@@ -25,30 +25,37 @@ export default function ActivityGraph({ data }: Props) {
   const max = Math.max(...data.map((d) => d.count), 1)
 
   return (
-    <div className="flex items-end gap-1 h-16">
+    <div className="flex items-end gap-1.5 md:gap-2 h-24 pt-4">
       {data.map((d, i) => {
-        const height = Math.max((d.count / max) * 100, 4)
+        const height = Math.max((d.count / max) * 100, 6)
+        const hasActivity = d.count > 0
         return (
           <div
             key={d.date}
-            className="flex-1 group relative"
-            title={d.date + ': ' + d.count + ' sessions'}
+            className="flex-1 flex flex-col items-center h-full justify-end group relative"
           >
             <div
-              className={
-                'w-full rounded-sm transition-all duration-700 ' +
-                (d.count > 0 ? 'bg-[#E96118] group-hover:bg-[#F58A32]' : 'bg-white/5 group-hover:bg-white/10')
-              }
+              className={`w-full rounded-t-md transition-all duration-500 cursor-pointer ${
+                hasActivity
+                  ? 'bg-[#F26A21] group-hover:bg-[#D95416] shadow-xs'
+                  : 'bg-[#F5F3ED] group-hover:bg-[#E8E5DE]'
+              }`}
               style={{
-                height: animated ? height + '%' : '4%',
-                transitionDelay: i * 20 + 'ms',
+                height: animated ? `${height}%` : '6%',
+                transitionDelay: `${i * 25}ms`,
               }}
             />
-            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block z-10">
-              <div className="bg-[#FFFFFF] border border-white/10 rounded-lg px-2 py-1 text-[10px] text-white/70 whitespace-nowrap">
-                {d.count} session{d.count !== 1 ? 's' : ''}
+            {/* Tooltip on hover */}
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col items-center z-20 pointer-events-none">
+              <div className="bg-[#20251F] text-white rounded-lg px-2.5 py-1 text-[11px] font-medium whitespace-nowrap shadow-lg">
+                <span className="font-bold text-[#F26A21]">{d.count}</span> session{d.count !== 1 ? 's' : ''} on {d.date}
               </div>
+              <div className="w-1.5 h-1.5 bg-[#20251F] rotate-45 -mt-0.5" />
             </div>
+            {/* Date label on mobile/desktop */}
+            <span className="text-[9px] text-[#939A92] mt-1.5 hidden md:block">
+              {d.date.slice(8)}
+            </span>
           </div>
         )
       })}

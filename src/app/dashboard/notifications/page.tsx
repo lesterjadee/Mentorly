@@ -67,41 +67,49 @@ export default async function NotificationsPage() {
   )
 
   return (
-    <div className="max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Notifications</h1>
-        <p className="text-white/40 text-sm mt-1">Stay updated on your sessions and messages</p>
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Header */}
+      <div>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
+          <Bell size={12} />
+          Activity Center
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Notifications</h1>
+        <p className="text-[#6B716B] text-sm mt-0.5">Stay updated on your tutoring sessions, incoming offers, and messages</p>
       </div>
 
       {!hasNotifications && (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <Bell size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">You're all caught up!</p>
-          <p className="text-white/20 text-xs mt-1">No new notifications right now</p>
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
+            <Bell size={24} />
+          </div>
+          <h2 className="text-base font-semibold text-[#20251F]">You're all caught up!</h2>
+          <p className="text-sm text-[#6B716B] mt-1">No new notifications or pending requests right now.</p>
         </div>
       )}
 
       <div className="space-y-3">
-
         {/* incoming tutor offers (for learners) */}
         {incomingOffers && incomingOffers.map((o: any) => (
           <Link
             key={'offer-' + o.id}
             href={'/dashboard/requests/' + o.request_id + '/offers'}
-            className="flex items-start gap-4 bg-white/3 border border-[#E96118]/20 rounded-2xl p-4 hover:border-[#E96118]/40 transition-all group"
+            className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all group shadow-xs"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
-              <Star size={15} className="text-[#F58A32]" />
+            <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center flex-shrink-0 text-[#F26A21]">
+              <Star size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">New tutor offer</p>
-              <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{o.tutor?.full_name}</span> sent an offer for{' '}
-                <span className="text-white/60">{o.requests?.title}</span>
+              <h2 className="text-sm font-semibold text-[#20251F] group-hover:text-[#F26A21] transition-colors">
+                New tutor offer received
+              </h2>
+              <p className="text-xs text-[#6B716B] mt-0.5">
+                <span className="font-medium text-[#20251F]">{o.tutor?.full_name}</span> offered help for{' '}
+                <span className="font-medium text-[#20251F]">"{o.requests?.title}"</span>
               </p>
-              <p className="text-xs text-white/20 mt-1">{timeAgo(o.created_at)}</p>
+              <p className="text-[11px] text-[#6B716B]/70 mt-1">{timeAgo(o.created_at)}</p>
             </div>
-            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-1 rounded-full flex-shrink-0">
               Offer
             </span>
           </Link>
@@ -112,20 +120,22 @@ export default async function NotificationsPage() {
           <Link
             key={'pending-' + b.id}
             href="/dashboard/bookings"
-            className="flex items-start gap-4 bg-white/3 border border-yellow-500/20 rounded-2xl p-4 hover:border-yellow-500/40 transition-all group"
+            className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all group shadow-xs"
           >
-            <div className="w-9 h-9 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center flex-shrink-0">
-              <Clock size={15} className="text-yellow-400" />
+            <div className="w-10 h-10 rounded-xl bg-[#FFF8F1] border border-[#F26A21]/20 flex items-center justify-center flex-shrink-0 text-[#F26A21]">
+              <Clock size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">New booking request</p>
-              <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.learner?.full_name}</span> wants to book{' '}
-                <span className="text-white/60">{b.services?.title}</span>
+              <h2 className="text-sm font-semibold text-[#20251F] group-hover:text-[#F26A21] transition-colors">
+                New booking request
+              </h2>
+              <p className="text-xs text-[#6B716B] mt-0.5">
+                <span className="font-medium text-[#20251F]">{b.learner?.full_name}</span> requested to book{' '}
+                <span className="font-medium text-[#20251F]">"{b.services?.title}"</span>
               </p>
-              <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
+              <p className="text-[11px] text-[#6B716B]/70 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs font-semibold text-[#D95416] border border-[#D95416]/20 bg-[#FFF8F1] px-2.5 py-1 rounded-full flex-shrink-0">
               Pending
             </span>
           </Link>
@@ -136,21 +146,23 @@ export default async function NotificationsPage() {
           <Link
             key={'accepted-' + b.id}
             href="/dashboard/bookings"
-            className="flex items-start gap-4 bg-white/3 border border-green-500/20 rounded-2xl p-4 hover:border-green-500/40 transition-all group"
+            className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all group shadow-xs"
           >
-            <div className="w-9 h-9 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center flex-shrink-0">
-              <CheckCircle size={15} className="text-green-400" />
+            <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center flex-shrink-0 text-[#315B3B]">
+              <CheckCircle size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">Booking accepted</p>
-              <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.tutor?.full_name}</span> accepted your booking for{' '}
-                <span className="text-white/60">{b.services?.title}</span>
+              <h2 className="text-sm font-semibold text-[#20251F] group-hover:text-[#315B3B] transition-colors">
+                Session confirmed!
+              </h2>
+              <p className="text-xs text-[#6B716B] mt-0.5">
+                <span className="font-medium text-[#20251F]">{b.tutor?.full_name}</span> confirmed your session for{' '}
+                <span className="font-medium text-[#20251F]">"{b.services?.title}"</span>
               </p>
-              <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
+              <p className="text-[11px] text-[#6B716B]/70 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full flex-shrink-0">
-              Accepted
+            <span className="text-xs font-semibold text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-1 rounded-full flex-shrink-0">
+              Confirmed
             </span>
           </Link>
         ))}
@@ -160,20 +172,22 @@ export default async function NotificationsPage() {
           <Link
             key={'declined-' + b.id}
             href="/dashboard/bookings"
-            className="flex items-start gap-4 bg-white/3 border border-red-500/20 rounded-2xl p-4 hover:border-red-500/40 transition-all group"
+            className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#E8E5DE] hover:shadow-md transition-all group shadow-xs"
           >
-            <div className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
-              <XCircle size={15} className="text-red-400" />
+            <div className="w-10 h-10 rounded-xl bg-[#F5F3ED] border border-[#E8E5DE] flex items-center justify-center flex-shrink-0 text-[#6B716B]">
+              <XCircle size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">Booking declined</p>
-              <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{b.tutor?.full_name}</span> declined your booking for{' '}
-                <span className="text-white/60">{b.services?.title}</span>
+              <h2 className="text-sm font-semibold text-[#20251F]">
+                Booking declined
+              </h2>
+              <p className="text-xs text-[#6B716B] mt-0.5">
+                <span className="font-medium text-[#20251F]">{b.tutor?.full_name}</span> was unable to accept your booking for{' '}
+                <span className="font-medium text-[#20251F]">"{b.services?.title}"</span>
               </p>
-              <p className="text-xs text-white/20 mt-1">{timeAgo(b.created_at)}</p>
+              <p className="text-[11px] text-[#6B716B]/70 mt-1">{timeAgo(b.created_at)}</p>
             </div>
-            <span className="text-xs text-red-400 border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs font-semibold text-[#6B716B] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-full flex-shrink-0">
               Declined
             </span>
           </Link>
@@ -184,20 +198,22 @@ export default async function NotificationsPage() {
           <Link
             key={'msg-' + m.id}
             href={'/dashboard/messages/' + m.sender_id}
-            className="flex items-start gap-4 bg-white/3 border border-[#E96118]/20 rounded-2xl p-4 hover:border-[#E96118]/40 transition-all group"
+            className="flex items-start gap-4 bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all group shadow-xs"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
-              <MessageSquare size={15} className="text-[#F58A32]" />
+            <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center flex-shrink-0 text-[#F26A21]">
+              <MessageSquare size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium">New message</p>
-              <p className="text-xs text-white/40 mt-0.5">
-                <span className="text-white/60">{m.sender?.full_name}</span>:{' '}
+              <h2 className="text-sm font-semibold text-[#20251F] group-hover:text-[#F26A21] transition-colors">
+                New message
+              </h2>
+              <p className="text-xs text-[#6B716B] mt-0.5">
+                <span className="font-medium text-[#20251F]">{m.sender?.full_name}</span>:{' '}
                 {m.content.length > 50 ? m.content.substring(0, 50) + '...' : m.content}
               </p>
-              <p className="text-xs text-white/20 mt-1">{timeAgo(m.created_at)}</p>
+              <p className="text-[11px] text-[#6B716B]/70 mt-1">{timeAgo(m.created_at)}</p>
             </div>
-            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-1 rounded-full flex-shrink-0">
+            <span className="text-xs font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-1 rounded-full flex-shrink-0">
               Message
             </span>
           </Link>

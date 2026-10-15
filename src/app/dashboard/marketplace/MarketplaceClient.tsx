@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Star, BookOpen, Filter, X, Search, ChevronDown, Award } from 'lucide-react'
+import { useState } from 'react'
+import { BookOpen, Filter, X, Search, ChevronDown, ShieldCheck, Sparkles, GraduationCap } from 'lucide-react'
 import Link from 'next/link'
 import TutorModal from './TutorModal'
 
@@ -80,76 +80,86 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
   function ServiceCard({ service, large = false }: { service: Service; large?: boolean }) {
     const isOwn = service.tutor_id === currentUserId
-    const score = service.users?.mentor_score || service.users?.trust_score || 0
 
     return (
       <div
         className={
-          'bg-white/3 border border-white/8 rounded-2xl overflow-hidden transition-all duration-200 group ' +
-          'hover:border-[#E96118]/40 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#E96118]/5 cursor-pointer ' +
+          'bg-white border border-[#E8E5DE] rounded-2xl overflow-hidden transition-all duration-200 group ' +
+          'hover:border-[#F26A21]/40 hover:-translate-y-0.5 hover:shadow-md cursor-pointer shadow-xs flex flex-col justify-between ' +
           (large ? 'p-6' : 'p-5')
         }
         onClick={() => !isOwn && setSelectedServiceId(service.id)}
       >
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className={
-              'rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center font-bold text-[#F58A32] flex-shrink-0 ' +
-              (large ? 'w-11 h-11 text-base' : 'w-9 h-9 text-sm')
-            }>
-              {service.users?.full_name?.[0] ?? '?'}
+        <div>
+          <div className="flex items-start justify-between mb-3.5">
+            <div className="flex items-center gap-3">
+              <div className={
+                'rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center font-bold text-[#F26A21] flex-shrink-0 shadow-xs ' +
+                (large ? 'w-12 h-12 text-base' : 'w-10 h-10 text-sm')
+              }>
+                {service.users?.full_name?.[0] ?? '?'}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-[#20251F] truncate group-hover:text-[#F26A21] transition-colors">
+                  {service.users?.full_name}
+                </p>
+                <p className="text-[11px] text-[#6B716B] truncate">{service.users?.school || 'Gordon College'}</p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-white/70 truncate">{service.users?.full_name}</p>
-              <p className="text-[10px] text-white/30 truncate">{service.users?.school}</p>
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              {isOwn && (
+                <span className="text-[10px] font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2 py-0.5 rounded-full">
+                  Yours
+                </span>
+              )}
+              <span className="text-[10px] font-medium text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-0.5 rounded-full capitalize">
+                {service.mode}
+              </span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 flex-shrink-0">
-            {isOwn && (
-              <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
-                Yours
-              </span>
-            )}
-            <span className="text-[10px] text-white/30 border border-white/8 px-2 py-0.5 rounded-full capitalize">
-              {service.mode}
+
+          <div className="mb-2">
+            <span className="text-[10px] font-semibold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-2 py-0.5 rounded-md mb-1.5 inline-block">
+              {service.category}
+            </span>
+            <h3 className={'font-bold text-[#20251F] line-clamp-1 ' + (large ? 'text-base' : 'text-sm')}>
+              {service.title}
+            </h3>
+          </div>
+
+          {service.description && (
+            <p className="text-xs text-[#6B716B] line-clamp-2 leading-relaxed mb-4">
+              {service.description}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between pt-3 border-t border-[#E8E5DE]/60 mb-3">
+            <span className="text-xs text-[#6B716B] flex items-center gap-1">
+              <ShieldCheck size={13} className="text-[#315B3B]" />
+              SPECS Support
+            </span>
+            <span className="text-sm font-bold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-2.5 py-0.5 rounded-full">
+              Free
             </span>
           </div>
-        </div>
 
-        <h3 className={'font-semibold mb-1 line-clamp-1 ' + (large ? 'text-sm' : 'text-xs')}>
-          {service.title}
-        </h3>
-        {service.description && (
-          <p className="text-xs text-white/30 line-clamp-2 leading-relaxed mb-3">
-            {service.description}
-          </p>
-        )}
-
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col gap-1">
-            <span className="text-[10px] text-white/20">SPECS volunteer support</span>
-          </div>
-          <p className={'font-black text-green-400 ' + (large ? 'text-base' : 'text-sm')}>Free</p>
-        </div>
-
-        {!isOwn && (
-          <div className="mt-3 pt-3 border-t border-white/5">
-            <div className="w-full text-center bg-white/3 group-hover:bg-[#E96118] border border-white/8 group-hover:border-[#E96118] transition-all py-2 rounded-xl text-xs font-semibold text-white/40 group-hover:text-white">
-              View profile & book
+          {!isOwn && (
+            <div className="w-full text-center bg-[#F5F3ED] group-hover:bg-[#F26A21] border border-[#E8E5DE] group-hover:border-[#F26A21] transition-all py-2.5 rounded-xl text-xs font-semibold text-[#20251F] group-hover:text-white shadow-xs">
+              View profile & book session
             </div>
-          </div>
-        )}
-        {isOwn && (
-          <div className="mt-3 pt-3 border-t border-white/5">
+          )}
+          {isOwn && (
             <Link
               href={'/dashboard/services/' + service.id + '/edit'}
               onClick={(e) => e.stopPropagation()}
-              className="block w-full text-center bg-white/3 hover:bg-white/8 border border-white/8 transition-all py-2 rounded-xl text-xs font-semibold text-white/30 hover:text-white/60"
+              className="block w-full text-center bg-[#F5F3ED] hover:bg-[#E8E5DE] border border-[#E8E5DE] transition-all py-2.5 rounded-xl text-xs font-semibold text-[#20251F]"
             >
               Edit listing
             </Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     )
   }
@@ -163,144 +173,159 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         />
       )}
 
-      <div className="w-full">
-        {/* header */}
-        <div className="flex items-start justify-between mb-6">
+      <div className="w-full space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black tracking-tight mb-1">Marketplace</h1>
-            <p className="text-white/30 text-sm">
-              {filtered.length} tutor{filtered.length !== 1 ? 's' : ''} available
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
+              <GraduationCap size={13} />
+              Peer Educator Marketplace
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Tutor Marketplace</h1>
+            <p className="text-[#6B716B] text-sm mt-0.5">
+              Connect with {filtered.length} verified peer educator{filtered.length !== 1 ? 's' : ''} offering free academic mentoring
             </p>
           </div>
           <Link
             href="/dashboard/requests/new"
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all px-4 py-2.5 rounded-xl text-xs font-semibold text-white/50 hover:text-white"
+            className="inline-flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all px-4 py-2.5 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs self-start sm:self-auto"
           >
-            <BookOpen size={13} />
+            <BookOpen size={14} className="text-[#F26A21]" />
             Post a request instead
           </Link>
         </div>
 
-        {/* search + filter bar */}
-        <div className="flex items-center gap-3 mb-4">
+        {/* Search + Filter Bar */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="relative flex-1">
-            <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B716B]" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search tutors, subjects, schools..."
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+              placeholder="Search tutors by name, subject (e.g. Calculus, Physics), school..."
+              className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-10 py-2.5 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
             />
             {query && (
               <button
+                type="button"
                 onClick={() => setQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/50 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B716B] hover:text-[#20251F] transition-colors p-1"
               >
                 <X size={14} />
               </button>
             )}
           </div>
 
-          {/* sort */}
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-xs focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none pr-8 cursor-pointer"
-            >
-              <option value="newest" className="bg-[#FFFFFF]">Newest</option>
-            </select>
-            <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
-          </div>
+          <div className="flex items-center gap-2">
+            {/* Sort */}
+            <div className="relative flex-1 sm:flex-initial">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-xs font-semibold focus:outline-none focus:border-[#F26A21] transition-all appearance-none pr-8 cursor-pointer shadow-xs"
+              >
+                <option value="newest">Newest first</option>
+                <option value="rating">Top rated mentors</option>
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B716B] pointer-events-none" />
+            </div>
 
-          {/* filter toggle */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={
-              'flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-semibold transition-all ' +
-              (hasFilters || showFilters
-                ? 'bg-[#E96118]/20 border-[#E96118]/40 text-[#F58A32]'
-                : 'bg-white/5 border-white/10 text-white/50 hover:border-white/20 hover:text-white')
-            }
-          >
-            <Filter size={13} />
-            Filters
-            {hasFilters && (
-              <span className="w-4 h-4 bg-[#E96118] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
-                !
-              </span>
-            )}
-          </button>
+            {/* Filter Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowFilters(!showFilters)}
+              className={
+                'flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-semibold transition-all shadow-xs ' +
+                (hasFilters || showFilters
+                  ? 'bg-[#FFF0E5] border-[#F26A21]/40 text-[#F26A21]'
+                  : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:text-[#20251F]')
+              }
+            >
+              <Filter size={13} />
+              Filters
+              {hasFilters && (
+                <span className="w-4 h-4 bg-[#F26A21] rounded-full text-[10px] font-bold text-white flex items-center justify-center">
+                  !
+                </span>
+              )}
+            </button>
+          </div>
         </div>
 
-        {/* filter panel */}
+        {/* Filter Panel */}
         {showFilters && (
-          <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-              {/* mode */}
+          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <label className="text-[10px] text-white/30 uppercase tracking-wider mb-2 block">Mode</label>
-                <div className="flex flex-col gap-1.5">
-                  {['All', 'online', 'in-person', 'both'].map((m) => (
-                    <button
-                      key={m}
-                      onClick={() => setSelectedMode(m)}
-                      className={
-                        'text-left px-3 py-1.5 rounded-lg text-xs transition-all capitalize ' +
-                        (selectedMode === m
-                          ? 'bg-[#E96118]/20 text-[#F58A32] border border-[#E96118]/30'
-                          : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent')
-                      }
-                    >
-                      {m}
-                    </button>
-                  ))}
+                <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">Instruction Mode</label>
+                <div className="flex flex-wrap gap-2">
+                  {['All', 'online', 'in-person', 'both'].map((m) => {
+                    const isSelected = selectedMode === m
+                    return (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => setSelectedMode(m)}
+                        className={
+                          'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize border ' +
+                          (isSelected
+                            ? 'bg-[#FFF0E5] text-[#F26A21] border-[#F26A21]/40 shadow-xs'
+                            : 'bg-[#FFFCF7] text-[#6B716B] border-[#E8E5DE] hover:text-[#20251F]')
+                        }
+                      >
+                        {m}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
 
-              {/* clear */}
-              <div className="flex items-end">
-                {hasFilters && (
-                  <button
-                    onClick={clearFilters}
-                    className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl text-xs font-semibold transition-all"
-                  >
-                    <X size={12} />
-                    Clear all
-                  </button>
-                )}
-              </div>
+              {hasFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="flex items-center gap-1.5 px-3 py-2 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-semibold transition-all self-end sm:self-auto"
+                >
+                  <X size={13} />
+                  Reset filters
+                </button>
+              )}
             </div>
           </div>
         )}
 
-        {/* category pills */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={
-                'px-4 py-2 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
-                (selectedCategory === cat
-                  ? 'bg-[#E96118] border-[#E96118] text-white shadow-lg shadow-[#E96118]/20'
-                  : 'border-white/10 text-white/40 hover:border-white/20 hover:text-white/70')
-              }
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category Pills */}
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {CATEGORIES.map((cat) => {
+            const isSelected = selectedCategory === cat
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={
+                  'px-4 py-2 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
+                  (isSelected
+                    ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-xs'
+                    : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]')
+                }
+              >
+                {cat}
+              </button>
+            )
+          })}
         </div>
 
-        {/* featured row */}
+        {/* Featured Row */}
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <BookOpen size={14} className="text-[#F58A32]" />
-              <p className="text-sm font-bold">Featured SPECS support</p>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+                <Sparkles size={15} />
+              </div>
+              <h2 className="text-sm font-bold text-[#20251F]">Featured SPECS Academic Support</h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {featured.slice(0, 3).map((s) => (
                 <ServiceCard key={s.id} service={s} large />
               ))}
@@ -308,31 +333,36 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
           </div>
         )}
 
-        {/* divider */}
+        {/* Divider if featured is visible */}
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-white/5" />
-            <p className="text-[10px] text-white/20 uppercase tracking-widest">All listings</p>
-            <div className="flex-1 h-px bg-white/5" />
+          <div className="flex items-center gap-3 pt-2">
+            <div className="flex-1 h-px bg-[#E8E5DE]" />
+            <p className="text-[11px] font-bold text-[#6B716B] uppercase tracking-wider">All Peer Services</p>
+            <div className="flex-1 h-px bg-[#E8E5DE]" />
           </div>
         )}
 
-        {/* all results grid */}
+        {/* All Results Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (
-          <div className="bg-white/3 border border-white/8 rounded-2xl p-16 text-center">
-            <BookOpen size={36} className="text-white/10 mx-auto mb-4" />
-            <p className="text-white/40 font-semibold mb-1">No tutors found</p>
-            <p className="text-white/20 text-sm mb-5">Try adjusting your filters or search term</p>
+          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-16 text-center shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
+              <BookOpen size={24} />
+            </div>
+            <h2 className="text-base font-semibold text-[#20251F]">No tutors or services found</h2>
+            <p className="text-sm text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+              Try adjusting your category selection, search terms, or active filters.
+            </p>
             {hasFilters && (
               <button
+                type="button"
                 onClick={clearFilters}
-                className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F26A21] hover:underline"
               >
                 Clear all filters
               </button>

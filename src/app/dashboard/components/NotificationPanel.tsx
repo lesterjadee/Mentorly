@@ -32,13 +32,12 @@ export default function NotificationPanel({ userId }: Props) {
 
   async function loadNotifications() {
     const supabase = createClient()
-
     const allNotifs: Notif[] = []
 
     // pending offers for learner
     const { data: offers } = await supabase
       .from('offers')
-      .select('id, created_at, tutor:users!offers_tutor_id_fkey(full_name), requests(title)')
+      .select('id, created_at, request_id, tutor:users!offers_tutor_id_fkey(full_name), requests(title)')
       .eq('learner_id', userId)
       .eq('status', 'pending')
       .order('created_at', { ascending: false })
@@ -48,7 +47,7 @@ export default function NotificationPanel({ userId }: Props) {
       allNotifs.push({
         id: 'offer-' + o.id,
         type: 'offer',
-        title: 'New tutor offer',
+        title: 'New Tutor Offer',
         desc: (o.tutor?.full_name || 'A tutor') + ' wants to help with "' + (o.requests?.title || 'your request') + '"',
         href: '/dashboard/requests/' + o.request_id + '/offers',
         time: o.created_at,
@@ -69,8 +68,8 @@ export default function NotificationPanel({ userId }: Props) {
       allNotifs.push({
         id: 'pending-' + b.id,
         type: 'booking_pending',
-        title: 'New booking request',
-        desc: (b.learner?.full_name || 'A student') + ' wants to book "' + (b.services?.title || b.booking_title || 'a session') + '"',
+        title: 'New Booking Request',
+        desc: (b.learner?.full_name || 'A student') + ' wants to book "' + (b.services?.title || 'a session') + '"',
         href: '/dashboard/bookings',
         time: b.created_at,
         read: false,
@@ -90,8 +89,8 @@ export default function NotificationPanel({ userId }: Props) {
       allNotifs.push({
         id: 'accepted-' + b.id,
         type: 'booking_accepted',
-        title: 'Booking confirmed!',
-        desc: (b.tutor?.full_name || 'Your tutor') + ' accepted your booking',
+        title: 'Booking Confirmed!',
+        desc: (b.tutor?.full_name || 'Your tutor') + ' accepted your tutoring session',
         href: '/dashboard/bookings',
         time: b.created_at,
         read: false,
@@ -111,7 +110,7 @@ export default function NotificationPanel({ userId }: Props) {
       allNotifs.push({
         id: 'msg-' + m.id,
         type: 'message',
-        title: 'New message from ' + (m.sender?.full_name || 'someone'),
+        title: 'Message from ' + (m.sender?.full_name || 'User'),
         desc: m.content.length > 60 ? m.content.substring(0, 60) + '...' : m.content,
         href: '/dashboard/messages/' + m.sender?.id,
         time: m.created_at,
@@ -119,30 +118,7 @@ export default function NotificationPanel({ userId }: Props) {
       })
     })
 
-    // pending trade requests for poster
-    const { data: tradeRequests } = await supabase
-      .from('trade_requests')
-      .select('id, created_at, requester:users!trade_requests_requester_id_fkey(full_name), trades(need_subject, offer_subject)')
-      .eq('poster_id', userId)
-      .eq('status', 'pending')
-      .order('created_at', { ascending: false })
-      .limit(3)
-
-    tradeRequests?.forEach((t: any) => {
-      allNotifs.push({
-        id: 'trade-' + t.id,
-        type: 'trade_request',
-        title: 'New swap request',
-        desc: (t.requester?.full_name || 'A student') + ' wants to swap ' + (t.trades?.need_subject || '') + ' ↔ ' + (t.trades?.offer_subject || ''),
-        href: '/dashboard/trades/' + t.trade_id + '/requests',
-        time: t.created_at,
-        read: false,
-      })
-    })
-
-    // sort by time descending
     allNotifs.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-
     setNotifs(allNotifs)
     setUnread(allNotifs.length)
     setLoading(false)
@@ -151,56 +127,32 @@ export default function NotificationPanel({ userId }: Props) {
   useEffect(() => {
     loadNotifications()
 
-    // realtime subscription for new messages
     const supabase = createClient()
     const channel = supabase
-      .channel(uniqueRealtimeTopic('notif-panel', userId))
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: 'receiver_id=eq.' + userId,
-      }, () => {
-        loadNotifications()
-      })
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'offers',
-        filter: 'learner_id=eq.' + userId,
-      }, () => {
-        loadNotifications()
-      })
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'bookings',
-      }, () => {
-        loadNotifications()
-      })
+      .channel(uniqueRealtimeTopic('notifications-panel', userId))
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages', filter: 'receiver_id=eq.' + userId },
+        () => loadNotifications()
+      )
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'bookings', filter: 'tutor_id=eq.' + userId },
+        () => loadNotifications()
+      )
       .subscribe()
 
     return () => { supabase.removeChannel(channel) }
   }, [userId])
 
-  // close on outside click
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
+    function handleClickOutside(e: MouseEvent) {
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
         setOpen(false)
       }
     }
-    if (open) document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [open])
-
-  // close on ESC
-  useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
   function timeAgo(dateStr: string) {
@@ -209,24 +161,24 @@ export default function NotificationPanel({ userId }: Props) {
     const hours = Math.floor(diff / 3600000)
     const days = Math.floor(diff / 86400000)
     if (mins < 1) return 'just now'
-    if (mins < 60) return mins + 'm ago'
-    if (hours < 24) return hours + 'h ago'
-    return days + 'd ago'
+    if (mins < 60) return `${mins}m ago`
+    if (hours < 24) return `${hours}h ago`
+    return `${days}d ago`
   }
 
   function NotifIcon({ type }: { type: Notif['type'] }) {
     const configs: Record<string, { icon: any; bg: string; color: string }> = {
-      offer: { icon: Star, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#F58A32]' },
-      booking_pending: { icon: Clock, bg: 'bg-yellow-500/10 border border-yellow-500/20', color: 'text-yellow-400' },
-      booking_accepted: { icon: CheckCircle, bg: 'bg-green-500/10 border border-green-500/20', color: 'text-green-400' },
-      booking_declined: { icon: XCircle, bg: 'bg-red-500/10 border border-red-500/20', color: 'text-red-400' },
-      booking_completed: { icon: CheckCircle, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#E96118]' },
-      message: { icon: MessageSquare, bg: 'bg-[#E96118]/10 border border-[#E96118]/20', color: 'text-[#E96118]' },
-      trade_request: { icon: ArrowLeftRight, bg: 'bg-[#315C36]/10 border border-[#315C36]/20', color: 'text-[#315C36]' },
+      offer: { icon: Star, bg: 'bg-[#FFF0E5] border border-[#F26A21]/20', color: 'text-[#F26A21]' },
+      booking_pending: { icon: Clock, bg: 'bg-amber-50 border border-amber-200', color: 'text-amber-600' },
+      booking_accepted: { icon: CheckCircle, bg: 'bg-[#E8F0E7] border border-[#315B3B]/20', color: 'text-[#315B3B]' },
+      booking_declined: { icon: XCircle, bg: 'bg-red-50 border border-red-200', color: 'text-red-500' },
+      booking_completed: { icon: CheckCircle, bg: 'bg-[#E8F0E7] border border-[#315B3B]/20', color: 'text-[#315B3B]' },
+      message: { icon: MessageSquare, bg: 'bg-[#FFF0E5] border border-[#F26A21]/20', color: 'text-[#F26A21]' },
+      trade_request: { icon: ArrowLeftRight, bg: 'bg-[#E8F0E7] border border-[#315B3B]/20', color: 'text-[#315B3B]' },
     }
     const cfg = configs[type] || configs.offer
     return (
-      <div className={'w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ' + cfg.bg}>
+      <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${cfg.bg}`}>
         <cfg.icon size={15} className={cfg.color} />
       </div>
     )
@@ -234,29 +186,32 @@ export default function NotificationPanel({ userId }: Props) {
 
   return (
     <div className="relative" ref={panelRef}>
-      {/* bell button */}
+      {/* Bell Button */}
       <button
-        onClick={() => { setOpen(!open); if (!open) loadNotifications() }}
-        className="relative w-9 h-9 flex items-center justify-center text-white/30 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-150"
+        onClick={() => {
+          setOpen(!open)
+          if (!open) loadNotifications()
+        }}
+        className="relative w-9 h-9 flex items-center justify-center text-[#6B716B] hover:text-[#20251F] hover:bg-[#F5F3ED] rounded-xl transition-all duration-150 border border-[#E8E5DE] shadow-xs"
+        title="Notifications"
       >
-        <Bell size={17} />
+        <Bell size={16} />
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#E96118] rounded-full text-[9px] font-black text-white flex items-center justify-center border-2 border-[#FFFDF8] animate-pulse">
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#F26A21] rounded-full text-[9px] font-extrabold text-white flex items-center justify-center border-2 border-white shadow-xs">
             {unread > 9 ? '9+' : unread}
           </span>
         )}
       </button>
 
-      {/* panel */}
+      {/* Dropdown Panel */}
       {open && (
-        <div className="absolute right-0 top-12 w-96 bg-[#FFFFFF] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 z-50 overflow-hidden">
-
-          {/* header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
+        <div className="absolute right-0 top-11 w-84 sm:w-96 bg-white border border-[#E8E5DE] rounded-2xl shadow-xl z-50 overflow-hidden animate-fade-in-up">
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E8E5DE] bg-[#FFFCF7]">
             <div className="flex items-center gap-2">
-              <p className="text-sm font-bold">Notifications</p>
+              <p className="text-sm font-bold text-[#20251F]">Notifications</p>
               {unread > 0 && (
-                <span className="bg-[#E96118] text-white text-[10px] font-black px-2 py-0.5 rounded-full">
+                <span className="bg-[#FFF0E5] text-[#D95416] border border-[#F26A21]/20 text-[10px] font-bold px-2 py-0.5 rounded-full">
                   {unread} new
                 </span>
               )}
@@ -265,72 +220,58 @@ export default function NotificationPanel({ userId }: Props) {
               <Link
                 href="/dashboard/notifications"
                 onClick={() => setOpen(false)}
-                className="text-[10px] text-white/30 hover:text-white/60 transition-colors"
+                className="text-xs font-semibold text-[#F26A21] hover:text-[#D95416] transition-colors"
               >
                 View all
               </Link>
               <button
                 onClick={() => setOpen(false)}
-                className="w-6 h-6 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/30 hover:text-white transition-colors"
+                className="w-6 h-6 rounded-lg hover:bg-[#F5F3ED] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-colors"
               >
-                <X size={12} />
+                <X size={13} />
               </button>
             </div>
           </div>
 
-          {/* content */}
-          <div className="max-h-[420px] overflow-y-auto">
+          {/* Notifications List */}
+          <div className="max-h-80 overflow-y-auto divide-y divide-[#E8E5DE]">
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
+              <div className="flex items-center justify-center py-10">
+                <div className="w-5 h-5 border-2 border-[#F26A21] border-t-transparent rounded-full animate-spin" />
               </div>
             ) : notifs.length === 0 ? (
-              <div className="py-12 text-center">
-                <Bell size={28} className="text-white/10 mx-auto mb-3" />
-                <p className="text-white/30 text-sm font-medium">All caught up!</p>
-                <p className="text-white/20 text-xs mt-1">No new notifications</p>
+              <div className="py-10 text-center">
+                <div className="w-10 h-10 rounded-full bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center mx-auto mb-2">
+                  <CheckCircle size={18} />
+                </div>
+                <p className="text-sm font-semibold text-[#20251F]">All caught up!</p>
+                <p className="text-xs text-[#6B716B] mt-0.5">No pending notifications at this time</p>
               </div>
             ) : (
               <div>
-                {notifs.map((notif, i) => (
+                {notifs.map((notif) => (
                   <Link
                     key={notif.id}
                     href={notif.href}
                     onClick={() => setOpen(false)}
-                    className={
-                      'flex items-start gap-3 px-5 py-4 hover:bg-white/3 transition-colors group ' +
-                      (i < notifs.length - 1 ? 'border-b border-white/5' : '')
-                    }
+                    className="flex items-start gap-3 px-4 py-3 hover:bg-[#FFFCF7] transition-colors group"
                   >
                     <NotifIcon type={notif.type} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-white/80 group-hover:text-white transition-colors">
+                      <p className="text-xs font-bold text-[#20251F] group-hover:text-[#F26A21] transition-colors truncate">
                         {notif.title}
                       </p>
-                      <p className="text-xs text-white/30 mt-0.5 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-[#6B716B] mt-0.5 line-clamp-2 leading-relaxed">
                         {notif.desc}
                       </p>
-                      <p className="text-[10px] text-white/20 mt-1.5">{timeAgo(notif.time)}</p>
+                      <p className="text-[10px] text-[#939A92] font-medium mt-1">{timeAgo(notif.time)}</p>
                     </div>
-                    <ChevronRight size={13} className="text-white/10 group-hover:text-white/30 flex-shrink-0 mt-1 group-hover:translate-x-0.5 transition-all" />
+                    <ChevronRight size={13} className="text-[#939A92] group-hover:text-[#F26A21] flex-shrink-0 mt-1 transition-all" />
                   </Link>
                 ))}
               </div>
             )}
           </div>
-
-          {/* footer */}
-          {notifs.length > 0 && (
-            <div className="border-t border-white/8 px-5 py-3">
-              <Link
-                href="/dashboard/notifications"
-                onClick={() => setOpen(false)}
-                className="block w-full text-center text-xs text-white/30 hover:text-white/60 transition-colors"
-              >
-                See all notifications →
-              </Link>
-            </div>
-          )}
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { TrendingUp, BookOpen, Zap } from 'lucide-react'
+import { TrendingUp, BookOpen, Zap, Sparkles, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function RecommendationsPage() {
@@ -76,61 +76,79 @@ export default async function RecommendationsPage() {
   function ServiceCard({ service }: { service: any }) {
     const isOwn = service.tutor_id === user!.id
     return (
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 hover:border-[#E96118]/30 transition-colors">
-        <div className="flex items-start justify-between mb-3">
-          <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32]">
-            {service.users?.full_name?.[0] ?? '?'}
-          </div>
-          <div className="flex items-center gap-1.5">
-            {isOwn && (
-              <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
-                Yours
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 hover:border-[#F26A21]/30 hover:shadow-md transition-all shadow-xs flex flex-col justify-between">
+        <div>
+          <div className="flex items-start justify-between mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-sm font-bold text-[#F26A21]">
+              {service.users?.full_name?.[0] ?? '?'}
+            </div>
+            <div className="flex items-center gap-1.5">
+              {isOwn && (
+                <span className="text-[11px] font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-0.5 rounded-full">
+                  Your listing
+                </span>
+              )}
+              <span className="text-xs text-[#20251F] font-medium border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-0.5 rounded-full">
+                {service.category}
               </span>
-            )}
-            <span className="text-xs text-white/30 border border-white/10 px-2 py-0.5 rounded-full">
-              {service.category}
+            </div>
+          </div>
+          <h3 className="font-semibold text-sm text-[#20251F] mb-1 line-clamp-1">{service.title}</h3>
+          <p className="text-xs text-[#6B716B] mb-3">{service.users?.full_name} · {service.users?.school}</p>
+        </div>
+
+        <div>
+          <div className="flex items-center justify-between mb-3 pt-3 border-t border-[#E8E5DE]/60">
+            <span className="text-xs text-[#6B716B] flex items-center gap-1">
+              <ShieldCheck size={13} className="text-[#315B3B]" />
+              SPECS Peer
+            </span>
+            <span className="text-xs font-bold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-2.5 py-0.5 rounded-full">
+              Free Session
             </span>
           </div>
+
+          {isOwn ? (
+            <Link
+              href={'/dashboard/services/' + service.id + '/edit'}
+              className="block w-full text-center bg-[#F5F3ED] hover:bg-[#E8E5DE] border border-[#E8E5DE] transition-all py-2 rounded-xl text-xs font-semibold text-[#20251F]"
+            >
+              Edit your listing
+            </Link>
+          ) : (
+            <Link
+              href={'/dashboard/bookings/new?service=' + service.id}
+              className="block w-full text-center bg-[#F26A21] hover:bg-[#D95416] text-white transition-all py-2 rounded-xl text-xs font-semibold shadow-xs"
+            >
+              Book free session
+            </Link>
+          )}
         </div>
-        <p className="font-medium text-sm mb-1">{service.title}</p>
-        <p className="text-xs text-white/30 mb-3">{service.users?.full_name} · {service.users?.school}</p>
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs text-white/40">SPECS volunteer support</span>
-          <p className="text-sm font-semibold text-green-400">Free</p>
-        </div>
-        {isOwn ? (
-          <Link
-            href={'/dashboard/services/' + service.id + '/edit'}
-            className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-all py-2 rounded-xl text-xs font-medium text-white/40"
-          >
-            Edit your listing
-          </Link>
-        ) : (
-          <Link
-            href={'/dashboard/bookings/new?service=' + service.id}
-            className="block w-full text-center bg-white/5 hover:bg-[#E96118] border border-white/10 hover:border-[#E96118] transition-all py-2 rounded-xl text-xs font-medium text-white/60 hover:text-white"
-          >
-            Book session
-          </Link>
-        )}
       </div>
     )
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-1">For you</h1>
-        <p className="text-white/40 text-sm">Personalized recommendations based on your profile and activity</p>
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div>
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
+          <Sparkles size={12} />
+          Tailored For You
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Recommended For You</h1>
+        <p className="text-[#6B716B] text-sm mt-0.5">Personalized peer tutoring and study services based on your major and activity</p>
       </div>
 
       {recommendedServices.length > 0 && (
-        <section className="mb-10">
+        <section>
           <div className="flex items-center gap-2 mb-4">
-            <Zap size={15} className="text-[#F58A32]" />
-            <h2 className="text-sm font-medium text-white">Recommended for {userCourse} students</h2>
+            <div className="w-7 h-7 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
+              <Zap size={15} />
+            </div>
+            <h2 className="text-sm font-bold text-[#20251F]">Recommended for {userCourse} Students</h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {recommendedServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
@@ -139,12 +157,14 @@ export default async function RecommendationsPage() {
       )}
 
       {repeatRecommendations.length > 0 && (
-        <section className="mb-10">
+        <section>
           <div className="flex items-center gap-2 mb-4">
-            <BookOpen size={15} className="text-[#E96118]" />
-            <h2 className="text-sm font-medium text-white">Based on your past sessions</h2>
+            <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+              <BookOpen size={15} />
+            </div>
+            <h2 className="text-sm font-bold text-[#20251F]">Based on Your Past Subjects</h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {repeatRecommendations.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
@@ -152,22 +172,24 @@ export default async function RecommendationsPage() {
         </section>
       )}
 
-      <section className="mb-10">
+      <section>
         <div className="flex items-center gap-2 mb-4">
-          <TrendingUp size={15} className="text-green-400" />
-          <h2 className="text-sm font-medium text-white">Popular on Mentorly</h2>
+          <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+            <TrendingUp size={15} />
+          </div>
+          <h2 className="text-sm font-bold text-[#20251F]">Popular on Mentorly</h2>
         </div>
         {popularServices && popularServices.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {popularServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (
-          <div className="bg-white/3 border border-white/8 rounded-2xl p-10 text-center">
-            <TrendingUp size={28} className="text-white/10 mx-auto mb-3" />
-            <p className="text-white/30 text-sm">No services listed yet</p>
-            <p className="text-white/20 text-xs mt-1">Be the first to list a service!</p>
+          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-10 text-center shadow-xs">
+            <TrendingUp size={28} className="text-[#6B716B]/40 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-[#20251F]">No services listed yet</p>
+            <p className="text-xs text-[#6B716B] mt-1">Be the first to list a peer tutoring service!</p>
           </div>
         )}
       </section>
@@ -175,11 +197,16 @@ export default async function RecommendationsPage() {
       {recommendedServices.length === 0 &&
         repeatRecommendations.length === 0 &&
         (!popularServices || popularServices.length === 0) && (
-          <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-            <Zap size={32} className="text-white/10 mx-auto mb-4" />
-            <p className="text-white/40 text-sm">No recommendations yet</p>
-            <p className="text-white/20 text-xs mt-1">Book a few sessions and we'll tailor suggestions for you</p>
-            <Link href="/dashboard/marketplace" className="inline-block mt-4 text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
+          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+            <Zap size={32} className="text-[#F26A21] mx-auto mb-4" />
+            <p className="text-base font-semibold text-[#20251F]">No recommendations yet</p>
+            <p className="text-xs text-[#6B716B] mt-1 max-w-sm mx-auto">
+              Book a few peer sessions or browse subjects to tailor suggestions for your major.
+            </p>
+            <Link
+              href="/dashboard/marketplace"
+              className="inline-block mt-4 bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-xs"
+            >
               Browse marketplace
             </Link>
           </div>

@@ -46,23 +46,28 @@ export default async function RequestsPage() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">My Requests</h1>
-          <p className="text-white/40 text-sm mt-1">Help requests you've posted</p>
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
+            Peer Assistance Network
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">My Requests</h1>
+          <p className="text-[#6B716B] text-sm mt-1">Help requests you've posted on the peer marketplace</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/requests/browse"
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white"
+            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium text-[#20251F] shadow-xs"
           >
-            <Search size={15} />
+            <Search size={15} className="text-[#6B716B]" />
             Browse requests
           </Link>
           <Link
             href="/dashboard/requests/new"
-            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-xs"
           >
             <Plus size={16} />
             New request
@@ -80,40 +85,47 @@ export default async function RequestsPage() {
             const pendingOffers = getOfferCount(req.id)
 
             return (
-              <div key={req.id} className="bg-white/3 border border-white/8 rounded-2xl p-6">
-                <div className="flex items-start justify-between gap-4">
+              <div
+                key={req.id}
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs hover:border-[#F26A21]/30 hover:shadow-md transition-all"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
-                    <div className="w-10 h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center flex-shrink-0">
-                      <BookOpen size={16} className="text-[#E96118]" />
+                    <div className="w-11 h-11 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center flex-shrink-0 text-[#F26A21]">
+                      <BookOpen size={20} />
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{req.title}</p>
+                    <div className="flex-1 min-w-0">
+                      <h2 className="font-semibold text-base text-[#20251F] tracking-tight">{req.title}</h2>
                       {req.description && (
-                        <p className="text-xs text-white/30 mt-1 leading-relaxed line-clamp-2">{req.description}</p>
+                        <p className="text-xs text-[#6B716B] mt-1.5 leading-relaxed line-clamp-2">{req.description}</p>
                       )}
 
-                      <div className="flex items-center gap-2 mt-2 flex-wrap">
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
+                      <div className="flex items-center gap-2 mt-3 flex-wrap">
+                        <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg font-medium">
+                          {req.category}
+                        </span>
+                        <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg capitalize font-medium">
+                          {req.mode}
+                        </span>
+                        {isMulti && (
+                          <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-1 rounded-lg font-semibold">
+                            {req.total_days} day{req.total_days !== 1 ? 's' : ''} course
+                          </span>
+                        )}
                       </div>
 
                       {req.start_date && (
-                        <div className="flex flex-wrap gap-3 mt-3">
-                          <span className="flex items-center gap-1.5 text-xs text-white/30">
-                            <Calendar size={11} />
+                        <div className="flex flex-wrap items-center gap-4 mt-3 pt-3 border-t border-[#E8E5DE]/60 text-xs text-[#6B716B]">
+                          <span className="flex items-center gap-1.5">
+                            <Calendar size={13} className="text-[#315B3B]" />
                             {isMulti
                               ? formatDate(req.start_date) + ' → ' + formatDate(req.end_date)
                               : formatDate(req.start_date)}
                           </span>
                           {timeRange && (
-                            <span className="flex items-center gap-1.5 text-xs text-white/30">
-                              <Clock size={11} />
-                              {timeRange} · {req.hours_per_day}hr/day
-                            </span>
-                          )}
-                          {isMulti && (
-                            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
-                              {req.total_days} day{req.total_days !== 1 ? 's' : ''}
+                            <span className="flex items-center gap-1.5">
+                              <Clock size={13} className="text-[#F26A21]" />
+                              {timeRange} · {req.hours_per_day} hr/day
                             </span>
                           )}
                         </div>
@@ -121,27 +133,27 @@ export default async function RequestsPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 flex-shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#E8E5DE]">
                     <span className={
-                      'text-xs px-2 py-1 rounded-full border ' +
+                      'text-xs px-3 py-1 rounded-full font-semibold border ' +
                       (req.status === 'open'
-                        ? 'border-green-500/20 text-green-400 bg-green-500/10'
-                        : 'border-white/10 text-white/30')
+                        ? 'border-[#315B3B]/20 text-[#315B3B] bg-[#E8F0E7]'
+                        : 'border-[#E8E5DE] text-[#6B716B] bg-[#F5F3ED]')
                     }>
-                      {req.status}
+                      {req.status === 'open' ? 'Active · Open' : 'Closed'}
                     </span>
 
                     <Link
                       href={'/dashboard/requests/' + req.id + '/offers'}
-                      className="flex items-center gap-1.5 px-3 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white/50 hover:text-white rounded-xl text-xs font-medium transition-all"
+                      className="flex items-center gap-2 px-3.5 py-2 bg-[#F5F3ED] hover:bg-[#FFF0E5] border border-[#E8E5DE] hover:border-[#F26A21]/30 text-[#20251F] hover:text-[#F26A21] rounded-xl text-xs font-semibold transition-all shadow-xs"
                     >
                       {pendingOffers > 0 && (
-                        <span className="w-4 h-4 bg-[#E96118] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+                        <span className="w-4 h-4 bg-[#F26A21] rounded-full text-[10px] font-bold text-white flex items-center justify-center">
                           {pendingOffers}
                         </span>
                       )}
-                      View offers
-                      <ChevronRight size={12} />
+                      <span>View offers</span>
+                      <ChevronRight size={13} />
                     </Link>
                   </div>
                 </div>
@@ -150,10 +162,19 @@ export default async function RequestsPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <BookOpen size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm mb-4">You haven't posted any requests yet</p>
-          <Link href="/dashboard/requests/new" className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
+            <BookOpen size={24} />
+          </div>
+          <h3 className="text-base font-semibold text-[#20251F]">You haven't posted any requests yet</h3>
+          <p className="text-[#6B716B] text-sm max-w-sm mx-auto mt-1 mb-5">
+            Need help with a subject, lab report, or coding project? Post a request and verified peer tutors will reach out.
+          </p>
+          <Link
+            href="/dashboard/requests/new"
+            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-xs"
+          >
+            <Plus size={16} />
             Post your first request
           </Link>
         </div>

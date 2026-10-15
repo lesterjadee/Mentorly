@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, AlertCircle, Briefcase } from 'lucide-react'
 
 const CATEGORIES = [
   'Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology',
@@ -50,85 +50,103 @@ export default function NewServicePage() {
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/services" className="text-white/30 hover:text-white transition-colors">
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard/services"
+          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+        >
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">New service</h1>
-          <p className="text-white/40 text-sm mt-1">List a skill you can teach</p>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
+            <Briefcase size={12} />
+            Peer Service Offering
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Create a New Service</h1>
+          <p className="text-[#6B716B] text-sm mt-0.5">List a subject, course, or programming language you can tutor</p>
         </div>
       </div>
 
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
-
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 sm:p-8 space-y-5 shadow-xs">
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2 text-red-700 text-sm">
+            <AlertCircle size={16} className="flex-shrink-0" />
+            <span>{error}</span>
           </div>
         )}
 
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Service title *</label>
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">
+            Service Title <span className="text-[#F26A21]">*</span>
+          </label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Calculus tutoring for Engineering students"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+            placeholder="e.g. Data Structures & Algorithms Tutoring in C++"
+            className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all"
           />
         </div>
 
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Description</label>
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Describe what you'll teach, your experience, and what students can expect..."
+            placeholder="Describe what concepts you cover, textbooks used, problem sets, and session format..."
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all resize-none"
           />
         </div>
 
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Category *</label>
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">
+            Category <span className="text-[#F26A21]">*</span>
+          </label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+            className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all"
           >
-            <option value="" disabled className="bg-[#FFFDF8]">Select category</option>
+            <option value="" disabled>Select category</option>
             {CATEGORIES.map((c) => (
-              <option key={c} value={c} className="bg-[#FFFDF8]">{c}</option>
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Session mode *</label>
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-3 block">
+            Session Mode <span className="text-[#F26A21]">*</span>
+          </label>
           <div className="grid grid-cols-3 gap-3">
-            {(['online', 'in-person', 'both'] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ${
-                  mode === m
-                    ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
-                    : 'border-white/10 text-white/40 hover:border-white/20'
-                }`}
-              >
-                {m}
-              </button>
-            ))}
+            {(['online', 'in-person', 'both'] as const).map((m) => {
+              const isSelected = mode === m
+              return (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setMode(m)}
+                  className={`py-2.5 rounded-xl border text-sm font-semibold transition-all capitalize ${
+                    isSelected
+                      ? 'border-[#F26A21] bg-[#FFF0E5] text-[#F26A21] shadow-xs'
+                      : 'border-[#E8E5DE] bg-white text-[#6B716B] hover:text-[#20251F]'
+                  }`}
+                >
+                  {m}
+                </button>
+              )
+            })}
           </div>
         </div>
 
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium mt-2"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-semibold mt-2 shadow-xs"
         >
-          {loading ? 'Publishing...' : 'Publish service'}
+          {loading ? 'Publishing Service...' : 'Publish Service Listing'}
         </button>
       </div>
     </div>

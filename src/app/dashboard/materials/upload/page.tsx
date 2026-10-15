@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import {
   ArrowLeft, Upload, X, FileText,
-  Shield, AlertCircle, BookOpen
+  Shield, AlertCircle, BookOpen, CheckCircle2
 } from 'lucide-react'
 
 const SUBJECTS = [
@@ -76,7 +76,7 @@ export default function UploadMaterialPage() {
       }
     }
     load()
-  }, [])
+  }, [router])
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -142,26 +142,27 @@ export default function UploadMaterialPage() {
   if (isSpecsMember === null) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#F26A21] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   if (!isSpecsMember) {
     return (
-      <div className="max-w-lg">
-        <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center">
-          <AlertCircle size={32} className="text-red-400 mx-auto mb-4" />
-          <h2 className="font-bold text-lg mb-2">SPECS Members Only</h2>
-          <p className="text-white/40 text-sm leading-relaxed mb-5">
-            Only SPECS members can upload study materials. If you're a SPECS member,
-            please contact an officer to update your account.
+      <div className="max-w-lg mx-auto pt-10">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+            <AlertCircle size={24} />
+          </div>
+          <h2 className="font-extrabold text-xl text-[#20251F] mb-2">SPECS Members Only</h2>
+          <p className="text-[#6B716B] text-xs leading-relaxed mb-6">
+            Only verified SPECS mentors and officers can upload study materials. Please contact an officer to verify your membership status.
           </p>
           <Link
             href="/dashboard/materials"
-            className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors"
+            className="inline-flex items-center justify-center bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs"
           >
-            Browse existing materials
+            Browse Study Materials
           </Link>
         </div>
       </div>
@@ -169,73 +170,76 @@ export default function UploadMaterialPage() {
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/materials" className="text-white/30 hover:text-white transition-colors">
-          <ArrowLeft size={18} />
+    <div className="max-w-2xl space-y-6">
+      {/* Header */}
+      <div>
+        <Link
+          href="/dashboard/materials"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
+        >
+          <ArrowLeft size={14} />
+          <span>Back to materials</span>
         </Link>
-        <div>
-          <div className="flex items-center gap-2 mb-0.5">
-            <Shield size={14} className="text-[#F58A32]" />
-            <span className="text-[11px] text-[#F58A32] font-semibold uppercase tracking-wider">
-              SPECS Member
-            </span>
-          </div>
-          <h1 className="text-2xl font-black tracking-tight">Upload study material</h1>
-          <p className="text-white/40 text-sm mt-0.5">
-            Share a reviewer, notes, or reference for all Gordon College students
-          </p>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+            <Shield size={13} />
+          </span>
+          <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">SPECS Contributor Hub</span>
         </div>
+        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Upload Study Resource</h1>
+        <p className="text-xs text-[#6B716B] mt-0.5">Share lecture guides, reviewers, and exercises for Gordon College peers</p>
       </div>
 
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-6">
-
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 flex items-start gap-2">
-            <X size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
+            <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
+            <p className="text-red-600 text-xs font-medium">{error}</p>
           </div>
         )}
 
-        {/* file upload */}
+        {/* File upload zone */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">
-            File *
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2.5 block">
+            Select Document or File *
           </label>
 
           {selectedFile ? (
-            <div className="bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center text-lg flex-shrink-0">
+            <div className="bg-[#E8F0E7]/50 border border-[#315B3B]/25 rounded-2xl p-4 flex items-center gap-3.5 shadow-2xs">
+              <div className="w-11 h-11 rounded-xl bg-white border border-[#315B3B]/20 flex items-center justify-center text-xl flex-shrink-0 shadow-2xs">
                 {getFileEmoji(selectedFile)}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white/80 truncate">{selectedFile.name}</p>
-                <p className="text-xs text-white/30">{formatFileSize(selectedFile.size)}</p>
+                <p className="text-xs font-bold text-[#20251F] truncate">{selectedFile.name}</p>
+                <p className="text-[11px] font-semibold text-[#315B3B]">{formatFileSize(selectedFile.size)}</p>
               </div>
               <button
+                type="button"
                 onClick={() => {
                   setSelectedFile(null)
                   if (fileInputRef.current) fileInputRef.current.value = ''
                 }}
-                className="text-white/30 hover:text-white/60 transition-colors flex-shrink-0"
+                className="p-1.5 hover:bg-white rounded-lg text-[#939A92] hover:text-[#20251F] transition-colors"
+                title="Remove file"
               >
                 <X size={16} />
               </button>
             </div>
           ) : (
             <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full flex flex-col items-center justify-center gap-3 bg-white/3 border-2 border-dashed border-white/15 hover:border-[#E96118]/40 hover:bg-[#E96118]/3 transition-all rounded-xl py-10 cursor-pointer group"
+              className="w-full flex flex-col items-center justify-center gap-3 bg-[#FFFCF7] border-2 border-dashed border-[#E8E5DE] hover:border-[#315B3B]/50 hover:bg-[#E8F0E7]/20 transition-all rounded-2xl py-10 cursor-pointer group"
             >
-              <div className="w-12 h-12 rounded-2xl bg-white/5 group-hover:bg-[#E96118]/10 border border-white/10 group-hover:border-[#E96118]/20 flex items-center justify-center transition-all">
-                <Upload size={20} className="text-white/20 group-hover:text-[#F58A32] transition-colors" />
+              <div className="w-12 h-12 rounded-2xl bg-white group-hover:bg-[#E8F0E7] border border-[#E8E5DE] group-hover:border-[#315B3B]/30 flex items-center justify-center transition-all shadow-2xs">
+                <Upload size={22} className="text-[#315B3B]" />
               </div>
               <div className="text-center">
-                <p className="text-sm text-white/40 group-hover:text-white/70 transition-colors font-medium">
-                  Click to choose a file
+                <p className="text-xs font-bold text-[#20251F] group-hover:text-[#315B3B] transition-colors">
+                  Click to select file from your device
                 </p>
-                <p className="text-xs text-white/20 mt-1">
-                  PDF, DOCX, PPTX, images · Max 50MB
+                <p className="text-[11px] text-[#6B716B] mt-1">
+                  PDF, DOCX, PPTX, XLSX, TXT, images up to 50MB
                 </p>
               </div>
             </button>
@@ -249,49 +253,49 @@ export default function UploadMaterialPage() {
           />
         </div>
 
-        {/* title */}
+        {/* Title */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Title *
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+            Resource Title *
           </label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Differential Calculus Reviewer — Finals"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+            placeholder="e.g. Operating Systems — Process Synchronization Notes"
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none"
           />
         </div>
 
-        {/* description */}
+        {/* Description */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Description — optional
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+            Description (Optional)
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What's covered? What level is it for? Any important notes?"
+            placeholder="Brief overview of chapters, formulas, or problem sets included..."
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none resize-none"
           />
         </div>
 
-        {/* subject */}
+        {/* Subject */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">
-            Subject *
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2.5 block">
+            Academic Subject *
           </label>
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {SUBJECTS.map((s) => (
               <button
+                type="button"
                 key={s}
                 onClick={() => setSubject(s)}
-                className={
-                  'py-2 px-2 rounded-xl border text-xs font-medium transition-all text-center ' +
-                  (subject === s
-                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
-                    : 'border-white/8 text-white/40 hover:border-white/20 hover:text-white/70')
-                }
+                className={`py-2 px-2.5 rounded-xl border text-xs font-bold transition-all text-center truncate ${
+                  subject === s
+                    ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B] shadow-2xs'
+                    : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30 hover:text-[#20251F]'
+                }`}
               >
                 {s}
               </button>
@@ -299,88 +303,55 @@ export default function UploadMaterialPage() {
           </div>
         </div>
 
-        {/* link to session */}
+        {/* Link to Session */}
         {sessions.length > 0 && (
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-              Link to one of your sessions — optional
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+              Link to Existing Session (Optional)
             </label>
             <div className="relative">
-              <BookOpen size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+              <BookOpen size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#939A92]" />
               <select
                 value={linkedSession}
                 onChange={(e) => setLinkedSession(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] outline-none transition-all"
               >
-                <option value="" className="bg-[#FFFDF8]">
-                  No session link (standalone material)
-                </option>
+                <option value="">No session link (standalone library material)</option>
                 {sessions.map((s) => (
-                  <option key={s.id} value={s.id} className="bg-[#FFFDF8]">
-                    {s.title}
+                  <option key={s.id} value={s.id}>
+                    Session: {s.title}
                   </option>
                 ))}
               </select>
             </div>
-            <p className="text-xs text-white/20 mt-1.5">
-              Linking lets students find this material from the session detail page.
+            <p className="text-[11px] text-[#6B716B] mt-1.5">
+              Linking connects this document directly to that tutoring session's detail page.
             </p>
           </div>
         )}
 
-        {/* notice */}
-        <div className="bg-[#E96118]/5 border border-[#E96118]/15 rounded-xl px-4 py-3 flex items-start gap-3">
-          <Shield size={13} className="text-[#F58A32] flex-shrink-0 mt-0.5" />
-          <p className="text-xs text-white/40 leading-relaxed">
-            This material will be{' '}
-            <span className="text-white/70 font-medium">publicly available</span> to all
-            Gordon College students — no payment needed to download.
+        {/* Public Notice */}
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5 flex items-center gap-3">
+          <Shield size={16} className="text-[#315B3B] flex-shrink-0" />
+          <p className="text-xs text-[#24452D] font-medium leading-relaxed">
+            This material will be published to the open Gordon College student resource repository under the SPECS Academic Initiative.
           </p>
         </div>
 
-        {/* preview */}
-        {selectedFile && title && subject && (
-          <div className="bg-white/3 border border-white/8 rounded-xl p-4">
-            <p className="text-[10px] text-white/20 uppercase tracking-wider mb-3">Preview</p>
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center text-base flex-shrink-0">
-                {getFileEmoji(selectedFile)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-white/80 truncate">{title}</p>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-[10px] text-white/30 border border-white/8 px-2 py-0.5 rounded-full">
-                    {subject}
-                  </span>
-                  <span className="text-[10px] text-white/20">
-                    {formatFileSize(selectedFile.size)}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <Shield size={9} className="text-[#F58A32]" />
-                <span className="text-[10px] text-[#F58A32]">SPECS</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* submit */}
+        {/* Submit */}
         <button
+          type="button"
           onClick={handleUpload}
           disabled={loading || !title || !subject || !selectedFile}
-          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-40 disabled:cursor-not-allowed transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow flex items-center justify-center gap-2"
         >
           {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              Uploading...
-            </span>
+            <span>Uploading file to repository...</span>
           ) : (
-            <span className="flex items-center justify-center gap-2">
-              <FileText size={15} />
-              Upload material
-            </span>
+            <>
+              <FileText size={16} />
+              <span>Publish Study Material</span>
+            </>
           )}
         </button>
       </div>

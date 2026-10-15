@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { ArrowLeft, User, Calendar, Clock } from 'lucide-react'
+import { ArrowLeft, User, Calendar, Clock, MessageSquare, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import OfferActionButtons from './OfferActionButtons'
 
@@ -51,95 +51,104 @@ export default async function RequestOffersPage({
   const isMulti = request.session_type === 'multi'
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/requests" className="text-white/30 hover:text-white transition-colors">
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard/requests"
+          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+        >
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">Incoming offers</h1>
-          <p className="text-white/40 text-sm mt-1">{request.title}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Incoming Offers</h1>
+          <p className="text-[#6B716B] text-sm mt-0.5">{request.title}</p>
         </div>
       </div>
 
-      {/* request schedule summary */}
+      {/* Request Schedule Summary */}
       {request.start_date && (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-4 mb-6 flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 text-xs text-white/40">
-            <Calendar size={12} className="text-white/20" />
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 flex flex-wrap items-center gap-4 shadow-xs text-xs">
+          <div className="flex items-center gap-2 text-[#20251F] font-medium">
+            <Calendar size={13} className="text-[#315B3B]" />
             {isMulti
               ? formatDate(request.start_date) + ' → ' + formatDate(request.end_date)
               : formatDate(request.start_date)}
           </div>
           {request.daily_start_time && (
-            <div className="flex items-center gap-2 text-xs text-white/40">
-              <Clock size={12} className="text-white/20" />
-              {formatEndTime(request.daily_start_time, request.hours_per_day)} · {request.hours_per_day}hr/day
+            <div className="flex items-center gap-2 text-[#6B716B]">
+              <Clock size={13} className="text-[#F26A21]" />
+              {formatEndTime(request.daily_start_time, request.hours_per_day)} · {request.hours_per_day} hr/day
             </div>
           )}
           {isMulti && (
-            <span className="text-xs text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
-              {request.total_days} day{request.total_days !== 1 ? 's' : ''}
+            <span className="text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-0.5 rounded-full font-semibold">
+              {request.total_days} days total
             </span>
           )}
         </div>
       )}
 
+      {/* Offers List */}
       {offers && offers.length > 0 ? (
         <div className="space-y-4">
           {offers.map((offer: any) => {
+            const isAccepted = offer.status === 'accepted'
+            const isDeclined = offer.status === 'declined'
+
             return (
               <div
                 key={offer.id}
                 className={
-                  'bg-white/3 border rounded-2xl p-6 transition-colors ' +
-                  (offer.status === 'accepted'
-                    ? 'border-green-500/30 bg-green-500/5'
-                    : offer.status === 'declined'
-                    ? 'border-red-500/20 opacity-60'
-                    : 'border-white/8 hover:border-white/15')
+                  'bg-white border rounded-2xl p-6 transition-all shadow-xs ' +
+                  (isAccepted
+                    ? 'border-[#315B3B] bg-[#E8F0E7]/20 ring-1 ring-[#315B3B]/20'
+                    : isDeclined
+                    ? 'border-[#E8E5DE] opacity-60 bg-[#F5F3ED]'
+                    : 'border-[#E8E5DE] hover:border-[#F26A21]/40 hover:shadow-md')
                 }
               >
-                {/* tutor info */}
+                {/* Tutor Info */}
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-base font-medium text-[#F58A32] flex-shrink-0">
-                      {offer.tutor?.full_name?.[0]}
+                    <div className="w-12 h-12 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-base font-bold text-[#F26A21] flex-shrink-0">
+                      {offer.tutor?.full_name?.[0] ?? '?'}
                     </div>
                     <div>
-                      <p className="font-medium text-sm">{offer.tutor?.full_name}</p>
-                      <p className="text-xs text-white/30 mt-0.5">
+                      <h2 className="font-semibold text-base text-[#20251F]">{offer.tutor?.full_name}</h2>
+                      <p className="text-xs text-[#6B716B] mt-0.5">
                         {offer.tutor?.course} · {offer.tutor?.school}
                       </p>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
                     {offer.status === 'pending' && (
-                      <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full">
-                        Pending
+                      <span className="text-xs text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-3 py-1 rounded-full font-semibold">
+                        Pending Review
                       </span>
                     )}
                     {offer.status === 'accepted' && (
-                      <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full">
+                      <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-3 py-1 rounded-full font-semibold flex items-center gap-1">
+                        <CheckCircle size={12} />
                         Accepted
                       </span>
                     )}
                     {offer.status === 'declined' && (
-                      <span className="text-xs text-red-400 border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-full">
+                      <span className="text-xs text-[#6B716B] border border-[#E8E5DE] bg-[#F5F3ED] px-3 py-1 rounded-full font-medium">
                         Declined
                       </span>
                     )}
                   </div>
                 </div>
 
-                {/* message */}
+                {/* Message */}
                 {offer.message && (
-                  <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-4">
-                    <p className="text-xs text-white/50 leading-relaxed italic">"{offer.message}"</p>
+                  <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 mb-4">
+                    <p className="text-xs text-[#20251F] leading-relaxed italic">"{offer.message}"</p>
                   </div>
                 )}
 
-                {/* action buttons */}
+                {/* Action Buttons */}
                 {offer.status === 'pending' && (
                   <OfferActionButtons
                     offerId={offer.id}
@@ -152,8 +161,9 @@ export default async function RequestOffersPage({
                 {offer.status === 'accepted' && (
                   <Link
                     href={'/dashboard/messages/' + offer.tutor_id}
-                    className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-2.5 rounded-xl text-xs font-medium text-white/50 hover:text-white"
+                    className="flex items-center justify-center gap-2 w-full text-center bg-[#315B3B] hover:bg-[#24452D] text-white transition-colors py-2.5 rounded-xl text-xs font-semibold shadow-xs"
                   >
+                    <MessageSquare size={14} />
                     Message tutor
                   </Link>
                 )}
@@ -162,10 +172,14 @@ export default async function RequestOffersPage({
           })}
         </div>
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <User size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No offers yet</p>
-          <p className="text-white/20 text-xs mt-1">Tutors will send you offers once they see your request</p>
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
+            <User size={24} />
+          </div>
+          <h3 className="text-base font-semibold text-[#20251F]">No offers yet</h3>
+          <p className="text-[#6B716B] text-sm mt-1 max-w-sm mx-auto">
+            Peer tutors will review your request and send support offers soon. Check back shortly!
+          </p>
         </div>
       )}
     </div>

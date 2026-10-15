@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, ArrowLeftRight, Calendar, Clock, Search } from 'lucide-react'
+import { Plus, ArrowLeftRight, Calendar, Clock, Search, ShieldCheck } from 'lucide-react'
 
 const SUBJECTS = [
   'All', 'Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology',
@@ -77,22 +77,27 @@ export default async function TradesPage({ searchParams }: Props) {
   }
 
   return (
-    <div>
-      <div className="flex items-start justify-between mb-8">
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Skill Swap</h1>
-          <p className="text-white/40 text-sm">Trade tutoring with another student — no fees, just learning</p>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
+            <ArrowLeftRight size={12} />
+            Reciprocal Learning Exchange
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Skill Swap</h1>
+          <p className="text-[#6B716B] text-sm mt-0.5">Trade tutoring with another student — no fees, collaborative campus learning</p>
         </div>
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/trades/my"
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors px-4 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white"
+            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-colors px-4 py-2.5 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs"
           >
             My swaps
           </Link>
           <Link
             href="/dashboard/trades/new"
-            className="flex items-center gap-2 bg-[#E96118] hover:bg-[#C94A0D] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium"
+            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-colors px-4 py-2.5 rounded-xl text-xs font-semibold text-white shadow-xs"
           >
             <Plus size={16} />
             Post a swap
@@ -100,55 +105,57 @@ export default async function TradesPage({ searchParams }: Props) {
         </div>
       </div>
 
-      {/* how it works banner */}
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-8">
+      {/* How it works banner */}
+      <div className="bg-[#E8F0E7]/60 border border-[#315B3B]/20 rounded-2xl p-5 shadow-xs">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-[#315C36]/10 border border-[#315C36]/20 flex items-center justify-center flex-shrink-0">
-            <ArrowLeftRight size={16} className="text-[#315C36]" />
+          <div className="w-10 h-10 rounded-xl bg-white border border-[#315B3B]/20 flex items-center justify-center flex-shrink-0 text-[#315B3B] shadow-xs">
+            <ArrowLeftRight size={18} />
           </div>
           <div>
-            <p className="font-medium text-sm mb-1">How Skill Swap works</p>
-            <p className="text-xs text-white/40 leading-relaxed">
-              Post what subject you need help with and what subject you can teach in return.
-              Another student matches with you — you both tutor each other at no cost.
-              Perfect for students who want to learn without spending money.
+            <h2 className="font-bold text-sm text-[#20251F] mb-1">How Skill Swap Works</h2>
+            <p className="text-xs text-[#20251F]/70 leading-relaxed">
+              Post what subject you need help with and what subject you can teach in return. Another student matches with you — you both tutor each other at no cost. Perfect for collaborative campus study!
             </p>
           </div>
         </div>
       </div>
 
-      {/* search */}
-      <form className="relative mb-6">
-        <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+      {/* Search */}
+      <form className="relative">
+        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B716B]" />
         <input
           name="q"
           defaultValue={query}
-          placeholder="Search by subject or description..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+          placeholder="Search skill swaps by subject or keyword..."
+          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-2.5 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
         />
         {selectedSubject !== 'All' && (
           <input type="hidden" name="subject" value={selectedSubject} />
         )}
       </form>
 
-      {/* subject filter */}
-      <div className="flex gap-2 flex-wrap mb-8">
-        {SUBJECTS.map((sub) => (
-          <Link
-            key={sub}
-            href={'/dashboard/trades?subject=' + sub + (query ? '&q=' + query : '')}
-            className={
-              selectedSubject === sub
-                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#315C36] border-[#315C36] text-white'
-                : 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
-            }
-          >
-            {sub}
-          </Link>
-        ))}
+      {/* Subject Filter Pills */}
+      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        {SUBJECTS.map((sub) => {
+          const isSelected = selectedSubject === sub
+          return (
+            <Link
+              key={sub}
+              href={'/dashboard/trades?subject=' + sub + (query ? '&q=' + query : '')}
+              className={
+                'px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
+                (isSelected
+                  ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-xs'
+                  : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30 hover:text-[#20251F]')
+              }
+            >
+              {sub}
+            </Link>
+          )
+        })}
       </div>
 
-      {/* trade cards */}
+      {/* Trade Cards Grid */}
       {trades && trades.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-4">
           {trades.map((trade: any) => {
@@ -159,94 +166,97 @@ export default async function TradesPage({ searchParams }: Props) {
             return (
               <div
                 key={trade.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#315C36]/20 transition-colors"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 hover:border-[#315B3B]/40 hover:shadow-md transition-all shadow-xs flex flex-col justify-between"
               >
-                {/* poster */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-full bg-[#315C36]/20 border border-[#315C36]/30 flex items-center justify-center text-sm font-medium text-[#315C36] flex-shrink-0">
-                    {trade.users?.full_name?.[0] ?? '?'}
+                <div>
+                  {/* Poster header */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-sm font-bold text-[#315B3B] flex-shrink-0 shadow-xs">
+                      {trade.users?.full_name?.[0] ?? '?'}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-[#20251F] truncate">{trade.users?.full_name}</p>
+                      <p className="text-xs text-[#6B716B] truncate">{trade.users?.course} · {trade.users?.school}</p>
+                    </div>
+                    {isOwn && (
+                      <span className="ml-auto text-[10px] font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-0.5 rounded-full flex-shrink-0">
+                        Your swap
+                      </span>
+                    )}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{trade.users?.full_name}</p>
-                    <p className="text-xs text-white/30 truncate">{trade.users?.school}</p>
+
+                  {/* Swap Box */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex-1 bg-[#FFF0E5] border border-[#F26A21]/20 rounded-xl px-3 py-2 text-center">
+                      <p className="text-[10px] text-[#F26A21] uppercase font-bold tracking-wider mb-0.5">Needs help with</p>
+                      <p className="text-xs font-bold text-[#20251F] truncate">{trade.need_subject}</p>
+                    </div>
+                    <div className="w-7 h-7 rounded-full bg-[#F5F3ED] border border-[#E8E5DE] flex items-center justify-center flex-shrink-0 text-[#20251F]">
+                      <ArrowLeftRight size={13} />
+                    </div>
+                    <div className="flex-1 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl px-3 py-2 text-center">
+                      <p className="text-[10px] text-[#315B3B] uppercase font-bold tracking-wider mb-0.5">Can teach</p>
+                      <p className="text-xs font-bold text-[#20251F] truncate">{trade.offer_subject}</p>
+                    </div>
                   </div>
-                  {isOwn && (
-                    <span className="ml-auto text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full flex-shrink-0">
-                      Your swap
-                    </span>
+
+                  {/* Description */}
+                  {trade.description && (
+                    <p className="text-xs text-[#6B716B] leading-relaxed mb-4 line-clamp-2">
+                      {trade.description}
+                    </p>
+                  )}
+
+                  {/* Schedule */}
+                  {trade.start_date && (
+                    <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3 mb-4 space-y-1.5 text-xs">
+                      <p className="text-[10px] font-bold text-[#6B716B] uppercase tracking-wider">Preferred Schedule</p>
+                      <div className="flex items-center gap-2 text-[#20251F]">
+                        <Calendar size={12} className="text-[#315B3B]" />
+                        {isMulti
+                          ? formatDate(trade.start_date) + ' → ' + formatDate(trade.end_date)
+                          : formatDate(trade.start_date)}
+                        {isMulti && (
+                          <span className="text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                            {trade.total_days} days
+                          </span>
+                        )}
+                      </div>
+                      {trade.daily_start_time && (
+                        <div className="flex items-center gap-2 text-[#6B716B]">
+                          <Clock size={12} className="text-[#F26A21]" />
+                          {formatEndTime(trade.daily_start_time, trade.hours_per_day)} · {trade.hours_per_day} hr/day
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
 
-                {/* swap arrow */}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex-1 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2.5 text-center">
-                    <p className="text-[10px] text-red-400/60 uppercase tracking-wider mb-1">Needs help with</p>
-                    <p className="text-sm font-semibold text-red-400">{trade.need_subject}</p>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <ArrowLeftRight size={16} className="text-white/20" />
-                  </div>
-                  <div className="flex-1 bg-green-500/10 border border-green-500/20 rounded-xl px-3 py-2.5 text-center">
-                    <p className="text-[10px] text-green-400/60 uppercase tracking-wider mb-1">Can teach</p>
-                    <p className="text-sm font-semibold text-green-400">{trade.offer_subject}</p>
-                  </div>
-                </div>
-
-                {/* description */}
-                {trade.description && (
-                  <p className="text-xs text-white/30 leading-relaxed mb-4 line-clamp-2">
-                    {trade.description}
-                  </p>
-                )}
-
-                {/* schedule */}
-                {trade.start_date && (
-                  <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-4 space-y-1.5">
-                    <p className="text-[10px] text-white/20 uppercase tracking-wider">Schedule</p>
-                    <div className="flex items-center gap-2 text-xs text-white/40">
-                      <Calendar size={11} />
-                      {isMulti
-                        ? formatDate(trade.start_date) + ' → ' + formatDate(trade.end_date)
-                        : formatDate(trade.start_date)}
-                      {isMulti && (
-                        <span className="text-[#315C36] border border-[#315C36]/20 bg-[#315C36]/10 px-2 py-0.5 rounded-full text-[10px]">
-                          {trade.total_days} day{trade.total_days !== 1 ? 's' : ''}
-                        </span>
-                      )}
-                    </div>
-                    {trade.daily_start_time && (
-                      <div className="flex items-center gap-2 text-xs text-white/40">
-                        <Clock size={11} />
-                        {formatEndTime(trade.daily_start_time, trade.hours_per_day)} · {trade.hours_per_day}hr/day
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-white/20">{timeAgo(trade.created_at)}</p>
+                {/* Footer Controls */}
+                <div className="flex items-center justify-between pt-3 border-t border-[#E8E5DE]/60">
+                  <p className="text-xs text-[#6B716B]/70">{timeAgo(trade.created_at)}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-white/20 border border-white/8 px-2 py-1 rounded-lg capitalize">
+                    <span className="text-xs font-medium text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg capitalize">
                       {trade.mode}
                     </span>
                     {!isOwn && !alreadyRequested && (
                       <Link
                         href={'/dashboard/trades/' + trade.id + '/request'}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#315C36]/10 hover:bg-[#315C36]/20 border border-[#315C36]/20 hover:border-[#315C36]/40 text-[#315C36] rounded-xl text-xs font-medium transition-all"
+                        className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#315B3B] hover:bg-[#24452D] text-white rounded-xl text-xs font-semibold transition-all shadow-xs"
                       >
                         <ArrowLeftRight size={12} />
                         Request swap
                       </Link>
                     )}
                     {!isOwn && alreadyRequested && (
-                      <span className="text-xs text-white/20 border border-white/8 px-3 py-1.5 rounded-xl">
+                      <span className="text-xs font-semibold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-3 py-1.5 rounded-xl">
                         Swap requested
                       </span>
                     )}
                     {isOwn && (
                       <Link
                         href={'/dashboard/trades/' + trade.id + '/requests'}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/50 hover:text-white rounded-xl text-xs font-medium transition-all"
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F3ED] hover:bg-[#E8E5DE] border border-[#E8E5DE] text-[#20251F] rounded-xl text-xs font-semibold transition-all shadow-xs"
                       >
                         View requests
                       </Link>
@@ -258,14 +268,19 @@ export default async function TradesPage({ searchParams }: Props) {
           })}
         </div>
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <ArrowLeftRight size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No skill swaps posted yet</p>
-          <p className="text-white/20 text-xs mt-1">Be the first to post a swap!</p>
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] mx-auto mb-4">
+            <ArrowLeftRight size={24} />
+          </div>
+          <h2 className="text-base font-semibold text-[#20251F]">No skill swaps posted yet</h2>
+          <p className="text-sm text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+            Be the first to trade tutoring in subjects you enjoy with other students!
+          </p>
           <Link
             href="/dashboard/trades/new"
-            className="inline-block mt-4 text-[#315C36] hover:text-[#427A49] text-sm transition-colors"
+            className="inline-flex items-center gap-2 bg-[#315B3B] hover:bg-[#24452D] text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-xs"
           >
+            <Plus size={15} />
             Post a skill swap
           </Link>
         </div>

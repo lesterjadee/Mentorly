@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { uniqueRealtimeTopic } from '@/lib/supabase/realtime'
-import { Send, Star, Paperclip, X, FileText, Download } from 'lucide-react'
+import { Send, Star, Paperclip, X, FileText, Download, ShieldCheck, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 type Message = {
@@ -172,7 +172,7 @@ export default function ChatWindow({
   }
 
   // uses onClick + window.open to avoid anchor tag rendering issues
-  function renderFileAttachment(msg: Message): React.ReactNode {
+  function renderFileAttachment(msg: Message, isMe: boolean): React.ReactNode {
     if (!msg.file_url) return null
 
     if (isImage(msg.file_type)) {
@@ -184,32 +184,44 @@ export default function ChatWindow({
           <img
             src={msg.file_url}
             alt={msg.file_name || 'Image'}
-            className="max-w-[240px] rounded-xl border border-white/10 hover:opacity-90 transition-opacity"
+            className="max-w-[240px] rounded-xl border border-[#E8E5DE] shadow-xs hover:opacity-95 transition-opacity"
           />
-          <p className="text-[10px] text-white/30 mt-1">{msg.file_name}</p>
+          <p className={isMe ? 'text-[10px] text-white/80 mt-1 font-medium' : 'text-[10px] text-[#6B716B] mt-1'}>
+            {msg.file_name}
+          </p>
         </div>
       )
     }
 
     return (
       <div
-        className="flex items-center gap-3 mt-2 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 rounded-xl px-3 py-2.5 transition-all cursor-pointer max-w-xs group"
+        className={
+          'flex items-center gap-3 mt-2 rounded-xl px-3.5 py-2.5 transition-all cursor-pointer max-w-xs group shadow-xs ' +
+          (isMe
+            ? 'bg-white/20 hover:bg-white/30 text-white'
+            : 'bg-white hover:bg-[#FFF0E5] border border-[#E8E5DE] text-[#20251F]')
+        }
         onClick={() => {
           if (msg.file_url) window.open(msg.file_url, '_blank')
         }}
       >
-        <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
-          <FileText size={15} className="text-white/60" />
+        <div className={
+          'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ' +
+          (isMe ? 'bg-white/20 text-white' : 'bg-[#E8F0E7] text-[#315B3B]')
+        }>
+          <FileText size={16} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-white/80 truncate group-hover:text-white transition-colors">
+          <p className="text-xs font-semibold truncate">
             {msg.file_name}
           </p>
           {msg.file_size !== undefined && msg.file_size !== null && (
-            <p className="text-[10px] text-white/40">{formatFileSize(msg.file_size)}</p>
+            <p className={isMe ? 'text-[10px] text-white/80' : 'text-[10px] text-[#6B716B]'}>
+              {formatFileSize(msg.file_size)}
+            </p>
           )}
         </div>
-        <Download size={13} className="text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0" />
+        <Download size={14} className={isMe ? 'text-white/80' : 'text-[#6B716B] group-hover:text-[#F26A21]'} />
       </div>
     )
   }
@@ -217,77 +229,110 @@ export default function ChatWindow({
   const grouped = groupByDate(messages)
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full h-full">
 
-      {/* sidebar contacts */}
-      <div className="w-72 border-r border-white/5 flex-col flex-shrink-0 hidden md:flex">
-        <div className="px-6 py-5 border-b border-white/5">
-          <h1 className="text-lg font-bold">Messages</h1>
-          <p className="text-white/30 text-xs mt-0.5">Your conversations</p>
+      {/* Sidebar Contacts */}
+      <div className="w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex-col flex-shrink-0 hidden md:flex">
+        <div className="px-6 py-5 border-b border-[#E8E5DE] bg-white">
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[11px] font-semibold mb-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
+            Direct Messages
+          </div>
+          <h1 className="text-lg font-bold text-[#20251F]">Conversations</h1>
+          <p className="text-[#6B716B] text-xs">Chat with your peer tutors and learners</p>
         </div>
-        <div className="flex-1 overflow-y-auto">
+
+        <div className="flex-1 overflow-y-auto divide-y divide-[#E8E5DE]">
           {contacts.length > 0 ? (
-            contacts.map((contact) => (
-              <Link
-                key={contact.id}
-                href={'/dashboard/messages/' + contact.id}
-                className={
-                  'flex items-center gap-3 px-4 py-4 border-b border-white/5 transition-colors ' +
-                  (contact.id === activeUserId ? 'bg-white/5' : 'hover:bg-white/3')
-                }
-              >
-                <div className={
-                  'w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 ' +
-                  (contact.id === activeUserId
-                    ? 'bg-[#E96118] text-white border border-[#E96118]'
-                    : 'bg-[#E96118]/20 border border-[#E96118]/30 text-[#F58A32]')
-                }>
-                  {contact.full_name?.[0]}
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{contact.full_name}</p>
-                  <p className="text-xs text-white/30 truncate">{contact.school}</p>
-                </div>
-              </Link>
-            ))
+            contacts.map((contact) => {
+              const isActive = contact.id === activeUserId
+              return (
+                <Link
+                  key={contact.id}
+                  href={'/dashboard/messages/' + contact.id}
+                  className={
+                    'flex items-center gap-3 px-5 py-4 transition-colors group ' +
+                    (isActive
+                      ? 'bg-white border-l-4 border-l-[#F26A21] shadow-xs'
+                      : 'hover:bg-white')
+                  }
+                >
+                  <div className={
+                    'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-xs ' +
+                    (isActive
+                      ? 'bg-[#F26A21] text-white'
+                      : 'bg-[#FFF0E5] text-[#F26A21] border border-[#F26A21]/20')
+                  }>
+                    {contact.full_name?.[0] ?? '?'}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={
+                      'text-sm font-semibold truncate transition-colors ' +
+                      (isActive ? 'text-[#F26A21]' : 'text-[#20251F] group-hover:text-[#F26A21]')
+                    }>
+                      {contact.full_name}
+                    </p>
+                    <p className="text-xs text-[#6B716B] truncate">{contact.school || 'Gordon College'}</p>
+                  </div>
+                </Link>
+              )
+            })
           ) : (
-            <div className="p-6 text-center">
-              <p className="text-white/30 text-xs">No conversations yet</p>
+            <div className="p-8 text-center text-xs text-[#6B716B]">
+              No other conversations
             </div>
           )}
         </div>
       </div>
 
-      {/* chat area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Chat Area */}
+      <div className="flex-1 flex flex-col min-w-0 bg-white">
 
-        {/* chat header */}
-        <div className="flex items-center gap-3 px-4 md:px-6 py-4 border-b border-white/5 flex-shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32]">
-            {otherUser.full_name?.[0]}
-          </div>
-          <div>
-            <p className="font-medium text-sm">{otherUser.full_name}</p>
-            <p className="text-xs text-white/30">{otherUser.course} · {otherUser.school}</p>
-          </div>
-          {(otherUser.trust_score ?? 0) > 0 && (
-            <div className="ml-auto flex items-center gap-1">
-              <Star size={12} className="text-yellow-400 fill-yellow-400" />
-              <span className="text-xs text-white/40">{otherUser.trust_score}</span>
+        {/* Chat Header */}
+        <div className="flex items-center justify-between gap-3 px-4 md:px-6 py-4 border-b border-[#E8E5DE] bg-white flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/messages"
+              className="md:hidden w-8 h-8 rounded-lg bg-[#F5F3ED] flex items-center justify-center text-[#20251F]"
+            >
+              <ArrowLeft size={16} />
+            </Link>
+            <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-sm font-bold text-[#315B3B] shadow-xs">
+              {otherUser.full_name?.[0] ?? '?'}
             </div>
-          )}
+            <div>
+              <p className="font-bold text-sm text-[#20251F]">{otherUser.full_name}</p>
+              <p className="text-xs text-[#6B716B]">{otherUser.course || 'Gordon College Student'} · {otherUser.school || 'Gordon College'}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {(otherUser.trust_score ?? 0) > 0 ? (
+              <div className="flex items-center gap-1 bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20 px-2.5 py-1 rounded-full text-xs font-semibold">
+                <Star size={12} className="text-[#315B3B] fill-[#315B3B]" />
+                <span>{otherUser.trust_score} Trust Score</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20 px-2.5 py-1 rounded-full text-xs font-semibold">
+                <ShieldCheck size={12} />
+                <span>Verified Peer</span>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* messages */}
-        <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4">
+        {/* Messages Scroll Area */}
+        <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4 bg-[#FFFCF7]/40">
           {grouped.length === 0 && (
             <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-[#E96118]/10 border border-[#E96118]/20 flex items-center justify-center mx-auto mb-3">
-                  <Send size={16} className="text-[#F58A32]" />
+              <div className="text-center max-w-xs">
+                <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center mx-auto mb-3 text-[#F26A21]">
+                  <Send size={18} />
                 </div>
-                <p className="text-white/30 text-sm">No messages yet</p>
-                <p className="text-white/20 text-xs mt-1">Say hi to {otherUser.full_name?.split(' ')[0]}!</p>
+                <p className="text-sm font-semibold text-[#20251F]">No messages yet</p>
+                <p className="text-xs text-[#6B716B] mt-1">
+                  Say hi to {otherUser.full_name?.split(' ')[0]} and coordinate your tutoring session!
+                </p>
               </div>
             </div>
           )}
@@ -295,11 +340,13 @@ export default function ChatWindow({
           {grouped.map((group) => (
             <div key={group.date}>
               <div className="flex items-center gap-3 my-4">
-                <div className="flex-1 h-px bg-white/5" />
-                <span className="text-xs text-white/20">{group.date}</span>
-                <div className="flex-1 h-px bg-white/5" />
+                <div className="flex-1 h-px bg-[#E8E5DE]" />
+                <span className="text-[11px] font-semibold text-[#6B716B] uppercase tracking-wider bg-white px-2 py-0.5 rounded-md border border-[#E8E5DE]">
+                  {group.date}
+                </span>
+                <div className="flex-1 h-px bg-[#E8E5DE]" />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {group.messages.map((msg) => {
                   const isMe = msg.sender_id === currentUser.id
                   return (
@@ -307,16 +354,16 @@ export default function ChatWindow({
                       <div className={'max-w-xs lg:max-w-md flex flex-col gap-1 ' + (isMe ? 'items-end' : 'items-start')}>
                         {msg.content && (
                           <div className={
-                            'px-4 py-2.5 rounded-2xl text-sm leading-relaxed ' +
+                            'px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-xs ' +
                             (isMe
-                              ? 'bg-[#E96118] text-white rounded-br-md'
-                              : 'bg-white/5 text-white/80 border border-white/8 rounded-bl-md')
+                              ? 'bg-[#F26A21] text-white rounded-br-xs font-normal'
+                              : 'bg-white text-[#20251F] border border-[#E8E5DE] rounded-bl-xs')
                           }>
                             {msg.content}
                           </div>
                         )}
-                        {renderFileAttachment(msg)}
-                        <span className="text-[10px] text-white/20 px-1">{formatTime(msg.created_at)}</span>
+                        {renderFileAttachment(msg, isMe)}
+                        <span className="text-[10px] text-[#6B716B]/70 px-1 font-medium">{formatTime(msg.created_at)}</span>
                       </div>
                     </div>
                   )
@@ -327,39 +374,41 @@ export default function ChatWindow({
           <div ref={bottomRef} />
         </div>
 
-        {/* selected file preview */}
+        {/* Selected File Preview */}
         {selectedFile && (
-          <div className="px-4 md:px-6 py-2 border-t border-white/5 flex-shrink-0">
-            <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
-              <div className="w-7 h-7 rounded-lg bg-[#E96118]/20 flex items-center justify-center flex-shrink-0">
-                <FileText size={13} className="text-[#F58A32]" />
+          <div className="px-4 md:px-6 py-2.5 bg-[#FFF0E5] border-t border-[#F26A21]/20 flex-shrink-0">
+            <div className="flex items-center gap-3 bg-white border border-[#F26A21]/30 rounded-xl px-3 py-2 shadow-xs">
+              <div className="w-8 h-8 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center flex-shrink-0">
+                <FileText size={15} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-white/70 truncate">{selectedFile.name}</p>
-                <p className="text-[10px] text-white/30">{formatFileSize(selectedFile.size)}</p>
+                <p className="text-xs font-semibold text-[#20251F] truncate">{selectedFile.name}</p>
+                <p className="text-[10px] text-[#6B716B]">{formatFileSize(selectedFile.size)}</p>
               </div>
               <button
+                type="button"
                 onClick={() => {
                   setSelectedFile(null)
                   if (fileInputRef.current) fileInputRef.current.value = ''
                 }}
-                className="text-white/30 hover:text-white/60 transition-colors"
+                className="text-[#6B716B] hover:text-[#20251F] transition-colors p-1"
               >
-                <X size={14} />
+                <X size={15} />
               </button>
             </div>
           </div>
         )}
 
-        {/* input bar */}
-        <div className="px-4 md:px-6 py-4 border-t border-white/5 flex-shrink-0">
+        {/* Input Bar */}
+        <div className="px-4 md:px-6 py-4 border-t border-[#E8E5DE] bg-white flex-shrink-0">
           <div className="flex items-end gap-2 md:gap-3">
             <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-10 h-10 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-colors rounded-xl flex items-center justify-center flex-shrink-0 text-white/30 hover:text-white"
-              title="Attach file or document"
+              className="w-10 h-10 bg-[#F5F3ED] hover:bg-[#E8F0E7] border border-[#E8E5DE] text-[#315B3B] hover:text-[#24452D] transition-colors rounded-xl flex items-center justify-center flex-shrink-0 shadow-xs"
+              title="Attach study file, note, or syllabus"
             >
-              <Paperclip size={15} />
+              <Paperclip size={16} />
             </button>
             <input
               ref={fileInputRef}
@@ -377,14 +426,15 @@ export default function ChatWindow({
                   sendMessage()
                 }
               }}
-              placeholder={'Message ' + (otherUser.full_name?.split(' ')[0] || 'them') + '...'}
+              placeholder={'Message ' + (otherUser.full_name?.split(' ')[0] || 'peer') + '...'}
               rows={1}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+              className="flex-1 bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all resize-none"
             />
             <button
+              type="button"
               onClick={sendMessage}
               disabled={sending || (!content.trim() && !selectedFile)}
-              className="w-10 h-10 bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-30 transition-colors rounded-xl flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 bg-[#F26A21] hover:bg-[#D95416] text-white disabled:opacity-40 transition-colors rounded-xl flex items-center justify-center flex-shrink-0 shadow-xs"
             >
               {uploadProgress
                 ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -392,8 +442,8 @@ export default function ChatWindow({
               }
             </button>
           </div>
-          <p className="text-white/20 text-xs mt-2">
-            Enter to send · Shift+Enter for new line · 📎 Max 10MB
+          <p className="text-[#6B716B] text-[11px] mt-2">
+            Press Enter to send · Shift+Enter for new line · 📎 Max 10MB study attachments
           </p>
         </div>
       </div>

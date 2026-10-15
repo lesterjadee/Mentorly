@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Check, X } from 'lucide-react'
+import { Check, X, AlertCircle } from 'lucide-react'
 
 type Props = {
   offerId: string
@@ -107,25 +107,28 @@ export default function OfferActionButtons({
   return (
     <div className="space-y-2">
       {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2">
-          <p className="text-red-400 text-xs">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-xl px-3 py-2 flex items-center gap-1.5 text-red-700 text-xs">
+          <AlertCircle size={14} className="flex-shrink-0" />
+          <span>{error}</span>
         </div>
       )}
       <div className="flex gap-3">
         <button
+          type="button"
           onClick={handleDecline}
           disabled={loading !== null}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-xl text-xs font-medium transition-colors disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-white hover:bg-red-50 border border-[#E8E5DE] hover:border-red-200 text-[#6B716B] hover:text-red-600 rounded-xl text-xs font-semibold transition-all disabled:opacity-50 shadow-xs"
         >
-          <X size={13} />
+          <X size={14} />
           {loading === 'decline' ? 'Declining...' : 'Decline'}
         </button>
         <button
+          type="button"
           onClick={handleAccept}
           disabled={loading !== null}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 text-green-400 rounded-xl text-xs font-medium transition-colors disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-[#315B3B] hover:bg-[#24452D] border border-transparent text-white rounded-xl text-xs font-semibold transition-all disabled:opacity-50 shadow-xs"
         >
-          <Check size={13} />
+          <Check size={14} />
           {loading === 'accept' ? 'Accepting...' : 'Accept offer'}
         </button>
       </div>

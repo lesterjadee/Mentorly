@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { ArrowLeft, Calendar, Clock, Shield } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, Shield, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 
 export default function NewBookingPage() {
@@ -33,7 +33,6 @@ export default function NewBookingPage() {
         .single()
       if (data) {
         setSession(data)
-        // pre-fill schedule from session if available
         if (data.start_date) setStartDate(data.start_date)
         if (data.end_date) setEndDate(data.end_date)
         if (data.daily_start_time) setDailyStartTime(data.daily_start_time.slice(0,5))
@@ -121,7 +120,7 @@ export default function NewBookingPage() {
   if (!session) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#F26A21] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -129,162 +128,176 @@ export default function NewBookingPage() {
   const days = countDays()
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href={'/dashboard/sessions/' + serviceId} className="text-white/30 hover:text-white transition-colors">
-          <ArrowLeft size={18} />
+    <div className="max-w-2xl space-y-6">
+      {/* Header */}
+      <div>
+        <Link
+          href={'/dashboard/sessions/' + serviceId}
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
+        >
+          <ArrowLeft size={14} />
+          <span>Back to session details</span>
         </Link>
-        <div>
-          <h1 className="text-2xl font-black tracking-tight">Book a session</h1>
-          <p className="text-white/40 text-sm mt-0.5">Confirm your booking details</p>
-        </div>
+        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Book Tutoring Session</h1>
+        <p className="text-xs text-[#6B716B] mt-0.5">Confirm your schedule preferences with your SPECS mentor</p>
       </div>
 
-      {/* session summary */}
-      <div className="bg-gradient-to-br from-[#FFF3E9] to-[#F7FBF5] border border-[#E96118]/20 rounded-2xl p-5 mb-6">
+      {/* Session Summary Card */}
+      <div className="bg-gradient-to-br from-[#FFF8F1] via-white to-[#F3F7F2] border border-[#E8E5DE] rounded-2xl p-5 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="w-11 h-11 rounded-full bg-[#E96118] flex items-center justify-center text-base font-black text-white flex-shrink-0">
-            {session.users?.full_name?.[0]}
+          <div className="w-12 h-12 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-base font-extrabold text-[#D95416] flex-shrink-0 shadow-2xs">
+            {session.users?.full_name?.[0] || 'T'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-sm">{session.title}</p>
+            <p className="font-bold text-base text-[#20251F] truncate">{session.title}</p>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <Shield size={10} className="text-[#F58A32]" />
-              <p className="text-xs text-[#F58A32]">
-                {session.users?.full_name} · SPECS {session.users?.specs_role || 'Member'}
+              <Shield size={12} className="text-[#315B3B]" />
+              <p className="text-xs font-semibold text-[#315B3B] truncate">
+                {session.users?.full_name} · SPECS {session.users?.specs_role || 'Mentor'}
               </p>
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-xl font-black text-green-400">FREE</p>
-            <p className="text-[10px] text-white/30">No charge</p>
+            <span className="text-xs font-extrabold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-3 py-1 rounded-full">
+              FREE
+            </span>
+            <p className="text-[10px] text-[#6B716B] font-medium mt-1">Peer Tutoring</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
-
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-xs font-medium">
+            {error}
           </div>
         )}
 
-        {/* session type toggle */}
-        <div className="grid grid-cols-2 gap-3">
-          {(['single', 'multi'] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setSessionType(t)}
-              className={
-                'py-3 rounded-xl border text-sm font-semibold transition-all ' +
-                (sessionType === t
-                  ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
-                  : 'border-white/10 text-white/40 hover:border-white/20')
-              }
-            >
-              {t === 'single' ? 'Single day' : 'Multiple days'}
-            </button>
-          ))}
+        {/* Schedule Type Selection */}
+        <div>
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2.5 block">
+            Booking Type
+          </label>
+          <div className="grid grid-cols-2 gap-3">
+            {(['single', 'multi'] as const).map((t) => (
+              <button
+                type="button"
+                key={t}
+                onClick={() => setSessionType(t)}
+                className={`py-2.5 rounded-xl border text-xs font-bold transition-all ${
+                  sessionType === t
+                    ? 'border-[#F26A21] bg-[#FFF0E5] text-[#D95416] shadow-2xs'
+                    : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]'
+                }`}
+              >
+                {t === 'single' ? 'Single Session' : 'Multiple Days Series'}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* dates */}
+        {/* Dates */}
         {sessionType === 'single' ? (
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-              <Calendar size={12} /> Date
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Calendar size={13} className="text-[#315B3B]" /> Session Date
             </label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
               min={new Date().toISOString().split('T')[0]}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+              className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 outline-none transition-all"
             />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-                <Calendar size={12} /> Start date
+              <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Calendar size={13} className="text-[#315B3B]" /> Start Date
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-                <Calendar size={12} /> End date
+              <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Calendar size={13} className="text-[#315B3B]" /> End Date
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 min={startDate || new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 outline-none transition-all"
               />
             </div>
           </div>
         )}
 
-        {/* time */}
-        <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-            <Clock size={12} /> Start time
-          </label>
-          <input
-            type="time"
-            value={dailyStartTime}
-            onChange={(e) => setDailyStartTime(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
-          />
-          {dailyStartTime && hoursPerDay && (
-            <p className="text-xs text-[#F58A32] mt-2">
-              {formatEndTime(dailyStartTime, hoursPerDay)}
-            </p>
-          )}
-        </div>
+        {/* Time & Duration */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Clock size={13} className="text-[#F26A21]" /> Preferred Start Time
+            </label>
+            <input
+              type="time"
+              value={dailyStartTime}
+              onChange={(e) => setDailyStartTime(e.target.value)}
+              className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 outline-none transition-all"
+            />
+            {dailyStartTime && hoursPerDay && (
+              <p className="text-xs font-semibold text-[#D95416] mt-1.5">
+                {formatEndTime(dailyStartTime, hoursPerDay)}
+              </p>
+            )}
+          </div>
 
-        {/* hours per day */}
-        <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Hours per day</label>
-          <div className="grid grid-cols-4 gap-2">
-            {['1', '1.5', '2', '3'].map((h) => (
-              <button
-                key={h}
-                onClick={() => setHoursPerDay(h)}
-                className={
-                  'py-2.5 rounded-xl border text-sm font-medium transition-all ' +
-                  (hoursPerDay === h
-                    ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
-                    : 'border-white/10 text-white/40 hover:border-white/20')
-                }
-              >
-                {h}h
-              </button>
-            ))}
+          <div>
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+              Hours per Day
+            </label>
+            <div className="grid grid-cols-4 gap-2">
+              {['1', '1.5', '2', '3'].map((h) => (
+                <button
+                  type="button"
+                  key={h}
+                  onClick={() => setHoursPerDay(h)}
+                  className={`py-2 rounded-xl border text-xs font-bold transition-all ${
+                    hoursPerDay === h
+                      ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                      : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30'
+                  }`}
+                >
+                  {h}h
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* mode */}
+        {/* Mode (if both allowed) */}
         {session.mode === 'both' && (
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Session mode</label>
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2.5 block">
+              Meeting Mode
+            </label>
             <div className="grid grid-cols-2 gap-3">
               {(['online', 'in-person'] as const).map((m) => (
                 <button
+                  type="button"
                   key={m}
                   onClick={() => setMode(m)}
-                  className={
-                    'py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ' +
-                    (mode === m
-                      ? 'border-[#E96118] bg-[#E96118]/10 text-[#F58A32]'
-                      : 'border-white/10 text-white/40 hover:border-white/20')
-                  }
+                  className={`py-2.5 rounded-xl border text-xs font-bold transition-all capitalize ${
+                    mode === m
+                      ? 'border-[#F26A21] bg-[#FFF0E5] text-[#D95416]'
+                      : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30'
+                  }`}
                 >
                   {m}
                 </button>
@@ -293,29 +306,29 @@ export default function NewBookingPage() {
           </div>
         )}
 
-        {/* notes */}
+        {/* Notes */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Message to tutor — optional
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+            Message for Tutor (Optional)
           </label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Topics you need help with, your current level, questions you have..."
+            placeholder="Specify topics you want to prioritize or questions you have prepared..."
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none resize-none"
           />
         </div>
 
-        {/* session summary */}
-        <div className="bg-white/3 border border-white/8 rounded-xl p-5 space-y-3">
-          <p className="text-xs text-white/30 uppercase tracking-wider">Booking summary</p>
+        {/* Summary Card */}
+        <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-2xl p-5 space-y-3">
+          <p className="text-xs font-bold text-[#939A92] uppercase tracking-wider">
+            Booking Summary
+          </p>
           {startDate && (
-            <div className="flex justify-between text-sm">
-              <span className="text-white/40">
-                {sessionType === 'single' ? 'Date' : 'Date range'}
-              </span>
-              <span className="text-white/70">
+            <div className="flex justify-between text-xs pt-1">
+              <span className="text-[#6B716B]">{sessionType === 'single' ? 'Scheduled Date' : 'Date Range'}</span>
+              <span className="font-bold text-[#20251F]">
                 {sessionType === 'single'
                   ? formatDisplayDate(startDate)
                   : formatDisplayDate(startDate) + ' → ' + formatDisplayDate(endDate)}
@@ -323,37 +336,40 @@ export default function NewBookingPage() {
             </div>
           )}
           {dailyStartTime && (
-            <div className="flex justify-between text-sm">
-              <span className="text-white/40">Time</span>
-              <span className="text-white/70">{formatEndTime(dailyStartTime, hoursPerDay)}</span>
+            <div className="flex justify-between text-xs">
+              <span className="text-[#6B716B]">Time Window</span>
+              <span className="font-bold text-[#20251F]">{formatEndTime(dailyStartTime, hoursPerDay)}</span>
             </div>
           )}
           {sessionType === 'multi' && startDate && endDate && (
-            <div className="flex justify-between text-sm">
-              <span className="text-white/40">Total days</span>
-              <span className="text-white/70">{days} day{days !== 1 ? 's' : ''}</span>
+            <div className="flex justify-between text-xs">
+              <span className="text-[#6B716B]">Total Sessions</span>
+              <span className="font-bold text-[#20251F]">{days} days</span>
             </div>
           )}
-          <div className="border-t border-white/8 pt-3 flex items-center justify-between">
-            <span className="text-sm text-white/40">Total cost</span>
-            <span className="text-xl font-black text-green-400">FREE</span>
+          <div className="border-t border-[#E8E5DE] pt-3 flex items-center justify-between">
+            <span className="text-xs font-bold text-[#6B716B]">Cost to You</span>
+            <span className="text-base font-extrabold text-[#315B3B] bg-[#E8F0E7] px-3 py-0.5 rounded-full border border-[#315B3B]/20">
+              FREE
+            </span>
           </div>
         </div>
 
-        {/* free notice */}
-        <div className="flex items-center gap-3 bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3">
-          <Shield size={14} className="text-green-400 flex-shrink-0" />
-          <p className="text-xs text-white/50">
-            This session is <span className="text-green-400 font-semibold">completely free</span> — provided by SPECS as a community service.
+        {/* Free pledge */}
+        <div className="flex items-center gap-3 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5">
+          <CheckCircle2 size={16} className="text-[#315B3B] flex-shrink-0" />
+          <p className="text-xs text-[#24452D] font-medium leading-relaxed">
+            Tutoring sessions on Mentorly are strictly free for Gordon College students through SPECS.
           </p>
         </div>
 
         <button
+          type="button"
           onClick={handleBooking}
           disabled={loading}
-          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow"
         >
-          {loading ? 'Sending request...' : 'Confirm booking — Free'}
+          {loading ? 'Submitting request...' : 'Confirm Session Booking — Free'}
         </button>
       </div>
     </div>

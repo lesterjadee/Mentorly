@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { BookOpen, Search, Calendar, Clock, CheckCircle } from 'lucide-react'
+import { BookOpen, Search, Calendar, Clock, CheckCircle, GraduationCap, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
 
 const CATEGORIES = [
@@ -74,48 +74,64 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-1">Browse Requests</h1>
-        <p className="text-white/40 text-sm">Students looking for help - view their schedule and offer support</p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-2">
+          <ShieldCheck size={13} className="text-[#315B3B]" />
+          SPECS Peer Support Board
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Browse Student Requests</h1>
+        <p className="text-[#6B716B] text-sm mt-1">
+          Students looking for academic help — view their schedules and offer peer tutoring support
+        </p>
       </div>
 
       {justOffered && (
-        <div className="bg-green-500/10 border border-green-500/20 rounded-xl px-4 py-3 mb-6 flex items-center gap-2">
-          <CheckCircle size={15} className="text-green-400" />
-          <p className="text-green-400 text-sm">Offer sent! The learner will respond when they can.</p>
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/30 rounded-2xl px-5 py-4 flex items-center gap-3 shadow-xs">
+          <CheckCircle size={18} className="text-[#315B3B] flex-shrink-0" />
+          <div>
+            <p className="text-[#315B3B] font-semibold text-sm">Offer sent successfully!</p>
+            <p className="text-[#315B3B]/80 text-xs">The student will be notified and can accept your support proposal.</p>
+          </div>
         </div>
       )}
 
-      <form className="relative mb-6">
-        <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
+      {/* Search Bar */}
+      <form className="relative">
+        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B716B]" />
         <input
           name="q"
           defaultValue={query}
-          placeholder="Search requests..."
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+          placeholder="Search requests by topic or keyword (e.g. Calculus, Python, Accounting)..."
+          className="w-full bg-white border border-[#E8E5DE] rounded-2xl pl-11 pr-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
         />
         {selectedCategory !== 'All' && (
           <input type="hidden" name="category" value={selectedCategory} />
         )}
       </form>
 
-      <div className="flex gap-2 flex-wrap mb-8">
-        {CATEGORIES.map((cat) => (
-          <Link
-            key={cat}
-            href={'/dashboard/requests/browse?category=' + cat + (query ? '&q=' + query : '')}
-            className={
-              selectedCategory === cat
-                ? 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors bg-[#E96118] border-[#E96118] text-white'
-                : 'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors border-white/10 text-white/40 hover:border-white/20 hover:text-white/70'
-            }
-          >
-            {cat}
-          </Link>
-        ))}
+      {/* Category Filter Pills */}
+      <div className="flex gap-2 flex-wrap">
+        {CATEGORIES.map((cat) => {
+          const isActive = selectedCategory === cat
+          return (
+            <Link
+              key={cat}
+              href={'/dashboard/requests/browse?category=' + cat + (query ? '&q=' + query : '')}
+              className={
+                isActive
+                  ? 'px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all bg-[#F26A21] border-[#F26A21] text-white shadow-xs'
+                  : 'px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]'
+              }
+            >
+              {cat}
+            </Link>
+          )
+        })}
       </div>
 
+      {/* Requests Grid */}
       {requests && requests.length > 0 ? (
         <div className="grid gap-4">
           {requests.map((req: any) => {
@@ -129,86 +145,96 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
             return (
               <div
                 key={req.id}
-                className="bg-white/3 border border-white/8 rounded-2xl p-6 hover:border-[#E96118]/20 transition-colors"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs hover:border-[#F26A21]/40 hover:shadow-md transition-all"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="w-10 h-10 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#E96118] flex-shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-sm font-bold text-[#315B3B] flex-shrink-0">
                       {req.users?.full_name?.[0] ?? '?'}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
-                        <h3 className="font-medium text-sm">{req.title}</h3>
+                        <h2 className="font-semibold text-base text-[#20251F] tracking-tight">{req.title}</h2>
                         {isOwn && (
-                          <span className="text-[10px] text-[#E96118] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full">
+                          <span className="text-[11px] font-semibold text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-0.5 rounded-full">
                             Your request
                           </span>
                         )}
                         {alreadyOffered && !isOwn && (
-                          <span className="text-[10px] text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <CheckCircle size={9} />
+                          <span className="text-[11px] font-semibold text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                            <CheckCircle size={11} />
                             Offer sent
                           </span>
                         )}
                       </div>
 
                       {req.description && (
-                        <p className="text-xs text-white/30 mb-3 leading-relaxed line-clamp-2">
+                        <p className="text-xs text-[#6B716B] mb-3 leading-relaxed line-clamp-2">
                           {req.description}
                         </p>
                       )}
 
                       <div className="flex items-center gap-2 flex-wrap mb-3">
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{req.category}</span>
-                        <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{req.mode}</span>
+                        <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg font-medium">
+                          {req.category}
+                        </span>
+                        <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg capitalize font-medium">
+                          {req.mode}
+                        </span>
+                        <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-1 rounded-lg font-semibold">
+                          Free Peer Session
+                        </span>
                       </div>
 
                       {req.start_date && (
-                        <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-3 space-y-1.5">
-                          <p className="text-[10px] text-white/20 uppercase tracking-wider mb-1">Requested schedule</p>
-                          <div className="flex items-center gap-2 text-xs text-white/50">
-                            <Calendar size={11} className="text-white/30 flex-shrink-0" />
+                        <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3 mb-3 space-y-1.5">
+                          <p className="text-[10px] text-[#6B716B] uppercase font-bold tracking-wider mb-1">Requested schedule</p>
+                          <div className="flex items-center gap-2 text-xs text-[#20251F] font-medium">
+                            <Calendar size={13} className="text-[#315B3B] flex-shrink-0" />
                             {isMulti
                               ? formatDate(req.start_date) + ' → ' + formatDate(req.end_date)
                               : formatDate(req.start_date)}
                             {isMulti && (
-                              <span className="text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full text-[10px]">
+                              <span className="text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2 py-0.5 rounded-full text-[10px] font-semibold">
                                 {req.total_days} day{req.total_days !== 1 ? 's' : ''}
                               </span>
                             )}
                           </div>
                           {timeRange && (
-                            <div className="flex items-center gap-2 text-xs text-white/50">
-                              <Clock size={11} className="text-white/30 flex-shrink-0" />
-                              {timeRange} · {req.hours_per_day}hr/day
+                            <div className="flex items-center gap-2 text-xs text-[#6B716B]">
+                              <Clock size={13} className="text-[#F26A21] flex-shrink-0" />
+                              {timeRange} · {req.hours_per_day} hr/day
                             </div>
                           )}
                         </div>
                       )}
 
-                      <p className="text-xs text-white/20">
-                        Posted by <span className="text-white/40">{req.users?.full_name}</span>
-                        {req.users?.school && <span> · {req.users.school}</span>}
-                        <span> · {timeAgo(req.created_at)}</span>
-                      </p>
+                      <div className="flex items-center gap-2 text-xs text-[#6B716B] pt-2 border-t border-[#E8E5DE]/60">
+                        <GraduationCap size={13} className="text-[#315B3B]" />
+                        <span>Posted by <strong className="text-[#20251F] font-medium">{req.users?.full_name}</strong></span>
+                        {req.users?.course && <span>· {req.users.course}</span>}
+                        {req.users?.school && <span>· {req.users.school}</span>}
+                        <span className="text-[#6B716B]/60">· {timeAgo(req.created_at)}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-2 flex-shrink-0 items-end">
-                    <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full">
-                      Open
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 flex-shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#E8E5DE]">
+                    <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-3 py-1 rounded-full font-semibold">
+                      Open for Help
                     </span>
                     {!isOwn && !alreadyOffered && (
                       <Link
                         href={'/dashboard/requests/' + req.id + '/offer'}
-                        className="flex items-center gap-1.5 px-3 py-2 bg-[#E96118]/10 hover:bg-[#E96118]/20 border border-[#E96118]/20 hover:border-[#E96118]/40 text-[#F58A32] rounded-xl text-xs font-medium transition-all whitespace-nowrap"
+                        className="flex items-center gap-1.5 px-4 py-2 bg-[#F26A21] hover:bg-[#D95416] text-white rounded-xl text-xs font-semibold transition-all shadow-xs whitespace-nowrap"
                       >
                         Offer help
                       </Link>
                     )}
                     {!isOwn && alreadyOffered && (
-                      <span className="text-xs text-white/20 border border-white/8 px-3 py-2 rounded-xl">
+                      <span className="text-xs text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-3.5 py-2 rounded-xl font-semibold flex items-center gap-1.5">
+                        <CheckCircle size={12} />
                         Offer sent
                       </span>
                     )}
@@ -219,10 +245,12 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
           })}
         </div>
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <BookOpen size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No open requests found</p>
-          <p className="text-white/20 text-xs mt-1">Try a different category or search term</p>
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
+            <BookOpen size={24} />
+          </div>
+          <h3 className="text-base font-semibold text-[#20251F]">No open requests found</h3>
+          <p className="text-[#6B716B] text-sm mt-1">Try selecting a different category or adjusting your search term.</p>
         </div>
       )}
     </div>

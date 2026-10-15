@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import {
   ArrowLeft, Calendar, Clock, Shield,
-  FileText, Upload, X, Users, AlertCircle
+  FileText, Upload, X, Users, AlertCircle, Sparkles
 } from 'lucide-react'
 
 const SUBJECTS = [
@@ -19,7 +19,7 @@ const SESSION_TYPES = [
   { value: 'tutoring', label: 'Tutoring', desc: 'One-on-one or small group learning' },
   { value: 'workshop', label: 'Workshop', desc: 'Hands-on activity-based session' },
   { value: 'review', label: 'Review Session', desc: 'Exam prep and topic review' },
-  { value: 'consultation', label: 'Consultation', desc: 'Q&A and guidance session' },
+  { value: 'consultation', label: 'Consultation', desc: 'Q&A and academic guidance' },
 ]
 
 export default function NewSessionPage() {
@@ -66,7 +66,7 @@ export default function NewSessionPage() {
       setIsSpecsMember(profile?.is_specs_member || false)
     }
     checkAccess()
-  }, [])
+  }, [router])
 
   function countDays() {
     if (!startDate || !endDate) return 1
@@ -190,7 +190,7 @@ export default function NewSessionPage() {
   if (isSpecsMember === null) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#F26A21] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
@@ -198,15 +198,20 @@ export default function NewSessionPage() {
   // access denied for non-SPECS
   if (!isSpecsMember) {
     return (
-      <div className="max-w-lg">
-        <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center">
-          <AlertCircle size={32} className="text-red-400 mx-auto mb-4" />
-          <h2 className="font-bold text-lg mb-2">SPECS Members Only</h2>
-          <p className="text-white/40 text-sm leading-relaxed mb-5">
-            Only SPECS members can post sessions. If you're a SPECS member, please contact an officer to update your account.
+      <div className="max-w-lg mx-auto pt-10">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+            <AlertCircle size={24} />
+          </div>
+          <h2 className="font-extrabold text-xl text-[#20251F] mb-2">SPECS Mentors Only</h2>
+          <p className="text-[#6B716B] text-xs leading-relaxed mb-6">
+            Only verified SPECS tutors and officers can publish academic sessions. If you are a member, please reach out to an officer to authorize your account.
           </p>
-          <Link href="/dashboard/sessions" className="text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
-            Browse existing sessions
+          <Link
+            href="/dashboard/sessions"
+            className="inline-flex items-center justify-center bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs"
+          >
+            Browse Available Sessions
           </Link>
         </div>
       </div>
@@ -214,105 +219,120 @@ export default function NewSessionPage() {
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/sessions" className="text-white/30 hover:text-white transition-colors">
-          <ArrowLeft size={18} />
+    <div className="max-w-2xl space-y-6">
+      {/* Header */}
+      <div>
+        <Link
+          href="/dashboard/sessions"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
+        >
+          <ArrowLeft size={14} />
+          <span>Back to sessions</span>
         </Link>
-        <div>
-          <div className="flex items-center gap-2 mb-0.5">
-            <Shield size={14} className="text-[#F58A32]" />
-            <span className="text-[11px] text-[#F58A32] font-semibold uppercase tracking-wider">SPECS Member</span>
-          </div>
-          <h1 className="text-2xl font-black tracking-tight">Post a session</h1>
-          <p className="text-white/40 text-sm mt-0.5">Share your knowledge with fellow Gordon College students</p>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+            <Shield size={13} />
+          </span>
+          <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">SPECS Mentor Hub</span>
         </div>
+        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Post a Tutoring Session</h1>
+        <p className="text-xs text-[#6B716B] mt-0.5">Share your knowledge with fellow Gordon College students</p>
       </div>
 
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-6">
-
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 flex items-start gap-2">
-            <X size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
+            <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
+            <p className="text-red-600 text-xs font-medium">{error}</p>
           </div>
         )}
 
-        {/* session type */}
+        {/* Session type */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Session type *</label>
-          <div className="grid grid-cols-2 gap-2">
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2.5 block">
+            Session Type *
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {SESSION_TYPES.map((t) => (
               <button
+                type="button"
                 key={t.value}
                 onClick={() => setSessionType(t.value)}
-                className={
-                  'p-3 rounded-xl border text-left transition-all ' +
-                  (sessionType === t.value
-                    ? 'border-[#E96118]/60 bg-[#E96118]/10'
-                    : 'border-white/8 bg-white/3 hover:border-white/20')
-                }
+                className={`p-3.5 rounded-xl border text-left transition-all ${
+                  sessionType === t.value
+                    ? 'border-[#315B3B] bg-[#E8F0E7]/60 shadow-2xs'
+                    : 'border-[#E8E5DE] bg-white hover:border-[#315B3B]/40 hover:bg-[#F3F7F2]/40'
+                }`}
               >
-                <p className={'text-xs font-semibold mb-0.5 ' + (sessionType === t.value ? 'text-[#F58A32]' : 'text-white/70')}>
+                <p className={`text-xs font-bold mb-0.5 ${sessionType === t.value ? 'text-[#315B3B]' : 'text-[#20251F]'}`}>
                   {t.label}
                 </p>
-                <p className="text-[10px] text-white/30">{t.desc}</p>
+                <p className="text-[11px] text-[#6B716B] leading-tight">{t.desc}</p>
               </button>
             ))}
           </div>
         </div>
 
-        {/* title */}
+        {/* Title */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Session title *</label>
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+            Session Title *
+          </label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. Basic Calculus — Derivatives and Integrals"
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors"
+            placeholder="e.g. Data Structures & Algorithms — Trees & Graphs"
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none"
           />
         </div>
 
-        {/* description */}
+        {/* Description */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Description</label>
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+            Description
+          </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="What will students learn? What topics will be covered? What's the expected level?"
+            placeholder="Outline the concepts covered, target audience, and any prerequisites students should have..."
             rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none resize-none"
           />
         </div>
 
-        {/* subject + mode */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* Subject & Mode */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Subject *</label>
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+              Academic Subject *
+            </label>
             <select
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors appearance-none"
+              className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none"
             >
-              <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
+              <option value="" disabled>Select subject category</option>
               {SUBJECTS.map((s) => (
-                <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
+                <option key={s} value={s}>{s}</option>
               ))}
             </select>
           </div>
+
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">Mode</label>
-            <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
+              Meeting Mode
+            </label>
+            <div className="grid grid-cols-3 gap-2">
               {(['online', 'in-person', 'both'] as const).map((m) => (
                 <button
+                  type="button"
                   key={m}
                   onClick={() => setMode(m)}
-                  className={
-                    'px-3 py-2 rounded-lg border text-xs font-medium transition-all capitalize ' +
-                    (mode === m
-                      ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
-                      : 'border-white/8 text-white/40 hover:border-white/20')
-                  }
+                  className={`py-2.5 rounded-xl border text-xs font-bold capitalize transition-all ${
+                    mode === m
+                      ? 'border-[#F26A21] bg-[#FFF0E5] text-[#D95416]'
+                      : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]'
+                  }`}
                 >
                   {m}
                 </button>
@@ -321,22 +341,22 @@ export default function NewSessionPage() {
           </div>
         </div>
 
-        {/* max participants */}
+        {/* Max participants */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-            <Users size={12} /> Max participants
+          <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <Users size={13} className="text-[#315B3B]" /> Max Participants
           </label>
           <div className="flex gap-2">
             {['5', '10', '20', '30', '50'].map((n) => (
               <button
+                type="button"
                 key={n}
                 onClick={() => setMaxParticipants(n)}
-                className={
-                  'flex-1 py-2 rounded-xl border text-xs font-medium transition-all ' +
-                  (maxParticipants === n
-                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
-                    : 'border-white/8 text-white/40 hover:border-white/20')
-                }
+                className={`flex-1 py-2 rounded-xl border text-xs font-bold transition-all ${
+                  maxParticipants === n
+                    ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                    : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30 hover:text-[#20251F]'
+                }`}
               >
                 {n}
               </button>
@@ -344,102 +364,93 @@ export default function NewSessionPage() {
           </div>
         </div>
 
-        {/* schedule */}
-        <div className="border-t border-white/8 pt-6">
-          <p className="text-xs text-white/30 uppercase tracking-wider mb-4">Schedule *</p>
+        {/* Schedule */}
+        <div className="border-t border-[#E8E5DE] pt-5 space-y-4">
+          <p className="text-xs font-bold text-[#20251F] uppercase tracking-wider">
+            Schedule & Availability *
+          </p>
 
-          {/* single/multi toggle */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-3">
             {(['single', 'multi'] as const).map((t) => (
               <button
+                type="button"
                 key={t}
                 onClick={() => setDateType(t)}
-                className={
-                  'py-2.5 rounded-xl border text-xs font-semibold transition-all ' +
-                  (dateType === t
-                    ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
-                    : 'border-white/8 text-white/40 hover:border-white/20')
-                }
+                className={`py-2 rounded-xl border text-xs font-bold transition-all ${
+                  dateType === t
+                    ? 'border-[#F26A21] bg-[#FFF0E5] text-[#D95416]'
+                    : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30'
+                }`}
               >
-                {t === 'single' ? 'Single day' : 'Multiple days'}
+                {t === 'single' ? 'Single day session' : 'Multiple days series'}
               </button>
             ))}
           </div>
 
-          {/* dates */}
           {dateType === 'single' ? (
-            <div className="mb-4">
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Calendar size={11} /> Date
-              </label>
+            <div>
+              <label className="text-xs font-medium text-[#6B716B] mb-1.5 block">Session Date</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2 text-[#20251F] text-sm focus:border-[#F26A21] outline-none"
               />
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Calendar size={11} /> Start date
-                </label>
+                <label className="text-xs font-medium text-[#6B716B] mb-1.5 block">Start Date</label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                  className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2 text-[#20251F] text-sm focus:border-[#F26A21] outline-none"
                 />
               </div>
               <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Calendar size={11} /> End date
-                </label>
+                <label className="text-xs font-medium text-[#6B716B] mb-1.5 block">End Date</label>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={startDate || new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                  className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2 text-[#20251F] text-sm focus:border-[#F26A21] outline-none"
                 />
               </div>
             </div>
           )}
 
-          {/* time + hours */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <Clock size={11} /> Start time
-              </label>
+              <label className="text-xs font-medium text-[#6B716B] mb-1.5 block">Start Time</label>
               <input
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#E96118]/60 transition-colors"
+                className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2 text-[#20251F] text-sm focus:border-[#F26A21] outline-none"
               />
               {startTime && hoursPerDay && (
-                <p className="text-xs text-[#F58A32] mt-1.5">{formatEndTime(startTime, hoursPerDay)}</p>
+                <p className="text-xs font-semibold text-[#D95416] mt-1.5">
+                  {formatEndTime(startTime, hoursPerDay)}
+                </p>
               )}
             </div>
             <div>
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-                Hours per day
-              </label>
+              <label className="text-xs font-medium text-[#6B716B] mb-1.5 block">Duration per Day</label>
               <div className="grid grid-cols-4 gap-1.5">
                 {['1', '1.5', '2', '3'].map((h) => (
                   <button
+                    type="button"
                     key={h}
                     onClick={() => setHoursPerDay(h)}
-                    className={
-                      'py-3 rounded-xl border text-xs font-medium transition-all ' +
-                      (hoursPerDay === h
-                        ? 'border-[#E96118]/60 bg-[#E96118]/10 text-[#F58A32]'
-                        : 'border-white/8 text-white/40 hover:border-white/20')
-                    }
+                    className={`py-2 rounded-xl border text-xs font-bold transition-all ${
+                      hoursPerDay === h
+                        ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                        : 'border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30'
+                    }`}
                   >
                     {h}h
                   </button>
@@ -449,52 +460,58 @@ export default function NewSessionPage() {
           </div>
         </div>
 
-        {/* study material upload */}
-        <div className="border-t border-white/8 pt-6">
-          <p className="text-xs text-white/30 uppercase tracking-wider mb-2">
-            Attach a study material — optional
-          </p>
-          <p className="text-xs text-white/20 mb-4 leading-relaxed">
-            Upload a reviewer, notes, or reference material. Students can download it even without booking the session.
-          </p>
+        {/* Study Material Upload */}
+        <div className="border-t border-[#E8E5DE] pt-5 space-y-3">
+          <div>
+            <p className="text-xs font-bold text-[#20251F] uppercase tracking-wider">
+              Attach Study Material (Optional)
+            </p>
+            <p className="text-xs text-[#6B716B] mt-0.5">
+              Upload notes or reviewers that students can download anytime.
+            </p>
+          </div>
 
           {selectedFile ? (
-            <div className="bg-[#E96118]/5 border border-[#E96118]/20 rounded-xl p-4">
+            <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-4">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-lg bg-[#E96118]/10 flex items-center justify-center flex-shrink-0">
-                  <FileText size={16} className="text-[#E96118]" />
+                <div className="w-9 h-9 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center flex-shrink-0">
+                  <FileText size={16} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-white/70 truncate">{selectedFile.name}</p>
-                  <p className="text-[10px] text-white/30">{formatFileSize(selectedFile.size)}</p>
+                  <p className="text-xs font-bold text-[#20251F] truncate">{selectedFile.name}</p>
+                  <p className="text-[10px] text-[#6B716B]">{formatFileSize(selectedFile.size)}</p>
                 </div>
                 <button
+                  type="button"
                   onClick={() => { setSelectedFile(null); if (fileInputRef.current) fileInputRef.current.value = '' }}
-                  className="text-white/30 hover:text-white/60 transition-colors"
+                  className="p-1 hover:bg-[#F5F3ED] rounded-md text-[#939A92] hover:text-[#20251F]"
                 >
-                  <X size={14} />
+                  <X size={15} />
                 </button>
               </div>
               <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-                  Material title *
+                <label className="text-xs font-semibold text-[#6B716B] mb-1.5 block">
+                  Material Title *
                 </label>
                 <input
                   value={materialTitle}
                   onChange={(e) => setMaterialTitle(e.target.value)}
-                  placeholder="e.g. Calculus Reviewer — Derivatives"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/40 transition-colors"
+                  placeholder="e.g. Tree Traversal Quick Reference Guide"
+                  className="w-full bg-white border border-[#E8E5DE] rounded-xl px-3 py-2 text-[#20251F] text-xs focus:border-[#F26A21] outline-none"
                 />
               </div>
             </div>
           ) : (
             <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="w-full flex flex-col items-center justify-center gap-2 bg-white/3 border border-dashed border-white/15 hover:border-white/30 hover:bg-white/5 transition-all rounded-xl py-6 cursor-pointer"
+              className="w-full flex flex-col items-center justify-center gap-2 bg-[#FFFCF7] border border-dashed border-[#E8E5DE] hover:border-[#315B3B]/40 hover:bg-[#E8F0E7]/20 transition-all rounded-xl py-6 cursor-pointer"
             >
-              <Upload size={20} className="text-white/20" />
-              <p className="text-xs text-white/30">Click to upload file</p>
-              <p className="text-[10px] text-white/15">PDF, DOCX, PPTX, images — max 50MB</p>
+              <div className="w-8 h-8 rounded-full bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+                <Upload size={16} />
+              </div>
+              <p className="text-xs font-bold text-[#20251F]">Click to upload document or notes</p>
+              <p className="text-[10px] text-[#6B716B]">PDF, DOCX, PPTX, images up to 50MB</p>
             </button>
           )}
           <input
@@ -506,24 +523,25 @@ export default function NewSessionPage() {
           />
         </div>
 
-        {/* free badge */}
-        <div className="bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3 flex items-center gap-3">
-          <div className="w-7 h-7 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
-            <Shield size={13} className="text-green-400" />
+        {/* Free peer pledge badge */}
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-[#315B3B] text-white flex items-center justify-center flex-shrink-0">
+            <Shield size={16} />
           </div>
-          <p className="text-xs text-white/50 leading-relaxed">
-            This session is <span className="text-green-400 font-semibold">completely free</span> — no payments, no fees. SPECS provides this as a service to the Gordon College community.
+          <p className="text-xs text-[#24452D] leading-relaxed font-medium">
+            This session is provided as <span className="font-bold underline decoration-[#315B3B]">free academic support</span> for Gordon College students through SPECS.
           </p>
         </div>
 
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-bold"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow"
         >
           {loading
-            ? (uploadingFile ? 'Uploading materials...' : 'Posting session...')
-            : 'Post session'}
+            ? (uploadingFile ? 'Uploading study materials...' : 'Publishing session...')
+            : 'Publish Tutoring Session'}
         </button>
       </div>
     </div>

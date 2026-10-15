@@ -32,18 +32,18 @@ export default function AcceptDeclineButtons({ bookingId, status, isLearner }: P
         <button
           onClick={() => updateStatus('accepted')}
           disabled={loading !== null}
-          className="flex items-center gap-1 px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/20 text-green-400 rounded-lg text-xs font-medium transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#E8F0E7] hover:bg-[#D4E4D3] border border-[#315B3B]/30 text-[#315B3B] rounded-lg text-xs font-semibold transition-all disabled:opacity-50 shadow-2xs"
         >
-          <Check size={11} />
-          {loading === 'accepted' ? '...' : 'Accept'}
+          <Check size={13} />
+          {loading === 'accepted' ? 'Updating...' : 'Accept'}
         </button>
         <button
           onClick={() => updateStatus('declined')}
           disabled={loading !== null}
-          className="flex items-center gap-1 px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-lg text-xs font-medium transition-colors disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 shadow-2xs"
         >
-          <X size={11} />
-          {loading === 'declined' ? '...' : 'Decline'}
+          <X size={13} />
+          {loading === 'declined' ? 'Updating...' : 'Decline'}
         </button>
       </div>
     )
@@ -54,10 +54,10 @@ export default function AcceptDeclineButtons({ bookingId, status, isLearner }: P
       <button
         onClick={() => updateStatus('completed')}
         disabled={loading !== null}
-        className="flex items-center gap-1 px-3 py-1.5 bg-[#E96118]/10 hover:bg-[#E96118]/20 border border-[#E96118]/20 text-[#E96118] rounded-lg text-xs font-medium transition-colors disabled:opacity-50 mt-1"
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FFF0E5] hover:bg-[#FFE3D0] border border-[#F26A21]/30 text-[#D95416] rounded-lg text-xs font-semibold transition-all disabled:opacity-50 mt-1 shadow-2xs"
       >
-        <CheckCircle size={11} />
-        {loading === 'completed' ? '...' : 'Mark complete'}
+        <CheckCircle size={13} />
+        {loading === 'completed' ? 'Updating...' : 'Mark Completed'}
       </button>
     )
   }

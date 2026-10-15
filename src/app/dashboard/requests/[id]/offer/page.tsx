@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { ArrowLeft, Calendar, Clock, Send } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, Send, ShieldCheck, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
 export default function SendOfferPage() {
@@ -96,34 +96,45 @@ export default function SendOfferPage() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-5 h-5 border-2 border-[#E96118] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-[#F26A21] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   if (!request) {
     return (
-      <div className="text-center py-20">
-        <p className="text-white/40">Request not found.</p>
-        <Link href="/dashboard/requests/browse" className="text-[#E96118] text-sm mt-3 inline-block">Back to browse</Link>
+      <div className="text-center py-20 bg-white border border-[#E8E5DE] rounded-2xl p-8 max-w-lg mx-auto shadow-xs">
+        <p className="text-[#6B716B] font-medium">Request not found or no longer available.</p>
+        <Link href="/dashboard/requests/browse" className="text-[#F26A21] hover:underline text-sm mt-3 inline-block font-semibold">
+          Back to browse
+        </Link>
       </div>
     )
   }
 
   if (alreadyOffered) {
     return (
-      <div className="max-w-lg">
-        <div className="flex items-center gap-3 mb-8">
-          <Link href="/dashboard/requests/browse" className="text-white/30 hover:text-white transition-colors">
+      <div className="max-w-lg mx-auto space-y-6">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/requests/browse"
+            className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+          >
             <ArrowLeft size={18} />
           </Link>
-          <h1 className="text-2xl font-bold">Send offer</h1>
+          <h1 className="text-2xl font-bold text-[#20251F]">Send Offer</h1>
         </div>
-        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-8 text-center">
-          <p className="text-yellow-400 font-medium mb-2">Offer already sent</p>
-          <p className="text-white/40 text-sm">You've already sent an offer for this request. Wait for the learner to respond.</p>
-          <Link href="/dashboard/requests/browse" className="inline-block mt-4 text-[#E96118] hover:text-[#F58A32] text-sm transition-colors">
-            Back to browse
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/30 rounded-2xl p-8 text-center shadow-xs">
+          <ShieldCheck size={32} className="text-[#315B3B] mx-auto mb-2" />
+          <h2 className="text-[#315B3B] font-bold text-base mb-1">Offer already sent</h2>
+          <p className="text-[#20251F]/70 text-sm max-w-xs mx-auto">
+            You've already submitted an offer for this student request. They will review your profile and respond soon.
+          </p>
+          <Link
+            href="/dashboard/requests/browse"
+            className="inline-block mt-4 bg-white border border-[#315B3B]/20 text-[#315B3B] hover:bg-[#315B3B] hover:text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all shadow-xs"
+          >
+            Browse other requests
           </Link>
         </div>
       </div>
@@ -133,94 +144,109 @@ export default function SendOfferPage() {
   const isMulti = request.session_type === 'multi'
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/requests/browse" className="text-white/30 hover:text-white transition-colors">
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard/requests/browse"
+          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+        >
           <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">Send an offer</h1>
-          <p className="text-white/40 text-sm mt-1">Respond to this learner's request</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Send an Offer</h1>
+          <p className="text-[#6B716B] text-sm mt-0.5">Offer your academic tutoring help to this student</p>
         </div>
       </div>
 
-      {/* request summary */}
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-5 mb-6">
+      {/* Request Summary Card */}
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#E96118] flex-shrink-0">
-            {request.users?.full_name?.[0]}
+          <div className="w-12 h-12 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-base font-bold text-[#315B3B] flex-shrink-0">
+            {request.users?.full_name?.[0] ?? '?'}
           </div>
-          <div className="flex-1">
-            <p className="font-medium text-sm">{request.title}</p>
-            <p className="text-xs text-white/30 mt-0.5">
-              {request.users?.full_name} · {request.users?.school}
+          <div className="flex-1 min-w-0">
+            <h2 className="font-semibold text-base text-[#20251F]">{request.title}</h2>
+            <p className="text-xs text-[#6B716B] mt-0.5">
+              Posted by {request.users?.full_name} · {request.users?.course} · {request.users?.school}
             </p>
             {request.description && (
-              <p className="text-xs text-white/30 mt-2 leading-relaxed">{request.description}</p>
+              <p className="text-xs text-[#6B716B] mt-2.5 leading-relaxed bg-[#FFFCF7] p-3 rounded-xl border border-[#E8E5DE]">
+                {request.description}
+              </p>
             )}
 
-            {/* schedule */}
+            {/* Schedule */}
             {request.start_date && (
-              <div className="bg-white/3 border border-white/8 rounded-xl p-3 mt-3 space-y-1.5">
-                <p className="text-[10px] text-white/20 uppercase tracking-wider mb-1">Requested schedule</p>
-                <div className="flex items-center gap-2 text-xs text-white/50">
-                  <Calendar size={11} className="text-white/30" />
+              <div className="bg-[#F5F3ED] border border-[#E8E5DE] rounded-xl p-3 mt-3 space-y-1.5">
+                <p className="text-[10px] text-[#6B716B] font-bold uppercase tracking-wider mb-1">Requested schedule</p>
+                <div className="flex items-center gap-2 text-xs text-[#20251F]">
+                  <Calendar size={13} className="text-[#315B3B]" />
                   {isMulti
                     ? formatDate(request.start_date) + ' → ' + formatDate(request.end_date)
                     : formatDate(request.start_date)}
                   {isMulti && (
-                    <span className="text-[#F58A32] border border-[#E96118]/20 bg-[#E96118]/10 px-2 py-0.5 rounded-full text-[10px]">
+                    <span className="text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2 py-0.5 rounded-full text-[10px] font-semibold">
                       {request.total_days} day{request.total_days !== 1 ? 's' : ''}
                     </span>
                   )}
                 </div>
                 {request.daily_start_time && (
-                  <div className="flex items-center gap-2 text-xs text-white/50">
-                    <Clock size={11} className="text-white/30" />
-                    {formatEndTime(request.daily_start_time, request.hours_per_day)} · {request.hours_per_day}hr/day
+                  <div className="flex items-center gap-2 text-xs text-[#6B716B]">
+                    <Clock size={13} className="text-[#F26A21]" />
+                    {formatEndTime(request.daily_start_time, request.hours_per_day)} · {request.hours_per_day} hr/day
                   </div>
                 )}
               </div>
             )}
 
             <div className="flex flex-wrap gap-2 mt-3">
-              <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg">{request.category}</span>
-              <span className="text-xs text-white/30 border border-white/8 bg-white/3 px-2 py-1 rounded-lg capitalize">{request.mode}</span>
+              <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg font-medium">
+                {request.category}
+              </span>
+              <span className="text-xs text-[#20251F] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-lg capitalize font-medium">
+                {request.mode}
+              </span>
+              <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-1 rounded-lg font-semibold">
+                Free Peer Tutoring
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* offer form */}
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
-        <p className="text-xs text-white/30 uppercase tracking-wider">Your support offer</p>
+      {/* Offer Form */}
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 sm:p-8 shadow-xs space-y-5">
+        <p className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Your Peer Tutoring Offer</p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2 text-red-700 text-sm">
+            <AlertCircle size={16} className="flex-shrink-0" />
+            <span>{error}</span>
           </div>
         )}
 
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
-            Message to learner — optional
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">
+            Message to Learner <span className="font-normal text-xs text-[#6B716B]/60">(Optional)</span>
           </label>
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="Introduce yourself, describe your experience with this subject, and why you'd be a great fit..."
+            placeholder="Introduce yourself, mention your course/grade in this topic, and share how you can help them prepare or succeed..."
             rows={4}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all resize-none"
           />
         </div>
 
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#E96118] hover:bg-[#C94A0D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium flex items-center justify-center gap-2"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-xs"
         >
           <Send size={15} />
-          {loading ? 'Sending offer...' : 'Send offer to learner'}
+          {loading ? 'Sending Offer...' : 'Send Offer to Learner'}
         </button>
       </div>
     </div>

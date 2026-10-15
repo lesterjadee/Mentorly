@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { MessageSquare } from 'lucide-react'
+import { MessageSquare, Users } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function MessagesPage() {
@@ -51,45 +51,66 @@ export default async function MessagesPage() {
   const contacts = Array.from(contactMap.values())
 
   return (
-    <div className="flex w-full">
-      {/* contact list */}
-      <div className="w-72 border-r border-white/5 flex flex-col">
-        <div className="px-6 py-5 border-b border-white/5">
-          <h1 className="text-lg font-bold">Messages</h1>
-          <p className="text-white/30 text-xs mt-0.5">Your conversations</p>
+    <div className="flex w-full h-full">
+      {/* Contact List Sidebar */}
+      <div className="w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex flex-col flex-shrink-0">
+        <div className="px-6 py-5 border-b border-[#E8E5DE] bg-white">
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[11px] font-semibold mb-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
+            Direct Messages
+          </div>
+          <h1 className="text-lg font-bold text-[#20251F]">Conversations</h1>
+          <p className="text-[#6B716B] text-xs">Chat with your peer tutors and learners</p>
         </div>
-        <div className="flex-1 overflow-y-auto">
+
+        <div className="flex-1 overflow-y-auto divide-y divide-[#E8E5DE]">
           {contacts.length > 0 ? (
-            contacts.map((contact) => (
+            contacts.map((contact, idx) => (
               <Link
                 key={contact.id}
                 href={'/dashboard/messages/' + contact.id}
-                className="flex items-center gap-3 px-4 py-4 hover:bg-white/3 border-b border-white/5 transition-colors"
+                className="flex items-center gap-3 px-5 py-4 hover:bg-white transition-colors group"
               >
-                <div className="w-9 h-9 rounded-full bg-[#E96118]/20 border border-[#E96118]/30 flex items-center justify-center text-sm font-medium text-[#F58A32] flex-shrink-0">
-                  {contact.full_name?.[0]}
+                <div className={
+                  'w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 shadow-xs ' +
+                  (idx % 2 === 0
+                    ? 'bg-[#FFF0E5] border border-[#F26A21]/20 text-[#F26A21]'
+                    : 'bg-[#E8F0E7] border border-[#315B3B]/20 text-[#315B3B]')
+                }>
+                  {contact.full_name?.[0] ?? '?'}
                 </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{contact.full_name}</p>
-                  <p className="text-xs text-white/30 truncate">{contact.school}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-[#20251F] group-hover:text-[#F26A21] transition-colors truncate">
+                    {contact.full_name}
+                  </p>
+                  <p className="text-xs text-[#6B716B] truncate">{contact.school || 'Gordon College'}</p>
                 </div>
               </Link>
             ))
           ) : (
-            <div className="p-6 text-center">
-              <p className="text-white/30 text-xs">No conversations yet</p>
-              <p className="text-white/20 text-xs mt-1">Book a session to start messaging</p>
+            <div className="p-8 text-center">
+              <div className="w-12 h-12 rounded-xl bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center mx-auto mb-3">
+                <Users size={20} />
+              </div>
+              <p className="text-sm font-semibold text-[#20251F]">No conversations yet</p>
+              <p className="text-xs text-[#6B716B] mt-1 max-w-[180px] mx-auto">
+                Book a peer session or accept a tutor offer to start chatting
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* empty state */}
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <MessageSquare size={32} className="text-white/10 mx-auto mb-3" />
-          <p className="text-white/30 text-sm">Select a conversation</p>
-          <p className="text-white/20 text-xs mt-1">Choose someone from the left to start chatting</p>
+      {/* Empty State Main Area */}
+      <div className="flex-1 hidden md:flex items-center justify-center bg-white p-8">
+        <div className="text-center max-w-sm">
+          <div className="w-16 h-16 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4 shadow-xs">
+            <MessageSquare size={28} />
+          </div>
+          <h2 className="text-lg font-bold text-[#20251F]">Select a conversation</h2>
+          <p className="text-sm text-[#6B716B] mt-1.5 leading-relaxed">
+            Choose a tutor or peer learner from the sidebar to review messages, exchange study files, or coordinate sessions.
+          </p>
         </div>
       </div>
     </div>

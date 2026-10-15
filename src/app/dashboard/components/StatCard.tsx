@@ -18,7 +18,7 @@ export default function StatCard({ label, value, sub, icon, color, delay = 0 }: 
   useEffect(() => {
     if (!isNumber) return
     const start = Date.now()
-    const duration = 1200
+    const duration = 1000
     const end = value as number
 
     const timer = setTimeout(() => {
@@ -35,25 +35,25 @@ export default function StatCard({ label, value, sub, icon, color, delay = 0 }: 
     return () => clearTimeout(timer)
   }, [value, delay, isNumber])
 
-  return (
-    <div className={
-      'relative bg-white/3 border border-white/8 rounded-2xl p-6 overflow-hidden group ' +
-      'hover:border-white/15 transition-all duration-300 hover:-translate-y-0.5'
-    }>
-      {/* glow on hover */}
-      <div className={'absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl ' + color} />
+  // BudgetMate style: distinct colored icon container based on variant
+  const isGreen = color.includes('green') || color.includes('315')
+  const iconContainerClass = isGreen
+    ? 'bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20'
+    : 'bg-[#FFF0E5] text-[#F26A21] border border-[#F26A21]/20'
 
-      <div className="relative">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-xs text-white/30 uppercase tracking-widest font-medium">{label}</p>
-          <div className="text-white/20 group-hover:text-white/40 transition-colors">
-            {icon}
-          </div>
+  return (
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-[#E8E5DE] transition-all duration-200 flex flex-col justify-between">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs font-semibold text-[#6B716B] uppercase tracking-wider">{label}</p>
+        <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-transform hover:scale-105 ${iconContainerClass}`}>
+          {icon}
         </div>
-        <p className="text-4xl font-black tracking-tight mb-1 text-white">
+      </div>
+      <div>
+        <p className="text-3xl md:text-4xl font-extrabold text-[#20251F] tracking-tight mb-1">
           {isNumber ? displayed : value}
         </p>
-        <p className="text-xs text-white/30">{sub}</p>
+        <p className="text-xs text-[#6B716B] font-medium">{sub}</p>
       </div>
     </div>
   )
