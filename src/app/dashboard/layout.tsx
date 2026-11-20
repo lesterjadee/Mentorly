@@ -60,7 +60,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const initial = user.user_metadata?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'
 
   return (
-    <div className="min-h-screen bg-[#FFFCF7] text-[#20251F] flex">
+    <div className="min-h-screen bg-[#FAC898] text-[#20251F] flex">
       <TabTitle userId={user.id} />
       <PushNotificationPrompt />
 
