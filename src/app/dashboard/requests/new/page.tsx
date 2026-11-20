@@ -7,9 +7,38 @@ import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, Calendar, Clock, AlertCircle, Sparkles } from 'lucide-react'
 
 const CATEGORIES = [
-  'Mathematics', 'Science', 'Physics', 'Chemistry', 'Biology',
-  'English', 'Filipino', 'History', 'Programming', 'Web Development',
-  'Data Science', 'Design', 'Accounting', 'Economics', 'Other'
+  'Introduction to Computing',
+  'Computer Programming 1',
+  'PC Troubleshooting with Basic Electronics',
+  'Computer Programming 2',
+  'Information Management 1',
+  'Discrete Structures 1',
+  'Data Structures and Algorithms',
+  'Discrete Structures 2',
+  'Operating Systems',
+  'Object-Oriented Programming',
+  'Graphics and Visual Computing',
+  'Application Development and Emerging Technologies',
+  'Software Engineering 1',
+  'Networking 1',
+  'Human Computer Interaction',
+  'Algorithms and Complexity 1',
+  'Software Engineering 2',
+  'Architecture and Organization',
+  'Information Assurance and Security',
+  'Data Science',
+  'CS Research Methods',
+  'CS Elective 1',
+  'CS Thesis Writing 1',
+  'Automata Theory',
+  'Intelligent Systems',
+  'Programming Languages',
+  'Parallel and Distributed Computing',
+  'CS Elective 2',
+  'CS Elective 3',
+  'CS Thesis Writing 2',
+  'CS Elective 4',
+  'CS Elective 5',
 ]
 
 export default function NewRequestPage() {
