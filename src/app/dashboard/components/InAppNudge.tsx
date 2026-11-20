@@ -21,7 +21,6 @@ type Props = {
   isSpecsMember: boolean
   hasSession?: boolean
   hasMaterial?: boolean
-  // legacy props — ignored but kept for backward compat
   hasService?: boolean
   hasBio?: boolean
 }
@@ -134,33 +133,33 @@ export default function InAppNudge({
   if (!nudge || allNudges.length === 0) return null
 
   return (
-    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#E8E5DE] transition-all">
-      <div className="flex items-center gap-3.5 min-w-0">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center border flex-shrink-0 ${nudge.iconBg}`}>
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-[#D9D4C7] transition-all duration-200">
+      <div className="flex items-center gap-4 min-w-0">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center border flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${nudge.iconBg}`}>
           <nudge.icon size={18} className={nudge.iconColor} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-[#20251F]">{nudge.title}</p>
-          <p className="text-xs text-[#6B716B] mt-0.5 leading-relaxed line-clamp-1">{nudge.desc}</p>
+          <p className="text-sm font-bold text-[#20251F] tracking-tight">{nudge.title}</p>
+          <p className="text-xs text-[#939A92] mt-0.5 leading-relaxed line-clamp-1">{nudge.desc}</p>
         </div>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">
         <Link
           href={nudge.href}
-          className="flex items-center gap-1.5 bg-[#FFF0E5] hover:bg-[#FFE3D0] border border-[#F26A21]/20 transition-all px-3.5 py-2 rounded-xl text-xs font-semibold text-[#D95416] whitespace-nowrap shadow-xs"
+          className="flex items-center gap-1.5 bg-[#FFF0E5] hover:bg-[#FFE3CF] border border-[#F26A21]/20 hover:border-[#F26A21]/35 transition-all duration-150 px-3.5 py-2 rounded-xl text-xs font-bold text-[#D95416] whitespace-nowrap shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[0_2px_8px_rgba(242,106,33,0.15)] hover:-translate-y-0.5"
         >
           {nudge.cta}
-          <ArrowRight size={13} />
+          <ArrowRight size={12} />
         </Link>
         <button
           onClick={() => {
             setDismissed((d) => [...d, nudge.id])
             setCurrentIdx((i) => i + 1)
           }}
-          className="w-7 h-7 rounded-lg bg-[#F5F3ED] hover:bg-[#E8E5DE] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-colors"
+          className="w-7 h-7 rounded-lg bg-[#F5F3ED] hover:bg-[#E8E5DE] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-all duration-150"
           title="Dismiss"
         >
-          <X size={13} />
+          <X size={12} />
         </button>
       </div>
     </div>

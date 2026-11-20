@@ -20,7 +20,6 @@ type Command = {
 }
 
 const ALL_COMMANDS: Command[] = [
-  // navigate — all users
   { id: 'overview', label: 'Go to Overview', icon: LayoutDashboard, href: '/dashboard', group: 'Navigate' },
   { id: 'sessions', label: 'Browse Sessions', icon: Calendar, href: '/dashboard/sessions', group: 'Navigate' },
   { id: 'materials', label: 'Study Materials', icon: FileText, href: '/dashboard/materials', group: 'Navigate' },
@@ -31,9 +30,7 @@ const ALL_COMMANDS: Command[] = [
   { id: 'messages', label: 'Messages', icon: MessageSquare, href: '/dashboard/messages', group: 'Navigate' },
   { id: 'notifications', label: 'Notifications', icon: Bell, href: '/dashboard/notifications', group: 'Navigate' },
   { id: 'profile', label: 'My Profile & Settings', icon: User, href: '/dashboard/profile', group: 'Navigate' },
-  // actions — all users
   { id: 'new-request', label: 'Post a Help Request', icon: Plus, href: '/dashboard/requests/new', group: 'Actions' },
-  // SPECS only
   { id: 'new-session', label: 'Post a New Session', icon: Plus, href: '/dashboard/sessions/new', group: 'SPECS Tutors', specsOnly: true },
   { id: 'upload-material', label: 'Upload Study Material', icon: Plus, href: '/dashboard/materials/upload', group: 'SPECS Tutors', specsOnly: true },
 ]
@@ -61,9 +58,7 @@ export default function CommandPalette() {
     checkRole()
   }, [])
 
-  const commands = ALL_COMMANDS.filter((c) =>
-    !c.specsOnly || isSpecsMember
-  )
+  const commands = ALL_COMMANDS.filter((c) => !c.specsOnly || isSpecsMember)
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -107,41 +102,39 @@ export default function CommandPalette() {
       setSelected((prev) => (prev - 1 + filtered.length) % Math.max(filtered.length, 1))
     } else if (e.key === 'Enter') {
       e.preventDefault()
-      if (filtered[selected]) {
-        execute(filtered[selected].href)
-      }
+      if (filtered[selected]) execute(filtered[selected].href)
     }
   }
 
   return (
     <>
-      {/* Top bar trigger button */}
+      {/* Top bar trigger — styled for orange header */}
       <button
         onClick={() => setOpen(true)}
-        className="w-full max-w-sm flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-[#F5F3ED] hover:bg-[#EBE7DD] border border-[#E8E5DE] transition-all text-xs text-[#6B716B] group shadow-xs"
+        className="w-full max-w-sm flex items-center justify-between gap-3 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 transition-all duration-150 text-xs text-white/80 group backdrop-blur-sm"
       >
         <div className="flex items-center gap-2.5 truncate">
-          <Search size={14} className="text-[#939A92] group-hover:text-[#F26A21] transition-colors" />
-          <span className="truncate">Search sessions, materials, requests...</span>
+          <Search size={13} className="text-white/60 group-hover:text-white/90 transition-colors flex-shrink-0" />
+          <span className="truncate text-white/70 group-hover:text-white/90 transition-colors">Search sessions, materials, requests...</span>
         </div>
-        <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold text-[#6B716B] bg-white border border-[#E8E5DE] rounded shadow-2xs">
+        <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold text-white/60 bg-white/10 border border-white/15 rounded-md">
           ⌘K
         </kbd>
       </button>
 
-      {/* Modal Backdrop & Palette */}
+      {/* Modal */}
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-black/35 backdrop-blur-xs animate-fade-in"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4 bg-black/40 backdrop-blur-sm animate-fade-in"
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full max-w-xl bg-white border border-[#E8E5DE] rounded-2xl shadow-2xl overflow-hidden animate-fade-in-up"
+            className="w-full max-w-xl bg-white border border-[#E8E5DE] rounded-2xl shadow-[0_24px_64px_rgba(0,0,0,0.18),0_4px_16px_rgba(0,0,0,0.08)] overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Input Header */}
-            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E8E5DE] bg-[#FFFCF7]">
-              <Search size={16} className="text-[#F26A21] flex-shrink-0" />
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#E8E5DE]">
+              <Search size={15} className="text-[#F26A21] flex-shrink-0" />
               <input
                 ref={inputRef}
                 value={query}
@@ -151,24 +144,24 @@ export default function CommandPalette() {
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Type a command or search destination..."
-                className="w-full bg-transparent text-sm text-[#20251F] placeholder:text-[#939A92] focus:outline-none"
+                className="w-full bg-transparent text-sm text-[#20251F] placeholder:text-[#939A92] focus:outline-none font-medium"
               />
-              <kbd className="text-[10px] font-bold text-[#939A92] bg-[#F5F3ED] border border-[#E8E5DE] px-1.5 py-0.5 rounded">
+              <kbd className="text-[10px] font-bold text-[#939A92] bg-[#F5F3ED] border border-[#E8E5DE] px-1.5 py-0.5 rounded-md">
                 ESC
               </kbd>
             </div>
 
             {/* List */}
-            <div className="max-h-80 overflow-y-auto p-2">
+            <div className="max-h-72 overflow-y-auto p-2">
               {filtered.length === 0 ? (
-                <div className="py-8 text-center">
-                  <p className="text-sm font-medium text-[#6B716B]">No matching commands found</p>
-                  <p className="text-xs text-[#939A92] mt-1">Try searching for sessions, materials, or profile</p>
+                <div className="py-10 text-center">
+                  <p className="text-sm font-semibold text-[#20251F]">No commands found</p>
+                  <p className="text-xs text-[#939A92] mt-1">Try sessions, materials, or profile</p>
                 </div>
               ) : (
                 groups.map((group) => (
                   <div key={group.name} className="mb-2 last:mb-0">
-                    <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#939A92]">
+                    <p className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-[#939A92]">
                       {group.name}
                     </p>
                     <div className="space-y-0.5">
@@ -180,7 +173,7 @@ export default function CommandPalette() {
                             key={cmd.id}
                             onClick={() => execute(cmd.href)}
                             onMouseEnter={() => setSelected(globalIndex)}
-                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer text-xs font-semibold transition-all ${
+                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer text-xs font-semibold transition-all duration-100 ${
                               isSelected
                                 ? 'bg-[#FFF0E5] text-[#D95416]'
                                 : 'text-[#20251F] hover:bg-[#F5F3ED]'
@@ -188,25 +181,25 @@ export default function CommandPalette() {
                           >
                             <div className="flex items-center gap-3 min-w-0">
                               <div
-                                className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
                                   isSelected
-                                    ? 'bg-white text-[#F26A21] shadow-2xs'
+                                    ? 'bg-[#F26A21] text-white shadow-[0_2px_8px_rgba(242,106,33,0.3)]'
                                     : 'bg-[#F5F3ED] text-[#6B716B]'
                                 }`}
                               >
-                                <cmd.icon size={15} />
+                                <cmd.icon size={14} />
                               </div>
                               <span className="truncate">{cmd.label}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               {cmd.specsOnly && (
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20">
+                                <span className="text-[9px] font-black px-1.5 py-0.5 rounded-md bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/20 uppercase tracking-wider">
                                   SPECS
                                 </span>
                               )}
                               <ArrowRight
-                                size={12}
-                                className={isSelected ? 'text-[#D95416] opacity-100' : 'opacity-0'}
+                                size={11}
+                                className={`transition-all duration-100 ${isSelected ? 'text-[#D95416] opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'}`}
                               />
                             </div>
                           </div>
@@ -219,9 +212,9 @@ export default function CommandPalette() {
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-2.5 bg-[#FFFCF7] border-t border-[#E8E5DE] flex items-center justify-between text-[11px] text-[#6B716B]">
-              <span>Navigate with <kbd className="font-semibold text-[#20251F]">↑</kbd> <kbd className="font-semibold text-[#20251F]">↓</kbd></span>
-              <span>Press <kbd className="font-semibold text-[#20251F]">Enter</kbd> to select</span>
+            <div className="px-4 py-2.5 bg-[#FFFCF7] border-t border-[#E8E5DE] flex items-center justify-between text-[11px] text-[#939A92]">
+              <span>Navigate <kbd className="font-bold text-[#20251F] text-[10px]">↑</kbd> <kbd className="font-bold text-[#20251F] text-[10px]">↓</kbd></span>
+              <span>Select <kbd className="font-bold text-[#20251F] text-[10px]">↵</kbd></span>
             </div>
           </div>
         </div>

@@ -21,39 +21,42 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
   if (dismissed || completed === total) return null
 
   return (
-    <div className="bg-gradient-to-r from-[#FFF8F1] via-white to-[#F3F7F2] border border-[#E8E5DE] rounded-2xl p-5 md:p-6 mb-6 relative shadow-xs">
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 relative shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden">
+      {/* Subtle top accent bar */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#F26A21] via-[#FAC898] to-[#315B3B] opacity-70" />
+
       <button
         onClick={() => setDismissed(true)}
-        className="absolute top-4 right-4 text-[#939A92] hover:text-[#20251F] transition-colors p-1"
+        className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-[#F5F3ED] hover:bg-[#E8E5DE] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-all duration-150"
         title="Dismiss guide"
       >
-        <X size={16} />
+        <X size={14} />
       </button>
 
-      <div className="flex items-start justify-between gap-4 mb-4 pr-6">
+      <div className="flex items-start justify-between gap-4 mb-4 pr-8">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-6 h-6 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
-              <Sparkles size={13} />
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-6 h-6 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+              <Sparkles size={12} />
             </span>
-            <p className="font-bold text-sm text-[#20251F]">
+            <p className="font-bold text-sm text-[#20251F] tracking-tight">
               {completed === 0 ? 'Welcome to Mentorly!' : 'Setup Progress'}
             </p>
           </div>
-          <p className="text-xs text-[#6B716B]">
+          <p className="text-xs text-[#6B716B] leading-relaxed">
             Complete your student profile to unlock peer sessions and study materials
           </p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-2xl font-extrabold text-[#F26A21]">{percent}%</p>
-          <p className="text-[11px] text-[#6B716B] font-medium">{completed} of {total} completed</p>
+          <p className="text-2xl font-black text-[#F26A21] tracking-tight tabular-nums">{percent}%</p>
+          <p className="text-[11px] text-[#939A92] font-medium mt-0.5">{completed} of {total} done</p>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="h-2 bg-[#F5F3ED] rounded-full mb-4 overflow-hidden border border-[#E8E5DE]/60">
+      <div className="h-1.5 bg-[#F5F3ED] rounded-full mb-4 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[#F26A21] to-[#315B3B] rounded-full transition-all duration-700"
+          className="h-full bg-gradient-to-r from-[#F26A21] to-[#315B3B] rounded-full transition-all duration-700 ease-out"
           style={{ width: `${percent}%` }}
         />
       </div>
@@ -64,27 +67,27 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
           <Link
             key={step.id}
             href={step.done ? '#' : step.href}
-            className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+            className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-150 ${
               step.done
-                ? 'bg-[#E8F0E7]/40 border-[#315B3B]/15 text-[#315B3B] cursor-default'
-                : 'bg-white border-[#E8E5DE] hover:border-[#F26A21]/40 hover:shadow-xs group'
+                ? 'bg-[#E8F0E7]/50 border-[#315B3B]/12 text-[#315B3B] cursor-default'
+                : 'bg-[#FFFCF7] border-[#E8E5DE] hover:border-[#F26A21]/35 hover:shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 group'
             }`}
           >
             {step.done ? (
-              <CheckCircle2 size={16} className="text-[#315B3B] flex-shrink-0" />
+              <CheckCircle2 size={15} className="text-[#315B3B] flex-shrink-0" />
             ) : (
-              <Circle size={16} className="text-[#939A92] group-hover:text-[#F26A21] transition-colors flex-shrink-0" />
+              <Circle size={15} className="text-[#D9D4C7] group-hover:text-[#F26A21] transition-colors flex-shrink-0" />
             )}
             <div className="flex-1 min-w-0">
-              <p className={`text-xs font-semibold truncate ${step.done ? 'line-through text-[#6B716B]' : 'text-[#20251F]'}`}>
+              <p className={`text-xs font-semibold truncate leading-tight ${step.done ? 'line-through text-[#939A92]' : 'text-[#20251F]'}`}>
                 {step.label}
               </p>
               {!step.done && (
-                <p className="text-[10px] text-[#6B716B] truncate">{step.desc}</p>
+                <p className="text-[10px] text-[#939A92] truncate mt-0.5">{step.desc}</p>
               )}
             </div>
             {!step.done && (
-              <ChevronRight size={13} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
+              <ChevronRight size={12} className="text-[#D9D4C7] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             )}
           </Link>
         ))}

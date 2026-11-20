@@ -172,15 +172,15 @@ export default async function DashboardPage() {
     <div className="w-full space-y-6">
 
       {/* Greeting & Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#939A92]">{greeting},</p>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[#20251F]">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#939A92] mb-0.5">{greeting},</p>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#20251F] leading-none">
             {firstName}
           </h1>
-          <div className="flex items-center gap-2 mt-1.5">
-            <GraduationCap size={15} className="text-[#315B3B]" />
-            <span className="text-xs text-[#6B716B] font-medium">
+          <div className="flex items-center gap-1.5 mt-2">
+            <GraduationCap size={13} className="text-[#315B3B]" />
+            <span className="text-xs text-[#939A92] font-medium">
               {profile?.course || 'General Student'} · {profile?.school || 'Gordon College'}
             </span>
           </div>
@@ -188,13 +188,13 @@ export default async function DashboardPage() {
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
           {isSpecsMember ? (
-            <div className="px-3.5 py-1.5 rounded-full border border-[#315B3B]/20 bg-[#E8F0E7] text-[#315B3B] text-xs font-bold flex items-center gap-2 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-[#315B3B] animate-pulse" />
+            <div className="px-3.5 py-1.5 rounded-full border border-[#315B3B]/25 bg-[#E8F0E7] text-[#315B3B] text-xs font-bold flex items-center gap-2 shadow-[0_1px_3px_rgba(49,91,59,0.12)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B] animate-pulse" />
               <span>SPECS {profile?.specs_role || 'Mentor'} ⚡</span>
             </div>
           ) : (
-            <div className="px-3.5 py-1.5 rounded-full border border-[#E8E5DE] bg-white text-[#20251F] text-xs font-semibold flex items-center gap-2 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-[#F26A21]" />
+            <div className="px-3.5 py-1.5 rounded-full border border-[#E8E5DE] bg-white text-[#20251F] text-xs font-semibold flex items-center gap-2 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#F26A21]" />
               <span>Gordon College Learner</span>
             </div>
           )}
@@ -336,23 +336,23 @@ export default async function DashboardPage() {
       )}
 
       {/* Activity Graph Card */}
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-xs">
-        <div className="flex items-center justify-between mb-2">
+      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-bold text-[#20251F]">Recent Activity</h3>
-            <p className="text-xs text-[#6B716B] mt-0.5">Tutoring sessions and bookings over the last 14 days</p>
+            <h3 className="text-sm font-bold text-[#20251F] tracking-tight">Recent Activity</h3>
+            <p className="text-xs text-[#939A92] mt-0.5">Tutoring sessions and bookings over the last 14 days</p>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold border border-[#315B3B]/20">
-            <TrendingUp size={13} />
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] text-xs font-bold border border-[#315B3B]/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
+            <TrendingUp size={12} />
             <span>Active Campus</span>
           </div>
         </div>
         <ActivityGraph data={activityData} />
       </div>
 
-      {/* Quick Actions (BudgetMate layout: rounded cards, colored icon box) */}
+      {/* Quick Actions */}
       <div>
-        <p className="text-xs font-bold text-[#939A92] uppercase tracking-wider mb-3">
+        <p className="text-[11px] font-black text-[#939A92] uppercase tracking-widest mb-3">
           Quick Actions
         </p>
 

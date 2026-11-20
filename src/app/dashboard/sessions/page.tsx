@@ -93,18 +93,18 @@ export default async function SessionsPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-              <Calendar size={14} />
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+              <Calendar size={13} />
             </span>
-            <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Academic Directory</span>
+            <span className="text-[10px] font-black text-[#315B3B] uppercase tracking-widest">Academic Directory</span>
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Peer Tutoring Sessions</h1>
-          <p className="text-[#6B716B] text-xs mt-0.5">
+          <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Peer Tutoring Sessions</h1>
+          <p className="text-[#939A92] text-xs mt-1 font-medium">
             Free academic support from verified Gordon College SPECS tutors · {(sessions || []).length} available
           </p>
         </div>
@@ -112,9 +112,9 @@ export default async function SessionsPage({ searchParams }: Props) {
         {isSpecsMember && (
           <Link
             href="/dashboard/sessions/new"
-            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all self-start sm:self-auto"
+            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-[0_1px_3px_rgba(217,84,22,0.25)] hover:shadow-[0_4px_12px_rgba(217,84,22,0.3)] hover:-translate-y-0.5 transition-all duration-150 self-start sm:self-auto"
           >
-            <Plus size={15} />
+            <Plus size={14} />
             Post a Session
           </Link>
         )}
@@ -122,27 +122,27 @@ export default async function SessionsPage({ searchParams }: Props) {
 
       {/* Search Input */}
       <form className="relative">
-        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#939A92]" />
+        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#939A92]" />
         <input
           name="q"
           defaultValue={query}
           placeholder="Search sessions by course title, topic, or keyword..."
-          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-3 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-2xs outline-none"
+          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-10 pr-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/12 transition-all shadow-[0_1px_3px_rgba(0,0,0,0.04)] outline-none font-medium"
         />
         {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
         {sessionType !== 'all' && <input type="hidden" name="type" value={sessionType} />}
       </form>
 
-      {/* Session Type Filter Pills (Orange focused) */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      {/* Session Type Filter Pills */}
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
         {SESSION_TYPES.map((t) => (
           <Link
             key={t.value}
             href={'/dashboard/sessions?type=' + t.value + (subject !== 'All' ? '&subject=' + subject : '') + (query ? '&q=' + query : '')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
               sessionType === t.value
-                ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-2xs'
-                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/40 hover:text-[#20251F]'
+                ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-[0_2px_8px_rgba(242,106,33,0.25)]'
+                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/35 hover:text-[#20251F]'
             }`}
           >
             {t.label}
@@ -150,16 +150,16 @@ export default async function SessionsPage({ searchParams }: Props) {
         ))}
       </div>
 
-      {/* Subject Filter Pills (Green focused) */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      {/* Subject Filter Pills */}
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
         {SUBJECTS.map((s) => (
           <Link
             key={s}
             href={'/dashboard/sessions?subject=' + s + (sessionType !== 'all' ? '&type=' + sessionType : '') + (query ? '&q=' + query : '')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all duration-150 whitespace-nowrap flex-shrink-0 ${
               subject === s
-                ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-2xs'
-                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/40 hover:text-[#20251F]'
+                ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-[0_2px_8px_rgba(49,91,59,0.25)]'
+                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/35 hover:text-[#20251F]'
             }`}
           >
             {s}
@@ -177,13 +177,13 @@ export default async function SessionsPage({ searchParams }: Props) {
             return (
               <div
                 key={session.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:border-[#F26A21]/35 hover:shadow-[0_6px_20px_rgba(0,0,0,0.07)] hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between group"
               >
                 <div>
                   {/* Tutor info & Badges */}
-                  <div className="flex items-start justify-between gap-3 mb-3.5">
+                  <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-sm font-bold text-[#D95416] flex-shrink-0 shadow-2xs">
+                      <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-sm font-black text-[#D95416] flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                         {session.tutor?.full_name?.[0] || 'T'}
                       </div>
                       <div className="min-w-0">
@@ -191,44 +191,44 @@ export default async function SessionsPage({ searchParams }: Props) {
                           {session.tutor?.full_name}
                         </p>
                         <div className="flex items-center gap-1 mt-0.5">
-                          <Shield size={11} className="text-[#315B3B] flex-shrink-0" />
-                          <p className="text-[11px] font-semibold text-[#315B3B] truncate">
+                          <Shield size={10} className="text-[#315B3B] flex-shrink-0" />
+                          <p className="text-[10px] font-bold text-[#315B3B] truncate">
                             SPECS {session.tutor?.specs_role || 'Mentor'}
                           </p>
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
-                      <span className="text-[11px] font-bold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-2.5 py-0.5 rounded-full">
+                      <span className="text-[10px] font-black text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-2.5 py-0.5 rounded-full tracking-wide">
                         FREE
                       </span>
-                      <span className="text-[10px] font-semibold text-[#6B716B] bg-[#F5F3ED] border border-[#E8E5DE] px-2 py-0.5 rounded-full">
+                      <span className="text-[9px] font-bold text-[#939A92] bg-[#F5F3ED] border border-[#E8E5DE] px-2 py-0.5 rounded-full uppercase tracking-wider">
                         {typeLabel[session.session_type] || 'Tutoring'}
                       </span>
                     </div>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="font-bold text-base text-[#20251F] mb-1.5 group-hover:text-[#F26A21] transition-colors line-clamp-1">
+                  <h3 className="font-black text-sm text-[#20251F] mb-1.5 group-hover:text-[#F26A21] transition-colors duration-150 line-clamp-1 tracking-tight">
                     {session.title}
                   </h3>
                   {session.description && (
-                    <p className="text-xs text-[#6B716B] leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-xs text-[#939A92] leading-relaxed mb-3.5 line-clamp-2">
                       {session.description}
                     </p>
                   )}
 
                   {/* Metadata Tags */}
-                  <div className="flex items-center gap-2 flex-wrap mb-4">
-                    <span className="text-xs font-medium text-[#20251F] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg">
+                  <div className="flex items-center gap-1.5 flex-wrap mb-3.5">
+                    <span className="text-[11px] font-semibold text-[#20251F] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg">
                       {session.category}
                     </span>
-                    <span className="text-xs font-medium text-[#6B716B] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg capitalize">
+                    <span className="text-[11px] font-semibold text-[#939A92] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg capitalize">
                       {session.mode}
                     </span>
                     {session.max_participants && (
-                      <span className="text-xs font-medium text-[#6B716B] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg flex items-center gap-1">
-                        <Users size={12} className="text-[#939A92]" />
+                      <span className="text-[11px] font-semibold text-[#939A92] bg-[#F5F3ED] border border-[#E8E5DE] px-2.5 py-1 rounded-lg flex items-center gap-1">
+                        <Users size={10} className="text-[#939A92]" />
                         Up to {session.max_participants}
                       </span>
                     )}
@@ -236,40 +236,40 @@ export default async function SessionsPage({ searchParams }: Props) {
 
                   {/* Schedule Details */}
                   {session.start_date && (
-                    <div className="flex flex-wrap items-center gap-3 py-2.5 px-3 bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl mb-4 text-xs text-[#6B716B]">
-                      <span className="flex items-center gap-1.5 font-medium text-[#20251F]">
-                        <Calendar size={13} className="text-[#315B3B]" />
+                    <div className="flex flex-wrap items-center gap-3 py-2.5 px-3 bg-[#F5F3ED] border border-[#E8E5DE] rounded-xl mb-3.5 text-xs text-[#939A92]">
+                      <span className="flex items-center gap-1.5 font-semibold text-[#20251F]">
+                        <Calendar size={12} className="text-[#315B3B]" />
                         {formatDate(session.start_date)}
                         {session.end_date && session.end_date !== session.start_date && ' → ' + formatDate(session.end_date)}
                       </span>
                       {session.daily_start_time && (
-                        <span className="flex items-center gap-1.5 font-medium text-[#6B716B]">
-                          <Clock size={13} className="text-[#F26A21]" />
+                        <span className="flex items-center gap-1.5 font-medium text-[#939A92]">
+                          <Clock size={12} className="text-[#F26A21]" />
                           {formatEndTime(session.daily_start_time, session.hours_per_day || 1)}
                         </span>
                       )}
                     </div>
                   )}
 
-                  {/* Study materials attached */}
+                  {/* Study materials */}
                   {matCount > 0 && (
-                    <div className="flex items-center gap-1.5 mb-4 px-2 py-1 bg-[#FFF0E5]/60 rounded-lg text-xs font-semibold text-[#D95416]">
-                      <FileText size={13} />
+                    <div className="flex items-center gap-1.5 mb-3.5 px-2.5 py-1.5 bg-[#FFF0E5] border border-[#F26A21]/15 rounded-lg text-xs font-bold text-[#D95416]">
+                      <FileText size={12} />
                       <span>{matCount} study material{matCount !== 1 ? 's' : ''} included</span>
                     </div>
                   )}
                 </div>
 
                 {/* Card Action */}
-                <div className="pt-3 border-t border-[#E8E5DE]">
+                <div className="pt-3 border-t border-[#E8E5DE]/70">
                   {isOwn ? (
-                    <div className="text-center py-2 text-xs font-semibold text-[#6B716B] bg-[#F5F3ED] rounded-xl">
+                    <div className="text-center py-2 text-xs font-semibold text-[#939A92] bg-[#F5F3ED] rounded-xl">
                       Your posted session
                     </div>
                   ) : (
                     <Link
                       href={'/dashboard/sessions/' + session.id}
-                      className="block w-full text-center bg-[#F26A21] hover:bg-[#D95416] text-white py-2.5 rounded-xl text-xs font-bold transition-all shadow-2xs hover:shadow-xs"
+                      className="block w-full text-center bg-[#F26A21] hover:bg-[#D95416] text-white py-2.5 rounded-xl text-xs font-bold transition-all duration-150 shadow-[0_1px_3px_rgba(217,84,22,0.2)] hover:shadow-[0_4px_12px_rgba(217,84,22,0.3)] hover:-translate-y-0.5"
                     >
                       View Details & Book
                     </Link>
@@ -280,19 +280,19 @@ export default async function SessionsPage({ searchParams }: Props) {
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center mx-auto mb-3">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-14 text-center shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/15 text-[#F26A21] flex items-center justify-center mx-auto mb-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
             <Calendar size={22} />
           </div>
-          <p className="text-base font-bold text-[#20251F] mb-1">No sessions found</p>
-          <p className="text-xs text-[#6B716B] mb-5 max-w-sm mx-auto">
+          <p className="text-sm font-black text-[#20251F] mb-1 tracking-tight">No sessions found</p>
+          <p className="text-xs text-[#939A92] mb-5 max-w-xs mx-auto leading-relaxed">
             {query || subject !== 'All' || sessionType !== 'all'
               ? 'Try clearing some filters or searching with different keywords.'
               : 'There are no active peer sessions right now. Post a request to let mentors know what you need!'}
           </p>
           <Link
             href="/dashboard/requests/new"
-            className="inline-flex items-center gap-1.5 bg-[#315B3B] hover:bg-[#24452D] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 bg-[#315B3B] hover:bg-[#24452D] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 shadow-[0_1px_3px_rgba(49,91,59,0.2)] hover:shadow-[0_4px_12px_rgba(49,91,59,0.25)] hover:-translate-y-0.5"
           >
             Post a Help Request →
           </Link>

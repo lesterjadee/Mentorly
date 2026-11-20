@@ -46,30 +46,30 @@ export default async function RequestsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black mb-2 uppercase tracking-widest shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
             Peer Assistance Network
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">My Requests</h1>
-          <p className="text-[#6B716B] text-sm mt-1">Help requests you've posted on the peer marketplace</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#20251F] tracking-tight leading-tight">My Requests</h1>
+          <p className="text-[#939A92] text-xs mt-1 font-medium">Help requests you've posted on the peer marketplace</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             href="/dashboard/requests/browse"
-            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-colors px-4 py-2.5 rounded-xl text-sm font-medium text-[#20251F] shadow-xs"
+            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all duration-150 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#20251F] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-[#D9D4C7]"
           >
-            <Search size={15} className="text-[#6B716B]" />
+            <Search size={13} className="text-[#939A92]" />
             Browse requests
           </Link>
           <Link
             href="/dashboard/requests/new"
-            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-colors px-4 py-2.5 rounded-xl text-sm font-semibold text-white shadow-xs"
+            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-all duration-150 px-3.5 py-2.5 rounded-xl text-xs font-bold text-white shadow-[0_1px_3px_rgba(217,84,22,0.2)] hover:shadow-[0_4px_12px_rgba(217,84,22,0.3)] hover:-translate-y-0.5"
           >
-            <Plus size={16} />
+            <Plus size={14} />
             New request
           </Link>
         </div>
