@@ -60,14 +60,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const initial = user.user_metadata?.full_name?.[0] || user.email?.[0]?.toUpperCase() || 'U'
 
   return (
-    <div className="min-h-screen bg-[#FAC898] text-[#20251F] flex">
+    <div className="min-h-screen bg-[#FDE8D0] text-[#20251F] flex">
       <TabTitle userId={user.id} />
       <PushNotificationPrompt />
 
-      {/* ── DESKTOP SIDEBAR (BudgetMate inspired) ── */}
-      <aside className="hidden md:flex w-64 bg-white border-r border-[#E8E5DE] flex-col fixed h-full z-20 shadow-[1px_0_4px_rgba(0,0,0,0.02)]">
+      {/* ── DESKTOP SIDEBAR ── */}
+      <aside className="hidden md:flex w-64 bg-[#315B3B] border-r border-[#24452D] flex-col fixed h-full z-20 shadow-[2px_0_12px_rgba(0,0,0,0.15)]">
         {/* Brand header */}
-        <div className="px-5 py-4 border-b border-[#E8E5DE]">
+        <div className="px-5 py-4 border-b border-[#24452D]">
           <Link href="/dashboard" className="flex items-center gap-3 group">
             <div className="relative flex-shrink-0">
               <Image
@@ -81,28 +81,28 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-[16px] tracking-tight text-[#20251F]">Mentorly</span>
-                <span className="text-[10px] font-bold bg-[#E8F0E7] text-[#315B3B] px-1.5 py-0.5 rounded border border-[#315B3B]/20">
+                <span className="font-bold text-[16px] tracking-tight text-white">Mentorly</span>
+                <span className="text-[10px] font-bold bg-white/20 text-white px-1.5 py-0.5 rounded border border-white/20">
                   CCS
                 </span>
               </div>
-              <p className="text-[11px] text-[#6B716B] truncate font-medium">SPECS Academic Support</p>
+              <p className="text-[11px] text-white/65 truncate font-medium">SPECS Academic Support</p>
             </div>
           </Link>
         </div>
 
         {/* SPECS Member Status Pill */}
         {isSpecsMember ? (
-          <div className="mx-3 mt-3 px-3 py-2 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-[#315B3B] animate-pulse" />
-            <span className="text-xs text-[#315B3B] font-semibold truncate">
+          <div className="mx-3 mt-3 px-3 py-2 bg-white/15 border border-white/20 rounded-xl flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <span className="text-xs text-white font-semibold truncate">
               SPECS {profile?.specs_role || 'Mentor'} ⚡
             </span>
           </div>
         ) : (
-          <div className="mx-3 mt-3 px-3 py-2 bg-[#FFF8F1] border border-[#F26A21]/15 rounded-xl flex items-center gap-2">
-            <GraduationCap size={14} className="text-[#F26A21]" />
-            <span className="text-xs text-[#D95416] font-medium truncate">
+          <div className="mx-3 mt-3 px-3 py-2 bg-white/10 border border-white/15 rounded-xl flex items-center gap-2">
+            <GraduationCap size={14} className="text-[#FAC898]" />
+            <span className="text-xs text-white/80 font-medium truncate">
               Gordon College Student
             </span>
           </div>
@@ -112,7 +112,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <nav className="flex-1 px-3 py-3 space-y-4 overflow-y-auto">
           {/* Main Marketplace */}
           <div>
-            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-[#939A92]">
+            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/50">
               Marketplace
             </p>
             <div className="space-y-0.5">
@@ -120,9 +120,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#6B716B] hover:text-[#20251F] hover:bg-[#F5F3ED] transition-all duration-150 group"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/75 hover:text-white hover:bg-white/10 transition-all duration-150 group"
                 >
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6B716B] group-hover:text-[#F26A21] group-hover:bg-[#FFF0E5] transition-colors">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white/75 group-hover:text-[#FAC898] group-hover:bg-white/15 transition-colors">
                     <item.icon size={16} />
                   </div>
                   <span className="flex-1 truncate">{item.label}</span>
@@ -133,7 +133,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
           {/* My Activity */}
           <div>
-            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-[#939A92]">
+            <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/50">
               My Learning
             </p>
             <div className="space-y-0.5">
@@ -141,9 +141,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#6B716B] hover:text-[#20251F] hover:bg-[#F5F3ED] transition-all duration-150 group"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/75 hover:text-white hover:bg-white/10 transition-all duration-150 group"
                 >
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-[#6B716B] group-hover:text-[#315B3B] group-hover:bg-[#E8F0E7] transition-colors">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white/75 group-hover:text-white group-hover:bg-white/15 transition-colors">
                     <item.icon size={16} />
                   </div>
                   <span className="flex-1 truncate">{item.label}</span>
@@ -161,19 +161,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
           {isSpecsMember && (
             <div>
               <div className="flex items-center justify-between px-3 pb-1.5">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-[#315B3B]">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-white">
                   SPECS Tutors ⚡
                 </p>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
               </div>
               <div className="space-y-0.5">
                 {specsNavItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#315B3B] bg-[#E8F0E7]/40 hover:bg-[#E8F0E7] hover:text-[#24452D] border border-[#315B3B]/10 transition-all duration-150 group"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white bg-white/10 hover:bg-white/20 hover:text-white border border-white/20 transition-all duration-150 group"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] flex items-center justify-center text-[#315B3B] group-hover:bg-[#315B3B] group-hover:text-white transition-colors">
+                    <div className="w-7 h-7 rounded-lg bg-white/15 flex items-center justify-center text-white group-hover:bg-white/30 group-hover:text-white transition-colors">
                       <item.icon size={16} />
                     </div>
                     <span className="flex-1 truncate">{item.label}</span>
@@ -185,29 +185,29 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </nav>
 
         {/* User Card */}
-        <div className="px-3 py-3 border-t border-[#E8E5DE] bg-[#FFFCF7]/60 space-y-2">
+        <div className="px-3 py-3 border-t border-[#24452D] bg-[#24452D]/60 space-y-2">
           <Link
             href="/dashboard/profile"
-            className="flex items-center gap-3 p-2 rounded-xl hover:bg-white transition-all border border-transparent hover:border-[#E8E5DE]"
+            className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/10 transition-all border border-transparent hover:border-white/20"
           >
             <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
               isSpecsMember
-                ? 'bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/30'
-                : 'bg-[#FFF0E5] text-[#D95416] border border-[#F26A21]/30'
+                ? 'bg-white/20 text-white border border-white/30'
+                : 'bg-white/15 text-white border border-white/20'
             }`}>
               {initial}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-[#20251F] truncate">{firstName}</p>
-              <p className="text-[11px] text-[#6B716B] truncate">
+              <p className="text-xs font-semibold text-white truncate">{firstName}</p>
+              <p className="text-[11px] text-white/65 truncate">
                 {isSpecsMember ? 'SPECS Mentor ⚡' : (profile?.course || 'Student')}
               </p>
             </div>
           </Link>
 
           <form action="/auth/signout" method="post">
-            <button className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-[#6B716B] hover:text-[#D95416] hover:bg-[#FFF0E5] transition-all duration-150 w-full group">
-              <LogOut size={14} className="group-hover:-translate-x-0.5 transition-transform duration-150 text-[#939A92] group-hover:text-[#D95416]" />
+            <button className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-white/65 hover:text-white hover:bg-white/10 transition-all duration-150 w-full group">
+              <LogOut size={14} className="group-hover:-translate-x-0.5 transition-transform duration-150 text-white/50 group-hover:text-white" />
               Sign out
             </button>
           </form>
@@ -216,24 +216,20 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex-1 md:ml-64 flex flex-col min-w-0 pb-20 md:pb-8">
-        {/* Desktop Top Header (BudgetMate style) */}
-        <header className="hidden md:flex items-center justify-between px-8 py-3.5 bg-white/90 backdrop-blur-md border-b border-[#E8E5DE] sticky top-0 z-10 shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+        {/* Desktop Top Header */}
+        <header className="hidden md:flex items-center justify-between px-8 py-3.5 bg-[#F26A21] border-b border-[#D95416] sticky top-0 z-10 shadow-[0_2px_6px_rgba(0,0,0,0.12)]">
           <div className="flex-1 max-w-lg">
             <CommandPalette />
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-[#F5F3ED] px-3 py-1.5 rounded-full border border-[#E8E5DE]">
-              <span className="w-2 h-2 rounded-full bg-[#315B3B]" />
-              <span className="text-xs font-semibold text-[#315B3B]">Gordon College Campus</span>
+            <div className="flex items-center gap-2 bg-[#D95416] px-3 py-1.5 rounded-full border border-[#D95416]/50">
+              <span className="w-2 h-2 rounded-full bg-white" />
+              <span className="text-xs font-semibold text-white">Gordon College Campus</span>
             </div>
             <NotificationPanel userId={user.id} />
             <Link
               href="/dashboard/profile"
-              className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                isSpecsMember
-                  ? 'bg-[#E8F0E7] text-[#315B3B] border border-[#315B3B]/30 hover:ring-2 hover:ring-[#315B3B]/20'
-                  : 'bg-[#FFF0E5] text-[#D95416] border border-[#F26A21]/30 hover:ring-2 hover:ring-[#F26A21]/20'
-              }`}
+              className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all bg-white/20 text-white border border-white/30 hover:ring-2 hover:ring-white/30"
               title="View profile"
             >
               {initial}
