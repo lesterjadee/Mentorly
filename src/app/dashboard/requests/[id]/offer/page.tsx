@@ -103,7 +103,7 @@ export default function SendOfferPage() {
 
   if (!request) {
     return (
-      <div className="text-center py-20 bg-white border border-[#E8E5DE] rounded-2xl p-8 max-w-lg mx-auto shadow-xs">
+      <div className="w-full text-center py-12 bg-white border border-[#E8E5DE] rounded-2xl p-8 shadow-xs">
         <p className="text-[#6B716B] font-medium">Request not found or no longer available.</p>
         <Link href="/dashboard/requests/browse" className="text-[#F26A21] hover:underline text-sm mt-3 inline-block font-semibold">
           Back to browse
@@ -114,20 +114,20 @@ export default function SendOfferPage() {
 
   if (alreadyOffered) {
     return (
-      <div className="max-w-lg mx-auto space-y-6">
+      <div className="w-full space-y-4">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/requests/browse"
-            className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+            className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={16} />
           </Link>
-          <h1 className="text-2xl font-bold text-[#20251F]">Send Offer</h1>
+          <h1 className="text-2xl font-black text-[#20251F]">Send Offer</h1>
         </div>
         <div className="bg-[#E8F0E7] border border-[#315B3B]/30 rounded-2xl p-8 text-center shadow-xs">
-          <ShieldCheck size={32} className="text-[#315B3B] mx-auto mb-2" />
+          <ShieldCheck size={30} className="text-[#315B3B] mx-auto mb-2" />
           <h2 className="text-[#315B3B] font-bold text-base mb-1">Offer already sent</h2>
-          <p className="text-[#20251F]/70 text-sm max-w-xs mx-auto">
+          <p className="text-[#20251F]/70 text-xs max-w-lg mx-auto">
             You've already submitted an offer for this student request. They will review your profile and respond soon.
           </p>
           <Link
@@ -144,23 +144,24 @@ export default function SendOfferPage() {
   const isMulti = request.session_type === 'multi'
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link
           href="/dashboard/requests/browse"
-          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+          className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Send an Offer</h1>
-          <p className="text-[#6B716B] text-sm mt-0.5">Offer your academic tutoring help to this student</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Send an Offer</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">Offer your academic tutoring help to this student</p>
         </div>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
       {/* Request Summary Card */}
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs">
+      <div className="lg:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-xs">
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-base font-bold text-[#315B3B] flex-shrink-0">
             {request.users?.full_name?.[0] ?? '?'}
@@ -216,7 +217,7 @@ export default function SendOfferPage() {
       </div>
 
       {/* Offer Form */}
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 sm:p-8 shadow-xs space-y-5">
+      <div className="lg:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
         <p className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Your Peer Tutoring Offer</p>
 
         {error && (
@@ -234,7 +235,7 @@ export default function SendOfferPage() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Introduce yourself, mention your course/grade in this topic, and share how you can help them prepare or succeed..."
-            rows={4}
+            rows={5}
             className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all resize-none"
           />
         </div>
@@ -243,11 +244,12 @@ export default function SendOfferPage() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-xs"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-xs"
         >
           <Send size={15} />
           {loading ? 'Sending Offer...' : 'Send Offer to Learner'}
         </button>
+      </div>
       </div>
     </div>
   )

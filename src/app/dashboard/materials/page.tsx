@@ -134,17 +134,17 @@ export default async function MaterialsPage({ searchParams }: Props) {
   const isFiltered = query || subject !== 'All' || fileType !== 'all'
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-              <FileText size={14} />
+            <span className="w-5.5 h-5.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+              <FileText size={13} />
             </span>
-            <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Academic Repository</span>
+            <span className="text-[10px] font-black text-[#315B3B] uppercase tracking-widest">Academic Repository</span>
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Study Materials & Reviewers</h1>
+          <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Study Materials & Reviewers</h1>
           <p className="text-xs text-[#6B716B] mt-0.5">
             Free downloadable notes, reviewers, and decks uploaded by SPECS tutors · <span className="font-bold text-[#315B3B]">{totalMaterials} files available</span>
           </p>
@@ -155,15 +155,15 @@ export default async function MaterialsPage({ searchParams }: Props) {
             href="/dashboard/materials/upload"
             className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs hover:shadow transition-all self-start sm:self-auto"
           >
-            <Plus size={15} />
+            <Plus size={14} />
             Upload Materials
           </Link>
         )}
       </div>
 
       {justUploaded && (
-        <div className="bg-[#E8F0E7] border border-[#315B3B]/25 rounded-2xl p-4 flex items-center gap-3 shadow-2xs">
-          <CheckCircle2 size={18} className="text-[#315B3B] flex-shrink-0" />
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/25 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xs">
+          <CheckCircle2 size={16} className="text-[#315B3B] flex-shrink-0" />
           <p className="text-xs font-bold text-[#315B3B]">
             Material uploaded successfully! It is now accessible to all Gordon College students.
           </p>
@@ -171,49 +171,51 @@ export default async function MaterialsPage({ searchParams }: Props) {
       )}
 
       {/* Free notice banner */}
-      <div className="flex items-start gap-3 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-2xl p-4 shadow-2xs">
-        <Shield size={16} className="text-[#315B3B] flex-shrink-0 mt-0.5" />
+      <div className="flex items-center gap-3 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl px-4 py-2.5 shadow-2xs">
+        <Shield size={15} className="text-[#315B3B] flex-shrink-0" />
         <p className="text-xs text-[#24452D] leading-relaxed font-medium">
           All study materials are free open-access educational assets created by <span className="font-bold underline decoration-[#315B3B]">SPECS members</span> for the Gordon College community. Download without any bookings or charges.
         </p>
       </div>
 
-      {/* Search Input */}
-      <form className="relative">
-        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#939A92]" />
-        <input
-          name="q"
-          defaultValue={query}
-          placeholder="Search materials by title, topic, or subject..."
-          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-3 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-2xs outline-none"
-        />
-        {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
-        {fileType !== 'all' && <input type="hidden" name="type" value={fileType} />}
-      </form>
+      {/* Search + File Type Toolbar */}
+      <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+        <form className="relative flex-1">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#939A92]" />
+          <input
+            name="q"
+            defaultValue={query}
+            placeholder="Search materials by title, topic, or subject..."
+            className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-10 pr-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-2xs outline-none"
+          />
+          {subject !== 'All' && <input type="hidden" name="subject" value={subject} />}
+          {fileType !== 'all' && <input type="hidden" name="type" value={fileType} />}
+        </form>
 
-      {/* File type filter pills */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {FILE_TYPES.map((t) => (
-          <Link
-            key={t.value}
-            href={
-              '/dashboard/materials?type=' + t.value +
-              (subject !== 'All' ? '&subject=' + subject : '') +
-              (query ? '&q=' + query : '')
-            }
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
-              fileType === t.value
-                ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-2xs'
-                : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/40 hover:text-[#20251F]'
-            }`}
-          >
-            {t.label}
-          </Link>
-        ))}
+        {/* File type filter pills */}
+        <div className="flex gap-1.5 overflow-x-auto pb-0.5 lg:pb-0 scrollbar-hide flex-shrink-0">
+          {FILE_TYPES.map((t) => (
+            <Link
+              key={t.value}
+              href={
+                '/dashboard/materials?type=' + t.value +
+                (subject !== 'All' ? '&subject=' + subject : '') +
+                (query ? '&q=' + query : '')
+              }
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap flex-shrink-0 ${
+                fileType === t.value
+                  ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-2xs'
+                  : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/40 hover:text-[#20251F]'
+              }`}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Subject filter pills */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex gap-1.5 overflow-x-auto sm:flex-wrap pb-0.5 scrollbar-hide">
         {SUBJECTS.map((s) => (
           <Link
             key={s}
@@ -222,7 +224,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
               (fileType !== 'all' ? '&type=' + fileType : '') +
               (query ? '&q=' + query : '')
             }
-            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ${
+            className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap flex-shrink-0 ${
               subject === s
                 ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-2xs'
                 : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/40 hover:text-[#20251F]'
@@ -236,7 +238,7 @@ export default async function MaterialsPage({ searchParams }: Props) {
       {/* Materials Display */}
       {totalMaterials > 0 ? (
         isFiltered ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3.5">
             {(materials || []).map((mat: any) => (
               <MaterialCard
                 key={mat.id}
@@ -249,17 +251,17 @@ export default async function MaterialsPage({ searchParams }: Props) {
             ))}
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-5">
             {Object.entries(subjectGroups).map(([subj, mats]) => (
               <div key={subj}>
-                <div className="flex items-center gap-3 mb-3.5">
-                  <h2 className="text-sm font-bold text-[#20251F] uppercase tracking-wider">{subj}</h2>
+                <div className="flex items-center gap-3 mb-3">
+                  <h2 className="text-xs font-black text-[#20251F] uppercase tracking-wider">{subj}</h2>
                   <div className="flex-1 h-px bg-[#E8E5DE]" />
                   <span className="text-xs font-bold text-[#315B3B] bg-[#E8F0E7] px-2.5 py-0.5 rounded-full border border-[#315B3B]/20">
                     {mats.length} file{mats.length !== 1 ? 's' : ''}
                   </span>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3.5">
                   {mats.map((mat: any) => (
                     <MaterialCard
                       key={mat.id}
@@ -276,10 +278,10 @@ export default async function MaterialsPage({ searchParams }: Props) {
           </div>
         )
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <FileText size={24} className="text-[#939A92] mx-auto mb-2" />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <FileText size={22} className="text-[#939A92] mx-auto mb-2" />
           <p className="text-sm font-bold text-[#20251F]">No study materials found</p>
-          <p className="text-xs text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+          <p className="text-xs text-[#6B716B] mt-1 max-w-lg mx-auto mb-4">
             {isFiltered
               ? 'Try choosing a different file type or subject filter.'
               : 'SPECS members will upload reviewers here soon. Feel free to request notes!'}
@@ -312,7 +314,7 @@ function MaterialCard({
   const colorClass = getFileColor(mat.file_type, mat.file_name)
 
   return (
-    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group flex flex-col justify-between">
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group flex flex-col justify-between">
       <div>
         {/* Header icon and title */}
         <div className="flex items-start gap-3.5 mb-3">

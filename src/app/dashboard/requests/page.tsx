@@ -46,28 +46,28 @@ export default async function RequestsPage() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="w-full space-y-4">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black mb-2 uppercase tracking-widest shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
+          <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black mb-1.5 uppercase tracking-widest shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
             Peer Assistance Network
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#20251F] tracking-tight leading-tight">My Requests</h1>
-          <p className="text-[#939A92] text-xs mt-1 font-medium">Help requests you've posted on the peer marketplace</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">My Requests</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5 font-medium">Help requests you've posted on the peer marketplace</p>
         </div>
         <div className="flex items-center gap-2.5">
           <Link
             href="/dashboard/requests/browse"
-            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all duration-150 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#20251F] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-[#D9D4C7]"
+            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all duration-150 px-3.5 py-2 rounded-xl text-xs font-bold text-[#20251F] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:border-[#D9D4C7]"
           >
-            <Search size={13} className="text-[#939A92]" />
+            <Search size={13} className="text-[#6B716B]" />
             Browse requests
           </Link>
           <Link
             href="/dashboard/requests/new"
-            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-all duration-150 px-3.5 py-2.5 rounded-xl text-xs font-bold text-white shadow-[0_1px_3px_rgba(217,84,22,0.2)] hover:shadow-[0_4px_12px_rgba(217,84,22,0.3)] hover:-translate-y-0.5"
+            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-all duration-150 px-3.5 py-2 rounded-xl text-xs font-bold text-white shadow-[0_1px_3px_rgba(217,84,22,0.2)] hover:shadow-[0_4px_12px_rgba(217,84,22,0.3)] hover:-translate-y-0.5"
           >
             <Plus size={14} />
             New request
@@ -76,7 +76,7 @@ export default async function RequestsPage() {
       </div>
 
       {requests && requests.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {requests.map((req: any) => {
             const isMulti = req.session_type === 'multi'
             const timeRange = req.daily_start_time
@@ -87,7 +87,7 @@ export default async function RequestsPage() {
             return (
               <div
                 key={req.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs hover:border-[#F26A21]/30 hover:shadow-md transition-all"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 shadow-xs hover:border-[#F26A21]/30 hover:shadow-md transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
@@ -162,19 +162,19 @@ export default async function RequestsPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
-            <BookOpen size={24} />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-3">
+            <BookOpen size={22} />
           </div>
           <h3 className="text-base font-semibold text-[#20251F]">You haven't posted any requests yet</h3>
-          <p className="text-[#6B716B] text-sm max-w-sm mx-auto mt-1 mb-5">
+          <p className="text-[#6B716B] text-xs max-w-lg mx-auto mt-1 mb-4">
             Need help with a subject, lab report, or coding project? Post a request and verified peer tutors will reach out.
           </p>
           <Link
             href="/dashboard/requests/new"
-            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors shadow-xs"
           >
-            <Plus size={16} />
+            <Plus size={15} />
             Post your first request
           </Link>
         </div>

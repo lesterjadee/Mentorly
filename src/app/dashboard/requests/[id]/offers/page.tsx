@@ -51,24 +51,24 @@ export default async function RequestOffersPage({
   const isMulti = request.session_type === 'multi'
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link
           href="/dashboard/requests"
-          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+          className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Incoming Offers</h1>
-          <p className="text-[#6B716B] text-sm mt-0.5">{request.title}</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Incoming Offers</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">{request.title}</p>
         </div>
       </div>
 
       {/* Request Schedule Summary */}
       {request.start_date && (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 flex flex-wrap items-center gap-4 shadow-xs text-xs">
+        <div className="bg-white border border-[#E8E5DE] rounded-xl p-3.5 flex flex-wrap items-center gap-4 shadow-xs text-xs">
           <div className="flex items-center gap-2 text-[#20251F] font-medium">
             <Calendar size={13} className="text-[#315B3B]" />
             {isMulti
@@ -91,7 +91,7 @@ export default async function RequestOffersPage({
 
       {/* Offers List */}
       {offers && offers.length > 0 ? (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {offers.map((offer: any) => {
             const isAccepted = offer.status === 'accepted'
             const isDeclined = offer.status === 'declined'
@@ -172,12 +172,12 @@ export default async function RequestOffersPage({
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
-            <User size={24} />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-3">
+            <User size={22} />
           </div>
           <h3 className="text-base font-semibold text-[#20251F]">No offers yet</h3>
-          <p className="text-[#6B716B] text-sm mt-1 max-w-sm mx-auto">
+          <p className="text-[#6B716B] text-xs mt-1 max-w-lg mx-auto">
             Peer tutors will review your request and send support offers soon. Check back shortly!
           </p>
         </div>

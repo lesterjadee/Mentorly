@@ -232,8 +232,8 @@ export default function ChatWindow({
     <div className="flex w-full h-full">
 
       {/* Sidebar Contacts */}
-      <div className="w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex-col flex-shrink-0 hidden md:flex">
-        <div className="px-6 py-5 border-b border-[#E8E5DE] bg-white">
+      <div className="w-72 lg:w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex-col flex-shrink-0 hidden md:flex">
+        <div className="px-5 py-4 border-b border-[#E8E5DE] bg-white">
           <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[11px] font-semibold mb-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
             Direct Messages
@@ -351,7 +351,7 @@ export default function ChatWindow({
                   const isMe = msg.sender_id === currentUser.id
                   return (
                     <div key={msg.id} className={'flex ' + (isMe ? 'justify-end' : 'justify-start')}>
-                      <div className={'max-w-xs lg:max-w-md flex flex-col gap-1 ' + (isMe ? 'items-end' : 'items-start')}>
+                      <div className={'max-w-xs lg:max-w-lg xl:max-w-xl flex flex-col gap-1 ' + (isMe ? 'items-end' : 'items-start')}>
                         {msg.content && (
                           <div className={
                             'px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-xs ' +

@@ -25,7 +25,7 @@ export default function ActivityGraph({ data }: Props) {
   const max = Math.max(...data.map((d) => d.count), 1)
 
   return (
-    <div className="flex items-end gap-1.5 md:gap-2 h-24 pt-4">
+    <div className="flex items-end gap-1.5 md:gap-2 h-28 pt-2">
       {data.map((d, i) => {
         const height = Math.max((d.count / max) * 100, 6)
         const hasActivity = d.count > 0

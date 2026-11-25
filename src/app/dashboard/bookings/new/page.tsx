@@ -128,45 +128,22 @@ export default function NewBookingPage() {
   const days = countDays()
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div>
         <Link
           href={'/dashboard/sessions/' + serviceId}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-2"
         >
           <ArrowLeft size={14} />
           <span>Back to session details</span>
         </Link>
-        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Book Tutoring Session</h1>
+        <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Book Tutoring Session</h1>
         <p className="text-xs text-[#6B716B] mt-0.5">Confirm your schedule preferences with your SPECS mentor</p>
       </div>
 
-      {/* Session Summary Card */}
-      <div className="bg-gradient-to-br from-[#FFF8F1] via-white to-[#F3F7F2] border border-[#E8E5DE] rounded-2xl p-5 shadow-xs">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-base font-extrabold text-[#D95416] flex-shrink-0 shadow-2xs">
-            {session.users?.full_name?.[0] || 'T'}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-bold text-base text-[#20251F] truncate">{session.title}</p>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <Shield size={12} className="text-[#315B3B]" />
-              <p className="text-xs font-semibold text-[#315B3B] truncate">
-                {session.users?.full_name} · SPECS {session.users?.specs_role || 'Mentor'}
-              </p>
-            </div>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <span className="text-xs font-extrabold text-[#315B3B] bg-[#E8F0E7] border border-[#315B3B]/20 px-3 py-1 rounded-full">
-              FREE
-            </span>
-            <p className="text-[10px] text-[#6B716B] font-medium mt-1">Peer Tutoring</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div className="lg:col-span-7 xl:col-span-8 bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 space-y-5 shadow-xs">
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-xs font-medium">
             {error}
@@ -319,9 +296,30 @@ export default function NewBookingPage() {
             className="w-full bg-white border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm placeholder:text-[#939A92] focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all outline-none resize-none"
           />
         </div>
+      </div>
+
+      {/* Right Column: Session & Booking Summary */}
+      <div className="lg:col-span-5 xl:col-span-4 space-y-4 lg:sticky lg:top-20">
+        {/* Session Summary Card */}
+        <div className="bg-gradient-to-br from-[#FFF8F1] via-white to-[#F3F7F2] border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 shadow-xs">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-base font-extrabold text-[#D95416] flex-shrink-0 shadow-2xs">
+              {session.users?.full_name?.[0] || 'T'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-bold text-sm text-[#20251F] truncate">{session.title}</p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <Shield size={12} className="text-[#315B3B]" />
+                <p className="text-xs font-semibold text-[#315B3B] truncate">
+                  {session.users?.full_name} · SPECS {session.users?.specs_role || 'Mentor'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Summary Card */}
-        <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-2xl p-5 space-y-3">
+        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xs">
           <p className="text-xs font-bold text-[#939A92] uppercase tracking-wider">
             Booking Summary
           </p>
@@ -349,28 +347,28 @@ export default function NewBookingPage() {
           )}
           <div className="border-t border-[#E8E5DE] pt-3 flex items-center justify-between">
             <span className="text-xs font-bold text-[#6B716B]">Cost to You</span>
-            <span className="text-base font-extrabold text-[#315B3B] bg-[#E8F0E7] px-3 py-0.5 rounded-full border border-[#315B3B]/20">
+            <span className="text-sm font-extrabold text-[#315B3B] bg-[#E8F0E7] px-3 py-0.5 rounded-full border border-[#315B3B]/20">
               FREE
             </span>
           </div>
-        </div>
 
-        {/* Free pledge */}
-        <div className="flex items-center gap-3 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5">
-          <CheckCircle2 size={16} className="text-[#315B3B] flex-shrink-0" />
-          <p className="text-xs text-[#24452D] font-medium leading-relaxed">
-            Tutoring sessions on Mentorly are strictly free for Gordon College students through SPECS.
-          </p>
-        </div>
+          <div className="flex items-center gap-2.5 bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3">
+            <CheckCircle2 size={15} className="text-[#315B3B] flex-shrink-0" />
+            <p className="text-[11px] text-[#24452D] font-medium leading-snug">
+              Tutoring sessions on Mentorly are strictly free for Gordon College students through SPECS.
+            </p>
+          </div>
 
-        <button
-          type="button"
-          onClick={handleBooking}
-          disabled={loading}
-          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow"
-        >
-          {loading ? 'Submitting request...' : 'Confirm Session Booking — Free'}
-        </button>
+          <button
+            type="button"
+            onClick={handleBooking}
+            disabled={loading}
+            className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-xs hover:shadow"
+          >
+            {loading ? 'Submitting request...' : 'Confirm Session Booking — Free'}
+          </button>
+        </div>
+      </div>
       </div>
     </div>
   )

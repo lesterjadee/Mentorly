@@ -67,28 +67,28 @@ export default async function NotificationsPage() {
   )
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
-          <Bell size={12} />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1">
+          <Bell size={11} />
           Activity Center
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Notifications</h1>
-        <p className="text-[#6B716B] text-sm mt-0.5">Stay updated on your tutoring sessions, incoming offers, and messages</p>
+        <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Notifications</h1>
+        <p className="text-[#6B716B] text-xs mt-0.5">Stay updated on your tutoring sessions, incoming offers, and messages</p>
       </div>
 
       {!hasNotifications && (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
-            <Bell size={24} />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-3">
+            <Bell size={22} />
           </div>
           <h2 className="text-base font-semibold text-[#20251F]">You're all caught up!</h2>
-          <p className="text-sm text-[#6B716B] mt-1">No new notifications or pending requests right now.</p>
+          <p className="text-xs text-[#6B716B] mt-1">No new notifications or pending requests right now.</p>
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* incoming tutor offers (for learners) */}
         {incomingOffers && incomingOffers.map((o: any) => (
           <Link

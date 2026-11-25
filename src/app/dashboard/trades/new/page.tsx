@@ -100,54 +100,58 @@ export default function NewTradePage() {
   const days = countDays()
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/trades" className="text-white/30 hover:text-white transition-colors">
-          <ArrowLeft size={18} />
+    <div className="w-full space-y-4">
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard/trades"
+          className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+        >
+          <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">Post a skill swap</h1>
-          <p className="text-white/40 text-sm mt-1">Find a student to trade tutoring with — free of charge</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Post a skill swap</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">Find a student to trade tutoring with — free of charge</p>
         </div>
       </div>
 
-      <div className="bg-white/3 border border-white/8 rounded-2xl p-8 space-y-5">
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+          <p className="text-red-700 text-sm">{error}</p>
+        </div>
+      )}
 
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-            <p className="text-red-400 text-sm">{error}</p>
-          </div>
-        )}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div className="lg:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-5 sm:p-6 space-y-5 shadow-xs">
 
         {/* subject swap */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-3 block">
             Subject exchange *
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <p className="text-xs text-red-400/70 mb-2">I need help with</p>
+              <p className="text-xs font-semibold text-[#F26A21] mb-1.5">I need help with</p>
               <select
                 value={needSubject}
                 onChange={(e) => setNeedSubject(e.target.value)}
-                className="w-full bg-red-500/5 border border-red-500/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-red-500/40 transition-colors"
+                className="w-full bg-[#FFF0E5]/50 border border-[#F26A21]/25 rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#F26A21] transition-colors"
               >
-                <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
+                <option value="" disabled>Select subject</option>
                 {SUBJECTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
             <div>
-              <p className="text-xs text-green-400/70 mb-2">I can teach</p>
+              <p className="text-xs font-semibold text-[#315B3B] mb-1.5">I can teach</p>
               <select
                 value={offerSubject}
                 onChange={(e) => setOfferSubject(e.target.value)}
-                className="w-full bg-green-500/5 border border-green-500/20 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-green-500/40 transition-colors"
+                className="w-full bg-[#E8F0E7]/50 border border-[#315B3B]/25 rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#315B3B] transition-colors"
               >
-                <option value="" disabled className="bg-[#FFFDF8]">Select subject</option>
+                <option value="" disabled>Select subject</option>
                 {SUBJECTS.map((s) => (
-                  <option key={s} value={s} className="bg-[#FFFDF8]">{s}</option>
+                  <option key={s} value={s}>{s}</option>
                 ))}
               </select>
             </div>
@@ -155,41 +159,42 @@ export default function NewTradePage() {
 
           {/* preview */}
           {needSubject && offerSubject && (
-            <div className="flex items-center gap-3 mt-3 p-3 bg-white/3 border border-white/8 rounded-xl">
-              <span className="text-sm font-medium text-red-400">{needSubject}</span>
-              <ArrowLeftRight size={14} className="text-white/20 flex-shrink-0" />
-              <span className="text-sm font-medium text-green-400">{offerSubject}</span>
+            <div className="flex items-center gap-3 mt-3 p-3 bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl">
+              <span className="text-sm font-semibold text-[#F26A21]">{needSubject}</span>
+              <ArrowLeftRight size={14} className="text-[#6B716B] flex-shrink-0" />
+              <span className="text-sm font-semibold text-[#315B3B]">{offerSubject}</span>
             </div>
           )}
         </div>
 
         {/* description */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-2 block">
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-1.5 block">
             Tell others about yourself — optional
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe your level in both subjects, what you're looking for, and any other details..."
-            rows={3}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#E96118]/60 transition-colors resize-none"
+            rows={4}
+            className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] transition-colors resize-none"
           />
         </div>
 
         {/* mode */}
         <div>
-          <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Session mode</label>
+          <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">Session mode</label>
           <div className="grid grid-cols-3 gap-3">
             {(['online', 'in-person', 'both'] as const).map((m) => (
               <button
+                type="button"
                 key={m}
                 onClick={() => setMode(m)}
                 className={
-                  'py-2.5 rounded-xl border text-sm font-medium transition-all capitalize ' +
+                  'py-2.5 rounded-xl border text-sm font-semibold transition-all capitalize ' +
                   (mode === m
-                    ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
-                    : 'border-white/10 text-white/40 hover:border-white/20')
+                    ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                    : 'border-[#E8E5DE] bg-white text-[#6B716B] hover:text-[#20251F]')
                 }
               >
                 {m}
@@ -197,30 +202,35 @@ export default function NewTradePage() {
             ))}
           </div>
         </div>
+      </div>
 
+      {/* Right Column: Schedule & Submit */}
+      <div className="lg:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-5 sm:p-6 space-y-5 shadow-xs">
         {/* schedule section */}
-        <div className="border-t border-white/8 pt-5">
-          <p className="text-xs text-white/30 uppercase tracking-wider mb-4">Preferred schedule</p>
+        <div>
+          <p className="text-xs font-bold text-[#315B3B] uppercase tracking-wider mb-3">Preferred schedule</p>
 
-          <div className="grid grid-cols-2 gap-3 mb-5">
+          <div className="grid grid-cols-2 gap-3 mb-4">
             <button
+              type="button"
               onClick={() => setSessionType('single')}
               className={
-                'py-3 rounded-xl border text-sm font-medium transition-all ' +
+                'py-2.5 rounded-xl border text-sm font-semibold transition-all ' +
                 (sessionType === 'single'
-                  ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
-                  : 'border-white/10 text-white/40 hover:border-white/20')
+                  ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                  : 'border-[#E8E5DE] bg-white text-[#6B716B] hover:text-[#20251F]')
               }
             >
               Single day
             </button>
             <button
+              type="button"
               onClick={() => setSessionType('multi')}
               className={
-                'py-3 rounded-xl border text-sm font-medium transition-all ' +
+                'py-2.5 rounded-xl border text-sm font-semibold transition-all ' +
                 (sessionType === 'multi'
-                  ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
-                  : 'border-white/10 text-white/40 hover:border-white/20')
+                  ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                  : 'border-[#E8E5DE] bg-white text-[#6B716B] hover:text-[#20251F]')
               }
             >
               Multiple days
@@ -228,76 +238,77 @@ export default function NewTradePage() {
           </div>
 
           {sessionType === 'single' ? (
-            <div className="mb-5">
-              <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-                <Calendar size={12} /> Date
+            <div className="mb-4">
+              <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                <Calendar size={12} className="text-[#315B3B]" /> Date
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setEndDate(e.target.value) }}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
+                className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#315B3B] transition-colors"
               />
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 mb-5">
+            <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Calendar size={12} /> Start date
+                <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                  <Calendar size={12} className="text-[#315B3B]" /> Start date
                 </label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
+                  className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#315B3B] transition-colors"
                 />
               </div>
               <div>
-                <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Calendar size={12} /> End date
+                <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                  <Calendar size={12} className="text-[#315B3B]" /> End date
                 </label>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={startDate || new Date().toISOString().split('T')[0]}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
+                  className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#315B3B] transition-colors"
                 />
               </div>
             </div>
           )}
 
-          <div className="mb-5">
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-2">
-              <Clock size={12} /> Start time (daily)
+          <div className="mb-4">
+            <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+              <Clock size={12} className="text-[#F26A21]" /> Start time (daily)
             </label>
             <input
               type="time"
               value={dailyStartTime}
               onChange={(e) => setDailyStartTime(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#315C36]/40 transition-colors"
+              className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-2.5 text-[#20251F] text-sm focus:outline-none focus:border-[#315B3B] transition-colors"
             />
             {dailyStartTime && hoursPerDay && (
-              <p className="text-xs text-[#315C36] mt-2">
+              <p className="text-xs text-[#315B3B] font-medium mt-1.5">
                 Each session: {formatEndTime(dailyStartTime, hoursPerDay)}
               </p>
             )}
           </div>
 
           <div>
-            <label className="text-xs text-white/40 uppercase tracking-wider mb-3 block">Hours per day</label>
+            <label className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-2 block">Hours per day</label>
             <div className="grid grid-cols-4 gap-2">
               {['1', '1.5', '2', '3'].map((h) => (
                 <button
+                  type="button"
                   key={h}
                   onClick={() => setHoursPerDay(h)}
                   className={
-                    'py-2.5 rounded-xl border text-sm font-medium transition-all ' +
+                    'py-2 rounded-xl border text-sm font-semibold transition-all ' +
                     (hoursPerDay === h
-                      ? 'border-[#315C36] bg-[#315C36]/10 text-[#315C36]'
-                      : 'border-white/10 text-white/40 hover:border-white/20')
+                      ? 'border-[#315B3B] bg-[#E8F0E7] text-[#315B3B]'
+                      : 'border-[#E8E5DE] bg-white text-[#6B716B] hover:text-[#20251F]')
                   }
                 >
                   {h}hr
@@ -309,31 +320,33 @@ export default function NewTradePage() {
 
         {/* summary */}
         {needSubject && offerSubject && startDate && dailyStartTime && (
-          <div className="bg-[#315C36]/5 border border-[#315C36]/20 rounded-xl p-4 space-y-2">
-            <p className="text-xs text-[#315C36]/60 uppercase tracking-wider">Swap summary</p>
+          <div className="bg-[#E8F0E7]/60 border border-[#315B3B]/20 rounded-xl p-4 space-y-1.5">
+            <p className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">Swap summary</p>
             <p className="text-sm">
-              <span className="text-red-400 font-medium">{needSubject}</span>
-              <span className="text-white/30 mx-2">↔</span>
-              <span className="text-green-400 font-medium">{offerSubject}</span>
+              <span className="text-[#F26A21] font-semibold">{needSubject}</span>
+              <span className="text-[#6B716B] mx-2">↔</span>
+              <span className="text-[#315B3B] font-semibold">{offerSubject}</span>
             </p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-[#6B716B]">
               {sessionType === 'single'
                 ? new Date(startDate + 'T00:00:00').toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })
                 : days + ' days'}
               {' · '}{formatEndTime(dailyStartTime, hoursPerDay)}
               {' · '}{hoursPerDay}hr/day
             </p>
-            <p className="text-xs text-[#315C36] font-medium">Free — no payment involved</p>
+            <p className="text-xs text-[#315B3B] font-semibold">Free — no payment involved</p>
           </div>
         )}
 
         <button
+          type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#2C5131] hover:bg-[#233B27] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-medium"
+          className="w-full bg-[#315B3B] hover:bg-[#24452D] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-semibold shadow-xs"
         >
           {loading ? 'Posting...' : 'Post skill swap'}
         </button>
+      </div>
       </div>
     </div>
   )

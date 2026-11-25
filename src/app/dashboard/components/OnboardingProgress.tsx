@@ -21,21 +21,21 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
   if (dismissed || completed === total) return null
 
   return (
-    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 relative shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden">
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 relative shadow-[0_1px_4px_rgba(0,0,0,0.04)] overflow-hidden">
       {/* Subtle top accent bar */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#F26A21] via-[#FAC898] to-[#315B3B] opacity-70" />
 
       <button
         onClick={() => setDismissed(true)}
-        className="absolute top-4 right-4 w-7 h-7 rounded-lg bg-[#F5F3ED] hover:bg-[#E8E5DE] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-all duration-150"
+        className="absolute top-3.5 right-3.5 w-7 h-7 rounded-lg bg-[#F5F3ED] hover:bg-[#E8E5DE] flex items-center justify-center text-[#939A92] hover:text-[#20251F] transition-all duration-150"
         title="Dismiss guide"
       >
         <X size={14} />
       </button>
 
-      <div className="flex items-start justify-between gap-4 mb-4 pr-8">
+      <div className="flex items-start justify-between gap-4 mb-3 pr-8">
         <div>
-          <div className="flex items-center gap-2 mb-1.5">
+          <div className="flex items-center gap-2 mb-1">
             <span className="w-6 h-6 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
               <Sparkles size={12} />
             </span>
@@ -48,13 +48,13 @@ export default function OnboardingProgress({ steps }: { steps: Step[] }) {
           </p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-2xl font-black text-[#F26A21] tracking-tight tabular-nums">{percent}%</p>
+          <p className="text-xl font-black text-[#F26A21] tracking-tight tabular-nums leading-none">{percent}%</p>
           <p className="text-[11px] text-[#939A92] font-medium mt-0.5">{completed} of {total} done</p>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="h-1.5 bg-[#F5F3ED] rounded-full mb-4 overflow-hidden">
+      <div className="h-1.5 bg-[#F5F3ED] rounded-full mb-3 overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-[#F26A21] to-[#315B3B] rounded-full transition-all duration-700 ease-out"
           style={{ width: `${percent}%` }}

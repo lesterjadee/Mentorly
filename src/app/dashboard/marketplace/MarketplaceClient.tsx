@@ -173,22 +173,22 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         />
       )}
 
-      <div className="w-full space-y-6">
+      <div className="w-full space-y-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
-              <GraduationCap size={13} />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1">
+              <GraduationCap size={12} />
               Peer Educator Marketplace
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Tutor Marketplace</h1>
-            <p className="text-[#6B716B] text-sm mt-0.5">
+            <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Tutor Marketplace</h1>
+            <p className="text-[#6B716B] text-xs mt-0.5">
               Connect with {filtered.length} verified peer educator{filtered.length !== 1 ? 's' : ''} offering free academic mentoring
             </p>
           </div>
           <Link
             href="/dashboard/requests/new"
-            className="inline-flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all px-4 py-2.5 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs self-start sm:self-auto"
+            className="inline-flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-all px-4 py-2 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs self-start sm:self-auto"
           >
             <BookOpen size={14} className="text-[#F26A21]" />
             Post a request instead
@@ -295,7 +295,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
         )}
 
         {/* Category Pills */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-1.5 overflow-x-auto sm:flex-wrap pb-0.5 scrollbar-hide">
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat
             return (
@@ -304,7 +304,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
                 className={
-                  'px-4 py-2 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
+                  'px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap flex-shrink-0 ' +
                   (isSelected
                     ? 'bg-[#F26A21] border-[#F26A21] text-white shadow-xs'
                     : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]')
@@ -318,10 +318,10 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
         {/* Featured Row */}
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-                <Sparkles size={15} />
+              <div className="w-6.5 h-6.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+                <Sparkles size={14} />
               </div>
               <h2 className="text-sm font-bold text-[#20251F]">Featured SPECS Academic Support</h2>
             </div>
@@ -335,7 +335,7 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
         {/* Divider if featured is visible */}
         {featured.length > 0 && !query && selectedCategory === 'All' && !hasFilters && (
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex items-center gap-3 pt-1">
             <div className="flex-1 h-px bg-[#E8E5DE]" />
             <p className="text-[11px] font-bold text-[#6B716B] uppercase tracking-wider">All Peer Services</p>
             <div className="flex-1 h-px bg-[#E8E5DE]" />
@@ -344,18 +344,18 @@ export default function MarketplaceClient({ services, currentUserId, featured }:
 
         {/* All Results Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {filtered.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-16 text-center shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
-              <BookOpen size={24} />
+          <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-3">
+              <BookOpen size={22} />
             </div>
             <h2 className="text-base font-semibold text-[#20251F]">No tutors or services found</h2>
-            <p className="text-sm text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+            <p className="text-xs text-[#6B716B] mt-1 max-w-lg mx-auto mb-4">
               Try adjusting your category selection, search terms, or active filters.
             </p>
             {hasFilters && (

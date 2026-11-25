@@ -73,7 +73,7 @@ export default async function SessionDetailPage({
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
+    <div className="w-full space-y-4">
       {/* Back button */}
       <div>
         <Link
@@ -85,7 +85,7 @@ export default async function SessionDetailPage({
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-5">
         {/* Main Content Column */}
         <div className="md:col-span-2 space-y-5">
           {/* Header Card */}

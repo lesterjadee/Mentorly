@@ -46,41 +46,44 @@ export default async function TradeRequestsPage({
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/dashboard/trades/my" className="text-white/30 hover:text-white transition-colors">
-          <ArrowLeft size={18} />
+    <div className="w-full space-y-4">
+      <div className="flex items-center gap-3">
+        <Link
+          href="/dashboard/trades/my"
+          className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+        >
+          <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold">Swap requests</h1>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Swap requests</h1>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-sm text-red-400">{trade.need_subject}</span>
-            <ArrowLeftRight size={13} className="text-white/20" />
-            <span className="text-sm text-green-400">{trade.offer_subject}</span>
+            <span className="text-xs font-bold text-[#F26A21] bg-[#FFF0E5] px-2.5 py-0.5 rounded-md">{trade.need_subject}</span>
+            <ArrowLeftRight size={13} className="text-[#6B716B]" />
+            <span className="text-xs font-bold text-[#315B3B] bg-[#E8F0E7] px-2.5 py-0.5 rounded-md">{trade.offer_subject}</span>
           </div>
         </div>
       </div>
 
       {requests && requests.length > 0 ? (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {requests.map((req: any) => (
             <div
               key={req.id}
               className={
-                'bg-white/3 border rounded-2xl p-6 transition-colors ' +
-                (req.status === 'accepted' ? 'border-green-500/30 bg-green-500/5' :
-                req.status === 'declined' ? 'border-red-500/20 opacity-60' :
-                'border-white/8 hover:border-white/15')
+                'bg-white border rounded-2xl p-5 transition-all shadow-xs ' +
+                (req.status === 'accepted' ? 'border-[#315B3B] bg-[#E8F0E7]/20' :
+                req.status === 'declined' ? 'border-[#E8E5DE] opacity-60' :
+                'border-[#E8E5DE] hover:border-[#F26A21]/30')
               }
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-11 h-11 rounded-full bg-[#315C36]/20 border border-[#315C36]/30 flex items-center justify-center text-base font-medium text-[#315C36] flex-shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-base font-bold text-[#315B3B] flex-shrink-0">
                     {req.requester?.full_name?.[0]}
                   </div>
                   <div>
-                    <p className="font-medium text-sm">{req.requester?.full_name}</p>
-                    <p className="text-xs text-white/30 mt-0.5">
+                    <p className="font-semibold text-sm text-[#20251F]">{req.requester?.full_name}</p>
+                    <p className="text-xs text-[#6B716B] mt-0.5">
                       {req.requester?.course} · {req.requester?.school}
                     </p>
                     <div className="mt-1.5">
@@ -90,17 +93,17 @@ export default async function TradeRequestsPage({
                 </div>
                 <div>
                   {req.status === 'pending' && (
-                    <span className="text-xs text-yellow-400 border border-yellow-500/20 bg-yellow-500/10 px-2 py-1 rounded-full">
+                    <span className="text-xs text-[#F26A21] border border-[#F26A21]/20 bg-[#FFF0E5] px-2.5 py-1 rounded-full font-semibold">
                       Pending
                     </span>
                   )}
                   {req.status === 'accepted' && (
-                    <span className="text-xs text-green-400 border border-green-500/20 bg-green-500/10 px-2 py-1 rounded-full">
+                    <span className="text-xs text-[#315B3B] border border-[#315B3B]/20 bg-[#E8F0E7] px-2.5 py-1 rounded-full font-semibold">
                       Accepted
                     </span>
                   )}
                   {req.status === 'declined' && (
-                    <span className="text-xs text-red-400 border border-red-500/20 bg-red-500/10 px-2 py-1 rounded-full">
+                    <span className="text-xs text-[#6B716B] border border-[#E8E5DE] bg-[#F5F3ED] px-2.5 py-1 rounded-full font-medium">
                       Declined
                     </span>
                   )}
@@ -108,8 +111,8 @@ export default async function TradeRequestsPage({
               </div>
 
               {req.message && (
-                <div className="bg-white/3 border border-white/8 rounded-xl p-3 mb-4">
-                  <p className="text-xs text-white/50 leading-relaxed italic">"{req.message}"</p>
+                <div className="bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3 mb-4">
+                  <p className="text-xs text-[#20251F] leading-relaxed italic">"{req.message}"</p>
                 </div>
               )}
 
@@ -125,7 +128,7 @@ export default async function TradeRequestsPage({
               {req.status === 'accepted' && (
                 <Link
                   href={'/dashboard/messages/' + req.requester_id}
-                  className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 transition-colors py-2.5 rounded-xl text-xs font-medium text-white/50 hover:text-white"
+                  className="block w-full text-center bg-[#315B3B] hover:bg-[#24452D] transition-colors py-2.5 rounded-xl text-xs font-semibold text-white"
                 >
                   Message your swap partner
                 </Link>
@@ -134,10 +137,10 @@ export default async function TradeRequestsPage({
           ))}
         </div>
       ) : (
-        <div className="bg-white/3 border border-white/8 rounded-2xl p-12 text-center">
-          <ArrowLeftRight size={32} className="text-white/10 mx-auto mb-4" />
-          <p className="text-white/40 text-sm">No swap requests yet</p>
-          <p className="text-white/20 text-xs mt-1">Students will send you requests once they see your swap post</p>
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <ArrowLeftRight size={28} className="text-[#939A92] mx-auto mb-3" />
+          <p className="text-[#20251F] font-semibold text-sm">No swap requests yet</p>
+          <p className="text-[#6B716B] text-xs mt-1">Students will send you requests once they see your swap post</p>
         </div>
       )}
     </div>

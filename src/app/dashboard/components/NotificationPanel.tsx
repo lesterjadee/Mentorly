@@ -192,7 +192,7 @@ export default function NotificationPanel({ userId }: Props) {
           setOpen(!open)
           if (!open) loadNotifications()
         }}
-        className="relative w-9 h-9 flex items-center justify-center text-[#6B716B] hover:text-[#20251F] hover:bg-[#F5F3ED] rounded-xl transition-all duration-150 border border-[#E8E5DE] shadow-xs"
+        className="relative w-9 h-9 flex items-center justify-center bg-white/90 text-[#20251F] hover:bg-white rounded-xl transition-all duration-150 border border-[#E8E5DE] shadow-xs"
         title="Notifications"
       >
         <Bell size={16} />

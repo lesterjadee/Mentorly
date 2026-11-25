@@ -169,20 +169,22 @@ export default async function DashboardPage() {
     (pendingOffers || 0)
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
 
       {/* Greeting & Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-widest text-[#939A92] mb-0.5">{greeting},</p>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#20251F] leading-none">
-            {firstName}
-          </h1>
-          <div className="flex items-center gap-1.5 mt-2">
-            <GraduationCap size={13} className="text-[#315B3B]" />
-            <span className="text-xs text-[#939A92] font-medium">
-              {profile?.course || 'General Student'} · {profile?.school || 'Gordon College'}
-            </span>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#6B716B] mb-0.5">{greeting},</p>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h1 className="text-2xl md:text-3xl font-black tracking-tight text-[#20251F] leading-none">
+              {firstName}
+            </h1>
+            <div className="flex items-center gap-1.5">
+              <GraduationCap size={13} className="text-[#315B3B]" />
+              <span className="text-xs text-[#6B716B] font-medium">
+                {profile?.course || 'General Student'} · {profile?.school || 'Gordon College'}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -335,162 +337,168 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* Activity Graph Card */}
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-sm font-bold text-[#20251F] tracking-tight">Recent Activity</h3>
-            <p className="text-xs text-[#939A92] mt-0.5">Tutoring sessions and bookings over the last 14 days</p>
+      {/* Activity & Quick Actions Split Row */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 items-stretch">
+        {/* Activity Graph Card */}
+        <div className="xl:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div>
+              <h3 className="text-sm font-bold text-[#20251F] tracking-tight">Recent Activity</h3>
+              <p className="text-xs text-[#6B716B] mt-0.5">Sessions & bookings (last 14 days)</p>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#E8F0E7] text-[#315B3B] text-xs font-bold border border-[#315B3B]/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] flex-shrink-0">
+              <TrendingUp size={12} />
+              <span>Active Campus</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] text-xs font-bold border border-[#315B3B]/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
-            <TrendingUp size={12} />
-            <span>Active Campus</span>
-          </div>
+          <ActivityGraph data={activityData} />
         </div>
-        <ActivityGraph data={activityData} />
-      </div>
 
-      {/* Quick Actions */}
-      <div>
-        <p className="text-[11px] font-black text-[#939A92] uppercase tracking-widest mb-3">
-          Quick Actions
-        </p>
+        {/* Quick Actions */}
+        <div className="xl:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 shadow-[0_1px_4px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[11px] font-black text-[#6B716B] uppercase tracking-widest">
+              Quick Actions
+            </p>
+            <span className="text-[11px] text-[#939A92] font-medium">Jump right in</span>
+          </div>
 
         {isSpecsMember ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
             <Link
               href="/dashboard/sessions/new"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#F26A21]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
-                  <Plus size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <Plus size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Post a session</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Offer tutoring to your peers</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Post a session</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Offer tutoring to your peers</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/materials/upload"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#315B3B]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
-                  <FileText size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <FileText size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Upload material</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Share notes, decks & reviewers</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Upload material</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Share notes, decks & reviewers</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/sessions"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#315B3B]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
-                  <Search size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <Search size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Browse all sessions</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Explore active campus tutoring</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Browse all sessions</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Explore active campus tutoring</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/requests/browse"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#F26A21]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
-                  <ClipboardList size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <ClipboardList size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Student requests</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Help peers with specific topics</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Student requests</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Help peers with specific topics</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
             <Link
               href="/dashboard/sessions"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#F26A21]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
-                  <Calendar size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <Calendar size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Find a session</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Join free peer tutoring</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Find a session</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Join free peer tutoring</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/requests/new"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#315B3B]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
-                  <Plus size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <Plus size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Request academic help</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Ask mentors for custom support</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Request academic help</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Ask mentors for custom support</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/materials"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#315B3B]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform">
-                  <FileText size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <FileText size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Download materials</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">Reviewers and lecture guides</p>
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Download materials</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">Reviewers and lecture guides</p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#315B3B] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
 
             <Link
               href="/dashboard/messages"
-              className="flex items-center justify-between bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 hover:border-[#F26A21]/40 hover:shadow-md transition-all duration-200 group"
+              className="flex items-center justify-between bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl p-3.5 hover:border-[#F26A21]/40 hover:bg-white hover:shadow-sm transition-all duration-200 group"
             >
-              <div className="flex items-center gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform">
-                  <MessageSquare size={18} />
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] group-hover:scale-105 transition-transform flex-shrink-0">
+                  <MessageSquare size={17} />
                 </div>
-                <div>
-                  <p className="font-bold text-sm text-[#20251F]">Messages</p>
-                  <p className="text-xs text-[#6B716B] mt-0.5">
+                <div className="min-w-0">
+                  <p className="font-bold text-sm text-[#20251F] truncate">Messages</p>
+                  <p className="text-xs text-[#6B716B] mt-0.5 truncate">
                     {unreadMessages ? `${unreadMessages} unread messages` : 'Chat with your peer tutors'}
                   </p>
                 </div>
               </div>
-              <ChevronRight size={16} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all" />
+              <ChevronRight size={15} className="text-[#939A92] group-hover:text-[#F26A21] group-hover:translate-x-0.5 transition-all flex-shrink-0" />
             </Link>
           </div>
         )}
+        </div>
       </div>
 
     </div>

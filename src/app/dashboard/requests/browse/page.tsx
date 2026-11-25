@@ -74,24 +74,32 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
-      <div>
-        <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-2">
-          <ShieldCheck size={13} className="text-[#315B3B]" />
-          SPECS Peer Support Board
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1.5">
+            <ShieldCheck size={12} className="text-[#315B3B]" />
+            SPECS Peer Support Board
+          </div>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Browse Student Requests</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">
+            Students looking for academic help — view their schedules and offer peer tutoring support
+          </p>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Browse Student Requests</h1>
-        <p className="text-[#6B716B] text-sm mt-1">
-          Students looking for academic help — view their schedules and offer peer tutoring support
-        </p>
+        <Link
+          href="/dashboard/requests/new"
+          className="inline-flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-xs transition-all self-start sm:self-auto"
+        >
+          Post a Request
+        </Link>
       </div>
 
       {justOffered && (
-        <div className="bg-[#E8F0E7] border border-[#315B3B]/30 rounded-2xl px-5 py-4 flex items-center gap-3 shadow-xs">
-          <CheckCircle size={18} className="text-[#315B3B] flex-shrink-0" />
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/30 rounded-xl px-4 py-3 flex items-center gap-3 shadow-xs">
+          <CheckCircle size={16} className="text-[#315B3B] flex-shrink-0" />
           <div>
-            <p className="text-[#315B3B] font-semibold text-sm">Offer sent successfully!</p>
+            <p className="text-[#315B3B] font-semibold text-xs">Offer sent successfully!</p>
             <p className="text-[#315B3B]/80 text-xs">The student will be notified and can accept your support proposal.</p>
           </div>
         </div>
@@ -99,12 +107,12 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
 
       {/* Search Bar */}
       <form className="relative">
-        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B716B]" />
+        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B716B]" />
         <input
           name="q"
           defaultValue={query}
           placeholder="Search requests by topic or keyword (e.g. Calculus, Python, Accounting)..."
-          className="w-full bg-white border border-[#E8E5DE] rounded-2xl pl-11 pr-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
+          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-10 pr-4 py-2.5 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
         />
         {selectedCategory !== 'All' && (
           <input type="hidden" name="category" value={selectedCategory} />
@@ -112,7 +120,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
       </form>
 
       {/* Category Filter Pills */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-1.5 flex-wrap">
         {CATEGORIES.map((cat) => {
           const isActive = selectedCategory === cat
           return (
@@ -121,7 +129,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
               href={'/dashboard/requests/browse?category=' + cat + (query ? '&q=' + query : '')}
               className={
                 isActive
-                  ? 'px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all bg-[#F26A21] border-[#F26A21] text-white shadow-xs'
+                  ? 'px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all bg-[#F26A21] border-[#F26A21] text-white shadow-xs'
                   : 'px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#F26A21]/30 hover:text-[#20251F]'
               }
             >
@@ -133,7 +141,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
 
       {/* Requests Grid */}
       {requests && requests.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {requests.map((req: any) => {
             const isOwn = req.learner_id === user.id
             const isMulti = req.session_type === 'multi'
@@ -145,7 +153,7 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
             return (
               <div
                 key={req.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 shadow-xs hover:border-[#F26A21]/40 hover:shadow-md transition-all"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 shadow-xs hover:border-[#F26A21]/40 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1 min-w-0">
@@ -245,12 +253,12 @@ export default async function BrowseRequestsPage({ searchParams }: Props) {
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-4">
-            <BookOpen size={24} />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#FFF0E5] border border-[#F26A21]/20 flex items-center justify-center text-[#F26A21] mx-auto mb-3">
+            <BookOpen size={22} />
           </div>
           <h3 className="text-base font-semibold text-[#20251F]">No open requests found</h3>
-          <p className="text-[#6B716B] text-sm mt-1">Try selecting a different category or adjusting your search term.</p>
+          <p className="text-[#6B716B] text-xs mt-1 max-w-lg mx-auto">Try selecting a different category or adjusting your search term.</p>
         </div>
       )}
     </div>

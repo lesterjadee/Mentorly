@@ -133,14 +133,14 @@ export default function InAppNudge({
   if (!nudge || allNudges.length === 0) return null
 
   return (
-    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-[#D9D4C7] transition-all duration-200">
-      <div className="flex items-center gap-4 min-w-0">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center border flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${nudge.iconBg}`}>
-          <nudge.icon size={18} className={nudge.iconColor} />
+    <div className="bg-white border border-[#E8E5DE] rounded-2xl p-3.5 md:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-[0_1px_4px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:border-[#D9D4C7] transition-all duration-200">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className={`w-9 h-9 rounded-xl flex items-center justify-center border flex-shrink-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] ${nudge.iconBg}`}>
+          <nudge.icon size={16} className={nudge.iconColor} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-[#20251F] tracking-tight">{nudge.title}</p>
-          <p className="text-xs text-[#939A92] mt-0.5 leading-relaxed line-clamp-1">{nudge.desc}</p>
+          <p className="text-sm font-bold text-[#20251F] tracking-tight leading-snug">{nudge.title}</p>
+          <p className="text-xs text-[#6B716B] mt-0.5 leading-relaxed line-clamp-1">{nudge.desc}</p>
         </div>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0 self-end sm:self-center">

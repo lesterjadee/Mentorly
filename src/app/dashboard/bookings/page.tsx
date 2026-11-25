@@ -142,22 +142,22 @@ export default async function BookingsPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
-      <div className="pb-2">
+      <div>
         <div className="flex items-center gap-2 mb-1">
-          <span className="w-6 h-6 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
-            <Calendar size={14} />
+          <span className="w-5.5 h-5.5 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
+            <Calendar size={13} />
           </span>
-          <span className="text-xs font-bold text-[#D95416] uppercase tracking-wider">Bookings Hub</span>
+          <span className="text-[10px] font-black text-[#D95416] uppercase tracking-widest">Bookings Hub</span>
         </div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Scheduled Sessions</h1>
+        <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Scheduled Sessions</h1>
         <p className="text-xs text-[#6B716B] mt-0.5">Manage your upcoming learning and tutoring appointments</p>
       </div>
 
       {params.success && (
-        <div className="bg-[#E8F0E7] border border-[#315B3B]/25 rounded-2xl p-4 flex items-center gap-3 shadow-2xs">
-          <CheckCircle size={18} className="text-[#315B3B] flex-shrink-0" />
+        <div className="bg-[#E8F0E7] border border-[#315B3B]/25 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xs">
+          <CheckCircle size={16} className="text-[#315B3B] flex-shrink-0" />
           <div>
             <p className="text-xs font-bold text-[#315B3B]">Booking Request Sent!</p>
             <p className="text-xs text-[#24452D] mt-0.5">Your tutor has been notified and will confirm shortly.</p>
@@ -168,7 +168,7 @@ export default async function BookingsPage({
       {/* Sessions I Booked (Learner) */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-bold text-[#939A92] uppercase tracking-wider">
+          <h2 className="text-xs font-bold text-[#6B716B] uppercase tracking-wider">
             Sessions I Booked
           </h2>
           <span className="text-xs font-semibold text-[#6B716B]">
@@ -177,11 +177,11 @@ export default async function BookingsPage({
         </div>
 
         {asLearner && asLearner.length > 0 ? (
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
             {asLearner.map((booking: any) => (
               <div
                 key={booking.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#F26A21]/30 transition-all"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#F26A21]/30 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
@@ -213,10 +213,10 @@ export default async function BookingsPage({
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
-            <Calendar size={24} className="text-[#939A92] mx-auto mb-2" />
+          <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-6 sm:p-8 text-center shadow-xs">
+            <Calendar size={22} className="text-[#939A92] mx-auto mb-2" />
             <p className="text-sm font-bold text-[#20251F]">No booked sessions yet</p>
-            <p className="text-xs text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+            <p className="text-xs text-[#6B716B] mt-1 max-w-lg mx-auto mb-4">
               Explore the sessions directory or post a help request to get matched with a peer tutor.
             </p>
             <Link
@@ -231,7 +231,7 @@ export default async function BookingsPage({
 
       {/* Sessions I'm Tutoring (Tutor) */}
       {asTutor && asTutor.length > 0 && (
-        <div className="space-y-3 pt-4">
+        <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <h2 className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">
               Sessions I am Tutoring ⚡
@@ -241,11 +241,11 @@ export default async function BookingsPage({
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
             {asTutor.map((booking: any) => (
               <div
                 key={booking.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#315B3B]/30 transition-all"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:border-[#315B3B]/30 transition-all"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">

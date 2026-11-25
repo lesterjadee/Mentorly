@@ -137,33 +137,35 @@ export default function NewRequestPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link
           href="/dashboard/requests"
-          className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] hover:border-[#F26A21]/30 transition-all shadow-xs"
+          className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] hover:border-[#F26A21]/30 transition-all shadow-xs"
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={16} />
         </Link>
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
-            <Sparkles size={11} />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1">
+            <Sparkles size={10} />
             Student Request Form
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Post a Request</h1>
-          <p className="text-[#6B716B] text-sm mt-0.5">Tell peer tutors what subject or concept you need help with</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Post a Request</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">Tell peer tutors what subject or concept you need help with</p>
         </div>
       </div>
 
-      {/* Form Card */}
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2 text-red-700 text-sm">
-            <AlertCircle size={16} className="flex-shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-2 text-red-700 text-sm">
+          <AlertCircle size={16} className="flex-shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {/* 2-Column Workspace Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div className="lg:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-5 sm:p-6 shadow-xs space-y-5">
 
         {/* Title */}
         <div>
@@ -187,7 +189,7 @@ export default function NewRequestPage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe what topics you're struggling with, textbook chapters, upcoming deadlines, or what format works best for you..."
-            rows={3}
+            rows={5}
             className="w-full bg-[#FFFCF7] border border-[#E8E5DE] rounded-xl px-4 py-3 text-[#20251F] text-sm placeholder-[#6B716B]/50 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all resize-none"
           />
         </div>
@@ -235,9 +237,12 @@ export default function NewRequestPage() {
             })}
           </div>
         </div>
+      </div>
 
+      {/* Right Column: Schedule & Submit */}
+      <div className="lg:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-5 sm:p-6 shadow-xs space-y-5">
         {/* Schedule Section */}
-        <div className="border-t border-[#E8E5DE] pt-5">
+        <div>
           <p className="text-xs font-bold text-[#315B3B] uppercase tracking-wider mb-3">Preferred Schedule</p>
 
           {/* Session type */}
@@ -392,10 +397,11 @@ export default function NewRequestPage() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3.5 rounded-xl text-white text-sm font-semibold shadow-xs"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 transition-colors py-3 rounded-xl text-white text-sm font-semibold shadow-xs"
         >
           {loading ? 'Posting Request...' : 'Publish Peer Request'}
         </button>
+      </div>
       </div>
     </div>
   )

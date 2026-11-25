@@ -198,13 +198,13 @@ export default function NewSessionPage() {
   // access denied for non-SPECS
   if (!isSpecsMember) {
     return (
-      <div className="max-w-lg mx-auto pt-10">
+      <div className="w-full pt-4">
         <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
           <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
             <AlertCircle size={24} />
           </div>
           <h2 className="font-extrabold text-xl text-[#20251F] mb-2">SPECS Mentors Only</h2>
-          <p className="text-[#6B716B] text-xs leading-relaxed mb-6">
+          <p className="text-[#6B716B] text-xs leading-relaxed mb-6 max-w-lg mx-auto">
             Only verified SPECS tutors and officers can publish academic sessions. If you are a member, please reach out to an officer to authorize your account.
           </p>
           <Link
@@ -219,33 +219,37 @@ export default function NewSessionPage() {
   }
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
-      <div>
-        <Link
-          href="/dashboard/sessions"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
-        >
-          <ArrowLeft size={14} />
-          <span>Back to sessions</span>
-        </Link>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-            <Shield size={13} />
-          </span>
-          <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">SPECS Mentor Hub</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <Link
+            href="/dashboard/sessions"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-2"
+          >
+            <ArrowLeft size={14} />
+            <span>Back to sessions</span>
+          </Link>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-5.5 h-5.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+              <Shield size={12} />
+            </span>
+            <span className="text-[10px] font-black text-[#315B3B] uppercase tracking-widest">SPECS Mentor Hub</span>
+          </div>
+          <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Post a Tutoring Session</h1>
+          <p className="text-xs text-[#6B716B] mt-0.5">Share your knowledge with fellow Gordon College students</p>
         </div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Post a Tutoring Session</h1>
-        <p className="text-xs text-[#6B716B] mt-0.5">Share your knowledge with fellow Gordon College students</p>
       </div>
 
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
-            <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
-            <p className="text-red-600 text-xs font-medium">{error}</p>
-          </div>
-        )}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
+          <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
+          <p className="text-red-600 text-xs font-medium">{error}</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div className="lg:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 space-y-5 shadow-xs">
 
         {/* Session type */}
         <div>
@@ -363,9 +367,12 @@ export default function NewSessionPage() {
             ))}
           </div>
         </div>
+      </div>
 
+      {/* Right Column: Schedule, Material & Submit */}
+      <div className="lg:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 space-y-5 shadow-xs">
         {/* Schedule */}
-        <div className="border-t border-[#E8E5DE] pt-5 space-y-4">
+        <div className="space-y-4">
           <p className="text-xs font-bold text-[#20251F] uppercase tracking-wider">
             Schedule & Availability *
           </p>
@@ -537,12 +544,13 @@ export default function NewSessionPage() {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-xs hover:shadow"
         >
           {loading
             ? (uploadingFile ? 'Uploading study materials...' : 'Publishing session...')
             : 'Publish Tutoring Session'}
         </button>
+      </div>
       </div>
     </div>
   )

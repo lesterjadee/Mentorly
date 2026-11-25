@@ -149,13 +149,13 @@ export default function UploadMaterialPage() {
 
   if (!isSpecsMember) {
     return (
-      <div className="max-w-lg mx-auto pt-10">
+      <div className="w-full pt-4">
         <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
           <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
             <AlertCircle size={24} />
           </div>
           <h2 className="font-extrabold text-xl text-[#20251F] mb-2">SPECS Members Only</h2>
-          <p className="text-[#6B716B] text-xs leading-relaxed mb-6">
+          <p className="text-[#6B716B] text-xs leading-relaxed mb-6 max-w-lg mx-auto">
             Only verified SPECS mentors and officers can upload study materials. Please contact an officer to verify your membership status.
           </p>
           <Link
@@ -170,33 +170,36 @@ export default function UploadMaterialPage() {
   }
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full space-y-4">
       {/* Header */}
       <div>
         <Link
           href="/dashboard/materials"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-3"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#6B716B] hover:text-[#20251F] transition-colors mb-2"
         >
           <ArrowLeft size={14} />
           <span>Back to materials</span>
         </Link>
         <div className="flex items-center gap-2 mb-1">
-          <span className="w-6 h-6 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-            <Shield size={13} />
+          <span className="w-5.5 h-5.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+            <Shield size={12} />
           </span>
-          <span className="text-xs font-bold text-[#315B3B] uppercase tracking-wider">SPECS Contributor Hub</span>
+          <span className="text-[10px] font-black text-[#315B3B] uppercase tracking-widest">SPECS Contributor Hub</span>
         </div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-[#20251F]">Upload Study Resource</h1>
+        <h1 className="text-2xl font-black tracking-tight text-[#20251F] leading-tight">Upload Study Resource</h1>
         <p className="text-xs text-[#6B716B] mt-0.5">Share lecture guides, reviewers, and exercises for Gordon College peers</p>
       </div>
 
-      <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 md:p-8 space-y-6 shadow-xs">
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
-            <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
-            <p className="text-red-600 text-xs font-medium">{error}</p>
-          </div>
-        )}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
+          <X size={15} className="text-red-500 flex-shrink-0 mt-0.5" />
+          <p className="text-red-600 text-xs font-medium">{error}</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Left Column: File Dropzone & Public Notice */}
+        <div className="lg:col-span-5 bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 space-y-5 shadow-xs">
 
         {/* File upload zone */}
         <div>
@@ -253,6 +256,17 @@ export default function UploadMaterialPage() {
           />
         </div>
 
+          {/* Public Notice */}
+          <div className="bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5 flex items-center gap-3">
+            <Shield size={16} className="text-[#315B3B] flex-shrink-0" />
+            <p className="text-xs text-[#24452D] font-medium leading-relaxed">
+              This material will be published to the open Gordon College student resource repository under the SPECS Academic Initiative.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Resource Metadata & Subject */}
+        <div className="lg:col-span-7 bg-white border border-[#E8E5DE] rounded-2xl p-5 md:p-6 space-y-5 shadow-xs">
         {/* Title */}
         <div>
           <label className="text-xs font-bold text-[#20251F] uppercase tracking-wider mb-2 block">
@@ -330,20 +344,12 @@ export default function UploadMaterialPage() {
           </div>
         )}
 
-        {/* Public Notice */}
-        <div className="bg-[#E8F0E7] border border-[#315B3B]/20 rounded-xl p-3.5 flex items-center gap-3">
-          <Shield size={16} className="text-[#315B3B] flex-shrink-0" />
-          <p className="text-xs text-[#24452D] font-medium leading-relaxed">
-            This material will be published to the open Gordon College student resource repository under the SPECS Academic Initiative.
-          </p>
-        </div>
-
         {/* Submit */}
         <button
           type="button"
           onClick={handleUpload}
           disabled={loading || !title || !subject || !selectedFile}
-          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-xs hover:shadow flex items-center justify-center gap-2"
+          className="w-full bg-[#F26A21] hover:bg-[#D95416] disabled:opacity-50 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-xs hover:shadow flex items-center justify-center gap-2"
         >
           {loading ? (
             <span>Uploading file to repository...</span>
@@ -354,6 +360,7 @@ export default function UploadMaterialPage() {
             </>
           )}
         </button>
+        </div>
       </div>
     </div>
   )

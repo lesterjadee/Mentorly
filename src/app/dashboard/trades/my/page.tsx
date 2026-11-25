@@ -21,30 +21,31 @@ export default async function MyTradesPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto">
+    <div className="w-full space-y-5">
       {/* Page Header */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link
             href="/dashboard/trades"
-            className="w-10 h-10 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
+            className="w-9 h-9 rounded-xl bg-white border border-[#E8E5DE] flex items-center justify-center text-[#6B716B] hover:text-[#20251F] transition-all shadow-xs"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={16} />
           </Link>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">My Swaps</h1>
-            <p className="text-[#6B716B] text-sm mt-0.5">Manage skill trades you've posted and requested</p>
+            <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">My Swaps</h1>
+            <p className="text-[#6B716B] text-xs mt-0.5">Manage skill trades you've posted and requested</p>
           </div>
         </div>
         <Link
           href="/dashboard/trades/new"
-          className="inline-flex items-center gap-2 bg-[#315B3B] hover:bg-[#24452D] text-white transition-colors px-4 py-2.5 rounded-xl text-xs font-semibold shadow-xs"
+          className="inline-flex items-center gap-2 bg-[#315B3B] hover:bg-[#24452D] text-white transition-colors px-4 py-2 rounded-xl text-xs font-semibold shadow-xs"
         >
-          <Plus size={16} />
+          <Plus size={15} />
           New swap
         </Link>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
       {/* Swaps I Posted */}
       <div>
         <h2 className="text-xs font-bold text-[#6B716B] uppercase tracking-wider mb-3">Swaps I Posted</h2>
@@ -137,7 +138,7 @@ export default async function MyTradesPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
+          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-6 text-center shadow-xs">
             <p className="text-sm font-semibold text-[#20251F]">You haven't requested any swaps yet</p>
             <Link
               href="/dashboard/trades"
@@ -147,6 +148,7 @@ export default async function MyTradesPage() {
             </Link>
           </div>
         )}
+      </div>
       </div>
     </div>
   )

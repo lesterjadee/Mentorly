@@ -53,8 +53,8 @@ export default async function MessagesPage() {
   return (
     <div className="flex w-full h-full">
       {/* Contact List Sidebar */}
-      <div className="w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex flex-col flex-shrink-0">
-        <div className="px-6 py-5 border-b border-[#E8E5DE] bg-white">
+      <div className="w-full md:w-72 lg:w-80 border-r border-[#E8E5DE] bg-[#FFFCF7] flex flex-col flex-shrink-0">
+        <div className="px-5 py-4 border-b border-[#E8E5DE] bg-white">
           <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[11px] font-semibold mb-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#315B3B]" />
             Direct Messages

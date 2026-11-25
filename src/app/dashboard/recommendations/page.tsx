@@ -129,26 +129,26 @@ export default async function RecommendationsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-5">
       {/* Page Header */}
       <div>
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
-          <Sparkles size={12} />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1">
+          <Sparkles size={11} />
           Tailored For You
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Recommended For You</h1>
-        <p className="text-[#6B716B] text-sm mt-0.5">Personalized peer tutoring and study services based on your major and activity</p>
+        <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Recommended For You</h1>
+        <p className="text-[#6B716B] text-xs mt-0.5">Personalized peer tutoring and study services based on your major and activity</p>
       </div>
 
       {recommendedServices.length > 0 && (
         <section>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
-              <Zap size={15} />
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-6.5 h-6.5 rounded-lg bg-[#FFF0E5] text-[#F26A21] flex items-center justify-center">
+              <Zap size={14} />
             </div>
             <h2 className="text-sm font-bold text-[#20251F]">Recommended for {userCourse} Students</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {recommendedServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
@@ -158,13 +158,13 @@ export default async function RecommendationsPage() {
 
       {repeatRecommendations.length > 0 && (
         <section>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-              <BookOpen size={15} />
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-6.5 h-6.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+              <BookOpen size={14} />
             </div>
             <h2 className="text-sm font-bold text-[#20251F]">Based on Your Past Subjects</h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {repeatRecommendations.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
@@ -173,21 +173,21 @@ export default async function RecommendationsPage() {
       )}
 
       <section>
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-7 h-7 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
-            <TrendingUp size={15} />
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6.5 h-6.5 rounded-lg bg-[#E8F0E7] text-[#315B3B] flex items-center justify-center">
+            <TrendingUp size={14} />
           </div>
           <h2 className="text-sm font-bold text-[#20251F]">Popular on Mentorly</h2>
         </div>
         {popularServices && popularServices.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {popularServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (
-          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-10 text-center shadow-xs">
-            <TrendingUp size={28} className="text-[#6B716B]/40 mx-auto mb-3" />
+          <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 text-center shadow-xs">
+            <TrendingUp size={24} className="text-[#6B716B]/40 mx-auto mb-2" />
             <p className="text-sm font-semibold text-[#20251F]">No services listed yet</p>
             <p className="text-xs text-[#6B716B] mt-1">Be the first to list a peer tutoring service!</p>
           </div>
@@ -197,15 +197,15 @@ export default async function RecommendationsPage() {
       {recommendedServices.length === 0 &&
         repeatRecommendations.length === 0 &&
         (!popularServices || popularServices.length === 0) && (
-          <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-            <Zap size={32} className="text-[#F26A21] mx-auto mb-4" />
+          <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+            <Zap size={26} className="text-[#F26A21] mx-auto mb-3" />
             <p className="text-base font-semibold text-[#20251F]">No recommendations yet</p>
-            <p className="text-xs text-[#6B716B] mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-[#6B716B] mt-1 max-w-lg mx-auto">
               Book a few peer sessions or browse subjects to tailor suggestions for your major.
             </p>
             <Link
               href="/dashboard/marketplace"
-              className="inline-block mt-4 bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-xs"
+              className="inline-block mt-4 bg-[#F26A21] hover:bg-[#D95416] text-white px-5 py-2 rounded-xl text-xs font-semibold transition-colors shadow-xs"
             >
               Browse marketplace
             </Link>

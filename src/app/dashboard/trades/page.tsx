@@ -77,44 +77,44 @@ export default async function TradesPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-4">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-xs font-semibold mb-1">
-            <ArrowLeftRight size={12} />
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E8F0E7] text-[#315B3B] text-[10px] font-black uppercase tracking-widest mb-1">
+            <ArrowLeftRight size={11} />
             Reciprocal Learning Exchange
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#20251F] tracking-tight">Skill Swap</h1>
-          <p className="text-[#6B716B] text-sm mt-0.5">Trade tutoring with another student — no fees, collaborative campus learning</p>
+          <h1 className="text-2xl font-black text-[#20251F] tracking-tight leading-tight">Skill Swap</h1>
+          <p className="text-[#6B716B] text-xs mt-0.5">Trade tutoring with another student — no fees, collaborative campus learning</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             href="/dashboard/trades/my"
-            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-colors px-4 py-2.5 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs"
+            className="flex items-center gap-2 bg-white hover:bg-[#F5F3ED] border border-[#E8E5DE] transition-colors px-3.5 py-2 rounded-xl text-xs font-semibold text-[#20251F] shadow-xs"
           >
             My swaps
           </Link>
           <Link
             href="/dashboard/trades/new"
-            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-colors px-4 py-2.5 rounded-xl text-xs font-semibold text-white shadow-xs"
+            className="flex items-center gap-2 bg-[#F26A21] hover:bg-[#D95416] transition-colors px-3.5 py-2 rounded-xl text-xs font-semibold text-white shadow-xs"
           >
-            <Plus size={16} />
+            <Plus size={15} />
             Post a swap
           </Link>
         </div>
       </div>
 
       {/* How it works banner */}
-      <div className="bg-[#E8F0E7]/60 border border-[#315B3B]/20 rounded-2xl p-5 shadow-xs">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-white border border-[#315B3B]/20 flex items-center justify-center flex-shrink-0 text-[#315B3B] shadow-xs">
-            <ArrowLeftRight size={18} />
+      <div className="bg-[#E8F0E7]/70 border border-[#315B3B]/20 rounded-xl p-3.5 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-8.5 h-8.5 rounded-xl bg-white border border-[#315B3B]/20 flex items-center justify-center flex-shrink-0 text-[#315B3B] shadow-xs">
+            <ArrowLeftRight size={16} />
           </div>
           <div>
-            <h2 className="font-bold text-sm text-[#20251F] mb-1">How Skill Swap Works</h2>
-            <p className="text-xs text-[#20251F]/70 leading-relaxed">
-              Post what subject you need help with and what subject you can teach in return. Another student matches with you — you both tutor each other at no cost. Perfect for collaborative campus study!
+            <h2 className="font-bold text-xs text-[#20251F]">How Skill Swap Works</h2>
+            <p className="text-xs text-[#20251F]/75 leading-relaxed">
+              Post what subject you need help with and what subject you can teach in return. Another student matches with you — you both tutor each other at no cost.
             </p>
           </div>
         </div>
@@ -122,12 +122,12 @@ export default async function TradesPage({ searchParams }: Props) {
 
       {/* Search */}
       <form className="relative">
-        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B716B]" />
+        <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B716B]" />
         <input
           name="q"
           defaultValue={query}
           placeholder="Search skill swaps by subject or keyword..."
-          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-11 pr-4 py-2.5 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
+          className="w-full bg-white border border-[#E8E5DE] rounded-xl pl-10 pr-4 py-2.5 text-[#20251F] text-sm placeholder-[#6B716B]/60 focus:outline-none focus:border-[#F26A21] focus:ring-2 focus:ring-[#F26A21]/15 transition-all shadow-xs"
         />
         {selectedSubject !== 'All' && (
           <input type="hidden" name="subject" value={selectedSubject} />
@@ -135,7 +135,7 @@ export default async function TradesPage({ searchParams }: Props) {
       </form>
 
       {/* Subject Filter Pills */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+      <div className="flex gap-1.5 overflow-x-auto sm:flex-wrap pb-0.5 scrollbar-hide">
         {SUBJECTS.map((sub) => {
           const isSelected = selectedSubject === sub
           return (
@@ -143,7 +143,7 @@ export default async function TradesPage({ searchParams }: Props) {
               key={sub}
               href={'/dashboard/trades?subject=' + sub + (query ? '&q=' + query : '')}
               className={
-                'px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap flex-shrink-0 ' +
+                'px-3 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap flex-shrink-0 ' +
                 (isSelected
                   ? 'bg-[#315B3B] border-[#315B3B] text-white shadow-xs'
                   : 'bg-white border-[#E8E5DE] text-[#6B716B] hover:border-[#315B3B]/30 hover:text-[#20251F]')
@@ -157,7 +157,7 @@ export default async function TradesPage({ searchParams }: Props) {
 
       {/* Trade Cards Grid */}
       {trades && trades.length > 0 ? (
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {trades.map((trade: any) => {
             const isOwn = trade.poster_id === user.id
             const alreadyRequested = requestedTradeIds.has(trade.id)
@@ -166,7 +166,7 @@ export default async function TradesPage({ searchParams }: Props) {
             return (
               <div
                 key={trade.id}
-                className="bg-white border border-[#E8E5DE] rounded-2xl p-6 hover:border-[#315B3B]/40 hover:shadow-md transition-all shadow-xs flex flex-col justify-between"
+                className="bg-white border border-[#E8E5DE] rounded-2xl p-4 sm:p-5 hover:border-[#315B3B]/40 hover:shadow-md transition-all shadow-xs flex flex-col justify-between"
               >
                 <div>
                   {/* Poster header */}
@@ -268,17 +268,17 @@ export default async function TradesPage({ searchParams }: Props) {
           })}
         </div>
       ) : (
-        <div className="bg-white border border-[#E8E5DE] rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-14 h-14 rounded-2xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] mx-auto mb-4">
-            <ArrowLeftRight size={24} />
+        <div className="w-full bg-white border border-[#E8E5DE] rounded-2xl p-8 sm:p-10 text-center shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-[#E8F0E7] border border-[#315B3B]/20 flex items-center justify-center text-[#315B3B] mx-auto mb-3">
+            <ArrowLeftRight size={22} />
           </div>
           <h2 className="text-base font-semibold text-[#20251F]">No skill swaps posted yet</h2>
-          <p className="text-sm text-[#6B716B] mt-1 max-w-sm mx-auto mb-4">
+          <p className="text-xs text-[#6B716B] mt-1 max-w-lg mx-auto mb-4">
             Be the first to trade tutoring in subjects you enjoy with other students!
           </p>
           <Link
             href="/dashboard/trades/new"
-            className="inline-flex items-center gap-2 bg-[#315B3B] hover:bg-[#24452D] text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 bg-[#315B3B] hover:bg-[#24452D] text-white px-4 py-2 rounded-xl text-xs font-semibold transition-colors shadow-xs"
           >
             <Plus size={15} />
             Post a skill swap
